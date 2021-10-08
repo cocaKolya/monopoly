@@ -47,7 +47,12 @@ router.route('/login').post(async (req, res) => {
   }
 });
 
-router.get();
+router.post('/check', (req, res) => {
+  if (req.session.user) {
+    return res.json(req.session.user);
+  }
+  res.sendStatus(401);
+});
 
 router.get('/logout', (req, res) => {
   req.session.destroy();
