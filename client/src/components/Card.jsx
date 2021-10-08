@@ -15,7 +15,7 @@ const CardBack = styled('div')`
   align-items: center;
   border: 1.5px solid black;
   margin: -1px;
-  background-color: white;
+  background-color: rgb(208, 252, 242); ;
 `;
 const CardHead = styled('div')`
   display: flex;
@@ -27,19 +27,25 @@ const CardHead = styled('div')`
 `;
 
 const CardText = styled('div')`
+  display: flex;
   padding: 5px;
   font-size: 8pt;
+  justify-content: center;
+  padding: 10px;
+  ${(props) => !props.mpColor && 'margin-top: 40%'};
 `;
 
-function Card({ name, mpColor, isCorner, id }) {
-  const { userPosition } = useDiceContext();
+function Card({ name, mpColor, isCorner, cardId }) {
+  const { userPosition, players } = useDiceContext();
 
   return (
     <>
       <CardBack isCorner={isCorner}>
-        {userPosition === id && <Player>🙃</Player>}
+        {players.map(
+          (el) => userPosition[el.id - 1] === cardId && <Player id={el.id} />
+        )}
         {mpColor && <CardHead mpColor={mpColor}></CardHead>}
-        <CardText>{name}</CardText>
+        <CardText mpColor={mpColor}>{name}</CardText>
       </CardBack>
     </>
   );

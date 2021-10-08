@@ -3,13 +3,15 @@ import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
 
 function RollDice() {
-  const { userPosition, setUserPosition } = useDiceContext();
+  const { userPosition, setUserPosition, playerTurn, nextPlayer, players } =
+    useDiceContext();
   const [dice, setDice] = useState(0);
   const [inProgress, setInProgress] = useState(false);
+  let currentPos = userPosition[playerTurn];
 
   useEffect(() => {
     const interval = () => {
-      let newPosition = dice + userPosition;
+      let newPosition = dice + userPosition[playerTurn];
       console.log(
         'dice:',
         dice,
@@ -25,8 +27,13 @@ function RollDice() {
         if (currentPos > 39) {
           newPosition = newPosition - currentPos;
           currentPos = 0;
-          setUserPosition(0);
-        } else setUserPosition((prev) => prev + 1);
+          setUserPosition((prev) =>
+            prev.map((el, i) => (i === playerTurn ? 0 : el))
+          );
+        } else
+          setUserPosition((prev) =>
+            prev.map((el, i) => (i === playerTurn ? el + 1 : el))
+          );
         console.log(
           'curPos:',
           currentPos,
@@ -38,13 +45,13 @@ function RollDice() {
         if (currentPos === newPosition) {
           clearInterval(timerId);
           setInProgress(false);
+          setDice(0);
+          nextPlayer();
         }
       }, 50);
     };
     if (dice !== 0) interval();
   }, [dice]);
-
-  let currentPos = userPosition;
 
   const rollHandler = () => {
     setInProgress(true);
@@ -58,7 +65,6 @@ function RollDice() {
     // console.log('dice:', dice, 'userPos:', userPosition);
   };
 
-  
   const Button = styled('div')`
     background-color: black;
     cursor: pointer;
@@ -73,7 +79,10 @@ function RollDice() {
       ) : (
         <Button style={{ backgroundColor: 'pink' }}> ROLL!</Button>
       )}
-      {dice}
+      <p>
+        Ходит игрок: {players[playerTurn].name} <br />
+        На кубиках выпало: {dice > 0 ? dice : '??'}
+      </p>
     </>
   );
 }

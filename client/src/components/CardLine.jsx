@@ -25,7 +25,7 @@ function CardLine({ position, db }) {
             name={el.name}
             mpColor={el.mpColor}
             isCorner={el.isCorner}
-            id={el.id}
+            cardId={el.id}
           ></Card>
         ))}
       </Wrapper>
