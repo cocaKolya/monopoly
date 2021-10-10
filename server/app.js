@@ -34,7 +34,7 @@ app.use(sessionParser);
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors[{ Credential: true, origin: process.env.ORIGIN }]);
+app.use(cors({ credentials: true, origin: process.env.ORIGIN }));
 
 app.use((req, res, next) => {
   res.locals.token = process.env.API;

@@ -10,13 +10,13 @@ import axios from 'axios';
 const url = process.env.REACT_APP_URL;
 
 const addUser = (user) => {
-  return axios(`${url}/reg`, { user }).then((res) => res.data);
+  return axios.post(`${url}/user/reg`, { user }).then((res) => res.data);
 };
 const delUser = () => {
-  return axios(`${url}/logout`).then((res) => res.data);
+  return axios.post(`${url}/user/logout`).then((res) => res.data);
 };
 const checkUser = () => {
-  return axios(`${url}/check`).then((res) => res.data);
+  return axios.post(`${url}/user/check`).then((res) => res.data);
 };
 
 function* addUserWatcher(action) {

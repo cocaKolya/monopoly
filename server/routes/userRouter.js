@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
-const { regexp } = require('sequelize/types/lib/operators');
+
 const { User } = require('../db/models');
 
 router.route('/reg').post(async (req, res) => {
   const { name, email, password } = req.body;
   if (name && email && password) {
-    const hashPass = await bcrypt.hash(password, process.env.SALT);
+    const hashPass = await bcrypt.hash(password, +process.env.SALT);
     try {
       const newUser = await User.create({
         name,
