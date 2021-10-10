@@ -10,13 +10,13 @@ import axios from 'axios';
 const url = process.env.REACT_APP_URL;
 
 const addUser = (user) => {
-  return axios(`${url}/reg`, { user }).then((res) => res.data);
+  return axios.post(`${url}/user/reg`, { user }).then((res) => res.data);
 };
 const delUser = () => {
-  return axios(`${url}/logout`).then((res) => res.data);
+  return axios(`${url}/user/logout`).then((res) => res.data);
 };
 const checkUser = () => {
-  return axios(`${url}/check`).then((res) => res.data);
+  return axios(`${url}/user/check`).then((res) => res.data);
 };
 
 function* addUserWatcher(action) {
@@ -24,7 +24,7 @@ function* addUserWatcher(action) {
     const user = yield call(addUser, action.payload);
     yield put({ type: ADD_USER, payload: user });
   } catch (err) {
-    yield put({ type: ADD_USER, payload: [{ name: 'ERROR' }] });
+    yield put({ type: ADD_USER, payload: null });
   }
 }
 
@@ -33,16 +33,17 @@ function* delUserWatcher() {
     yield call(delUser);
     yield put({ type: DEL_USER, payload: null });
   } catch (err) {
-    yield put({ type: DEL_USER, payload: [{ name: 'ERROR' }] });
+    yield put({ type: DEL_USER, payload: null });
   }
 }
 
 function* checkUserWatcher() {
   try {
     const user = yield call(checkUser);
+    console.log(user);
     yield put({ type: DEL_USER, payload: user });
   } catch (err) {
-    yield put({ type: DEL_USER, payload: [{ name: 'ERROR' }] });
+    yield put({ type: DEL_USER, payload: null });
   }
 }
 

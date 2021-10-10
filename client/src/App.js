@@ -6,6 +6,7 @@ import DiceContextProvider from './contexts/DiceContext';
 import './style.css';
 import { useDispatch } from 'react-redux';
 import { checkUser } from './redux/actions/userAction';
+import RegForm from './components/RegForm';
 
 const MainWrapperDiv = styled('div')`
   display: flex;
@@ -33,6 +34,7 @@ function App() {
       <MainWrapperDiv>
         <Switch>
           <Route exact path="/" component={CardBoard} />
+          <Route exact path="/reg" component={RegForm} />
         </Switch>
       </MainWrapperDiv>
     </DiceContextProvider>

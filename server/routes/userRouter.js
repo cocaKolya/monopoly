@@ -1,12 +1,14 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
-const { regexp } = require('sequelize/types/lib/operators');
+// const { regexp } = require('sequelize/types/lib/operators');
 const { User } = require('../db/models');
 
 router.route('/reg').post(async (req, res) => {
-  const { name, email, password } = req.body;
+  console.log(req.body);
+  const { name, email, password } = req.body.user;
   if (name && email && password) {
-    const hashPass = await bcrypt.hash(password, process.env.SALT);
+    console.log('in if');
+    const hashPass = await bcrypt.hash(password, +process.env.SALT);
     try {
       const newUser = await User.create({
         name,
@@ -17,12 +19,12 @@ router.route('/reg').post(async (req, res) => {
         id: newUser.id,
         name: newUser.name,
       };
-      return res.json({ user: req.session.user });
+      return res.json({ id: newUser.id, name: newUser.name });
     } catch (error) {
-      return res.sendStatus(401);
+      return res.sendStatus(403);
     }
   } else {
-    return res.sendStatus(401);
+    return res.sendStatus(409);
   }
 });
 router.route('/login').post(async (req, res) => {
@@ -30,7 +32,10 @@ router.route('/login').post(async (req, res) => {
   if (email && password) {
     try {
       const currentUser = await User.findOne({ where: { email } });
-      if (currentUser && (await bcrypt.compare(password, currentUser.password))) {
+      if (
+        currentUser &&
+        (await bcrypt.compare(password, currentUser.password))
+      ) {
         req.session.user = {
           id: currentUser.id,
           name: currentUser.name,
@@ -47,7 +52,7 @@ router.route('/login').post(async (req, res) => {
   }
 });
 
-router.post('/check', (req, res) => {
+router.get('/check', (req, res) => {
   if (req.session.user) {
     return res.json(req.session.user);
   }
