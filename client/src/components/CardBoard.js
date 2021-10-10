@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
 import CardLine from './CardLine';
+import RollDice from './RollDice';
+import Switcher from './Switcher';
 
 const dbDown = [
   { id: 1, name: 'житная', mpColor: 'brown' },
@@ -86,19 +88,23 @@ const Center = styled('div')`
 function CardBoard() {
   const { transform } = useDiceContext();
   return (
-    <BoardWrapper transform={transform}>
-      <CardLine position={'left'} db={dbLeft} />
+    <>
+      <Switcher />
+      <BoardWrapper transform={transform}>
+        <CardLine position={'left'} db={dbLeft} />
 
-      <Row>
-        <CardLine position={'up'} db={dbUp} />
-        <Center>
-          <Center rotate={true}>MONOPOLY</Center>
-        </Center>
-        <CardLine position={'down'} db={dbDown} />
-      </Row>
+        <Row>
+          <CardLine position={'up'} db={dbUp} />
+          <Center>
+            <Center rotate={true}>MONOPOLY</Center>
+          </Center>
+          <CardLine position={'down'} db={dbDown} />
+        </Row>
 
-      <CardLine position={'right'} db={dbRight} />
-    </BoardWrapper>
+        <CardLine position={'right'} db={dbRight} />
+      </BoardWrapper>
+      <RollDice />
+    </>
   );
 }
 

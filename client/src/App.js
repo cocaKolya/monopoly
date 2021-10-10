@@ -1,12 +1,13 @@
-import styled from 'styled-components';
+import { useEffect } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import CardBoard from './components/CardBoard';
-import RollDice from './components/RollDice';
+import styled from 'styled-components';
 import DiceContextProvider from './contexts/DiceContext';
-import { useEffect, useRef } from 'react';
 import './style.css';
-import Switcher from './components/Switcher';
+import { useDispatch } from 'react-redux';
+import { checkUser } from './redux/actions/userAction';
 
-const MainWrapper = styled('div')`
+const MainWrapperDiv = styled('div')`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -18,21 +19,22 @@ const MainWrapper = styled('div')`
 `;
 
 function App() {
-  // const socket = useRef(new WebSocket(`ws://127.0.0.1:3001`));
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   socket.current.onmessage = function (event) {
-  //     alert(`[message] Данные получены с сервера: ${event.data}`);
-  //   };
-  // }, []);
+  useEffect(() => {
+    dispatch(checkUser());
+  }, []);
 
   return (
+    // <div>
+    //   <button onClick={() => {}}>tap me</button>
+    // </div>
     <DiceContextProvider>
-      <MainWrapper>
-        <Switcher />
-        <CardBoard />
-        <RollDice />
-      </MainWrapper>
+      <MainWrapperDiv>
+        <Switch>
+          <Route exact path="/" component={CardBoard} />
+        </Switch>
+      </MainWrapperDiv>
     </DiceContextProvider>
   );
 }

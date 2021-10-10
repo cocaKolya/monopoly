@@ -15,6 +15,8 @@ module.exports = {
           model: 'Users',
           key: 'id',
         },
+        onDelete: 'SET NULL',
+        onUpdate: 'SET NULL',
       },
       gameid: {
         allowNull: false,
@@ -23,6 +25,8 @@ module.exports = {
           model: 'Games',
           key: 'id',
         },
+        onDelete: 'SET NULL',
+        onUpdate: 'SET NULL',
       },
       createdAt: {
         allowNull: false,

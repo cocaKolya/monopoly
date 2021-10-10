@@ -1,15 +1,22 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
-import { ADD_USER, DEL_USER, GET_ADD_USER, GET_CHECK_USER, GET_DEL_USER } from '../types/userTypes';
+import {
+  ADD_USER,
+  DEL_USER,
+  GET_ADD_USER,
+  GET_CHECK_USER,
+  GET_DEL_USER,
+} from '../types/userTypes';
 import axios from 'axios';
+const url = process.env.REACT_APP_URL;
 
 const addUser = (user) => {
-  return axios('/reg', { user }).then((res) => res.data);
+  return axios(`${url}/reg`, { user }).then((res) => res.data);
 };
 const delUser = () => {
-  return axios('/logout').then((res) => res.data);
+  return axios(`${url}/logout`).then((res) => res.data);
 };
 const checkUser = () => {
-  return axios('/check').then((res) => res.data);
+  return axios(`${url}/check`).then((res) => res.data);
 };
 
 function* addUserWatcher(action) {
