@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
-// const { regexp } = require('sequelize/types/lib/operators');
 const { User } = require('../db/models');
 
 router.route('/reg').post(async (req, res) => {
