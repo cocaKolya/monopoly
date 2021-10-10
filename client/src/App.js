@@ -2,14 +2,10 @@ import { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import CardBoard from './components/CardBoard';
 import styled from 'styled-components';
-
-import RollDice from './components/RollDice';
 import DiceContextProvider from './contexts/DiceContext';
-
 import './style.css';
 import { useDispatch } from 'react-redux';
 import { checkUser } from './redux/actions/userAction';
-import Switcher from './components/Switcher';
 
 const MainWrapperDiv = styled('div')`
   display: flex;

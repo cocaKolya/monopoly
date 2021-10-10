@@ -61,8 +61,6 @@ function RollDice() {
     setDice(dicetotal);
 
     console.log('rollH:', inProgress);
-    // console.log(dicetotal);
-    // console.log('dice:', dice, 'userPos:', userPosition);
   };
 
   const Button = styled('div')`

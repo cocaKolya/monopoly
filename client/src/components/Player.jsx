@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useDiceContext } from '../contexts/DiceContext';
+
 
 const PLAYER_FACTORS = {
   1: 'top: 40%; left:20%; background-color: yellow;',

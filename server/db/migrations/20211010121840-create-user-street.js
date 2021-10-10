@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('UserInGames', {
+    await queryInterface.createTable('UserStreets', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,29 +9,28 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       userid: {
-        type: Sequelize.INTEGER,
         allowNull: false,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Users',
           key: 'id',
         },
       },
       gameid: {
-        type: Sequelize.INTEGER,
         allowNull: false,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Games',
           key: 'id',
         },
       },
-      position: {
+      streetid: {
+        allowNull: false,
         type: Sequelize.INTEGER,
-      },
-      money: {
-        type: Sequelize.INTEGER,
-      },
-      queue: {
-        type: Sequelize.INTEGER,
+        references: {
+          model: 'Streets',
+          key: 'id',
+        },
       },
       createdAt: {
         allowNull: false,
@@ -44,6 +43,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('UserInGames');
+    await queryInterface.dropTable('UserStreets');
   },
 };
