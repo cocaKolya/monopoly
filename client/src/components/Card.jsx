@@ -15,8 +15,14 @@ const CardBack = styled('div')`
   align-items: center;
   border: 1.5px solid black;
   margin: -1px;
-  background-color: rgb(208, 252, 242); ;
+  background-color: rgb(208, 252, 242);
+  background-size: cover;
+  ${(props) => props.special && `background-image: url(/${props.special}.png);`}
+  ${(props) =>
+    props.special === 'train' &&
+    'background-size: 50px; background-repeat: no-repeat; background-position-x: center; background-position-y: 90%;'}
 `;
+
 const CardHead = styled('div')`
   display: flex;
   justify-content: space-around;
@@ -35,12 +41,12 @@ const CardText = styled('div')`
   ${(props) => !props.mpColor && 'margin-top: 40%'};
 `;
 
-function Card({ name, mpColor, isCorner, cardId }) {
+function Card({ name, mpColor, isCorner, cardId, special }) {
   const { userPosition, players } = useDiceContext();
 
   return (
     <>
-      <CardBack isCorner={isCorner}>
+      <CardBack isCorner={isCorner} special={special}>
         {players.map(
           (el) => userPosition[el.id - 1] === cardId && <Player id={el.id} />
         )}

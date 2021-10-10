@@ -15,8 +15,6 @@ const Wrapper = styled('div')`
 `;
 
 function CardLine({ position, db }) {
-  
-
   return (
     <>
       <Wrapper position={position}>
@@ -26,6 +24,7 @@ function CardLine({ position, db }) {
             mpColor={el.mpColor}
             isCorner={el.isCorner}
             cardId={el.id}
+            special={el.special}
           ></Card>
         ))}
       </Wrapper>
