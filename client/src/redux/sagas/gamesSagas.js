@@ -1,6 +1,6 @@
 import axios from 'axios';
 const { takeLatest, put, call } = require('@redux-saga/core/effects');
-const { CREATE_GAME, ADD_GAME, FIND_GAMES } = require('../types/gameTypes');
+const { ADD_GAME, FIND_GAMES } = require('../types/gameTypes');
 const url = process.env.REACT_APP_URL;
 
 const findGames = () => {

@@ -2,21 +2,32 @@ require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-const path = require('path');
 const redis = require('redis');
+const redisClient = redis.createClient();
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 const http = require('http');
 const WebSocket = require('ws');
+const passport = require('passport');
+require('./passportSetup');
 
-const { User, Game, UserInGame } = require('./db/models');
+const registerWsEmitter = require('./src/ws/wsEmitter');
+const registerWsMessages = require('./src/ws/wsMessages');
+
 const userRouter = require('./routes/userRouter');
+const gameRouter = require('./routes/gameRouter');
+const googleRouter = require('./routes/googleRouter');
 
-const redisClient = redis.createClient();
-
+// session
 const PORT = 3001;
 const app = express();
 const map = new Map();
+
+app.use(express.urlencoded({ extended: true }));
+app.use(cors({ credentials: true, origin: process.env.ORIGIN }));
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const sessionParser = session({
   name: 'sesid',
@@ -29,31 +40,35 @@ const sessionParser = session({
     httpOnly: true,
   },
 });
-
 app.use(sessionParser);
-app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors({ credentials: true, origin: process.env.ORIGIN }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// // Auth middleware that checks if the user is logged in
+// const isLoggedIn = (req, res, next) => {
+//   if (req.user) {
+//     console.log('====>>>> name', req.user.displayName, '====>>>>> email', req.user.emails[0].value, '=====>>>>', req.user.photos[0].value)
+//     next();
+//   } else {
+//     res.sendStatus(401);
+//   }
+// }
 
 app.use((req, res, next) => {
   res.locals.token = process.env.API;
   if (req.session.user) {
     res.locals.user = req.session.user;
   }
-
   next();
 });
 
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ clientTracking: false, noServer: true });
 
+app.use('/google', googleRouter);
 app.use('/user', userRouter);
-
-// const user = await User.findAll({
-//   include: Game,
-// });
-// console.log(user[0].Games[0].UserInGames);
+app.use('/game', gameRouter);
 
 //1
 server.on('upgrade', function (request, socket, head) {
@@ -76,56 +91,13 @@ server.on('upgrade', function (request, socket, head) {
 
 //2
 wss.on('connection', function (ws, request) {
-  console.log('asdfasdfasdfasdfasdf');
   const userId = request.session.user.id;
 
   map.set(userId, ws);
 
-  ws.on('message', async function (message) {
-    const dataFromFront = JSON.parse(message);
+  registerWsEmitter(map);
 
-    switch (dataFromFront.type) {
-      case 'newGame':
-        // try {
-        //   const { name, owner } = dataFromFront.payload.myGame;
-        //   try {
-        //     const game = await Game.create({
-        //       name,
-        //       owner,
-        //     });
-        //     for (let [id, userConnect] of map) {
-        //       userConnect.send(
-        //         JSON.stringify({
-        //           type: 'newGameCreate',
-        //           payload: game,
-        //         })
-        //       );
-        //     }
-        //   } catch (err) {
-        //     console.log(err);
-        //     ws.send(
-        //       JSON.stringify({
-        //         type: 'err',
-        //         payload: 'err',
-        //       })
-        //     );
-        //   }
-        // } catch (err) {
-        //   console.log(err);
-        //   ws.send(
-        //     JSON.stringify({
-        //       type: 'err',
-        //       payload: 'err',
-        //     })
-        console.log(dataFromFront);
-        //   );
-        // }
-        break;
-
-      default:
-        break;
-    }
-  });
+  registerWsMessages(map, ws);
 
   ws.on('close', function () {
     map.delete(userId);

@@ -8,9 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      key: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
+      },
+      inprocess: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
       },
       owner: {
         allowNull: false,

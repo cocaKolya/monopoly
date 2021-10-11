@@ -9,6 +9,7 @@ import { checkUser } from './redux/actions/userAction';
 import RegForm from './components/RegForm';
 import HomePage from './components/HomePage';
 import { NavBar } from './components/navBar';
+import { Lobby } from './components/Lobby';
 
 const MainWrapperDiv = styled('div')`
   display: flex;
@@ -29,9 +30,6 @@ function App() {
   }, []);
 
   return (
-    // <div>
-    //   <button onClick={() => {}}>tap me</button>
-    // </div>
     <DiceContextProvider>
       <NavBar />
       <MainWrapperDiv>
@@ -39,6 +37,7 @@ function App() {
           <Route exact path='/' component={CardBoard} />
           <Route exact path='/reg' component={RegForm} />
           <Route exact path='/home' component={HomePage} />
+          <Route exact path='/game/:id/lobby' component={Lobby} />
         </Switch>
       </MainWrapperDiv>
     </DiceContextProvider>
