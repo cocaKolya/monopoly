@@ -12,6 +12,8 @@ const WebSocket = require('ws');
 const { User, Game, UserInGame } = require('./db/models');
 const userRouter = require('./routes/userRouter');
 const gameRouter = require('./routes/gameRouter');
+const registerWsEmitter = require('./src/ws/wsEmitter');
+const registerWsMessages = require('./src/ws/wsMessages');
 
 const redisClient = redis.createClient();
 
@@ -83,51 +85,9 @@ wss.on('connection', function (ws, request) {
 
   map.set(userId, ws);
 
-  ws.on('message', async function (message) {
-    const dataFromFront = JSON.parse(message);
+  registerWsEmitter(map);
 
-    switch (dataFromFront.type) {
-      case 'newGame':
-        // try {
-        //   const { name, owner } = dataFromFront.payload.myGame;
-        //   try {
-        //     const game = await Game.create({
-        //       name,
-        //       owner,
-        //     });
-        //     for (let [id, userConnect] of map) {
-        //       userConnect.send(
-        //         JSON.stringify({
-        //           type: 'newGameCreate',
-        //           payload: game,
-        //         })
-        //       );
-        //     }
-        //   } catch (err) {
-        //     console.log(err);
-        //     ws.send(
-        //       JSON.stringify({
-        //         type: 'err',
-        //         payload: 'err',
-        //       })
-        //     );
-        //   }
-        // } catch (err) {
-        //   console.log(err);
-        //   ws.send(
-        //     JSON.stringify({
-        //       type: 'err',
-        //       payload: 'err',
-        //     })
-        console.log(dataFromFront);
-        //   );
-        // }
-        break;
-
-      default:
-        break;
-    }
-  });
+  registerWsMessages(map, ws);
 
   ws.on('close', function () {
     map.delete(userId);

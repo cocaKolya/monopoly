@@ -1,11 +1,22 @@
 const router = require('express').Router();
 const { Game, UserInGame } = require('../db/models');
 const { v4: uuidv4 } = require('uuid');
+const myEmitter = require('../src/ee');
+const { NEW_GAME_CREATE } = require('../src/constants/event');
 
 router.route('/add').post(async (req, res) => {
   const { owner } = req.body;
-  await Game.create({ key: uuidv4(), owner });
-  res.sendStatus(200);
+  const game = await Game.create({ key: uuidv4(), owner, inprocess: false });
+
+  await UserInGame.create({
+    gameid: game.id,
+    userid: owner,
+    position: 0,
+    money: 5500,
+    queue: 1,
+  });
+  myEmitter.emit(NEW_GAME_CREATE, game);
+  res.sendStatus(game);
 });
 router.route('/del').post(async (req, res) => {
   const { userid, gameid } = req.body;
@@ -23,7 +34,7 @@ router.route('/checkGame').get(async (req, res) => {
 });
 router.route('/userInGame').post(async (req, res) => {
   const { gameid, userid } = req.body;
-  const gameParty = await UserInGame.findAll({ where: { gameid } });
+  const gameParty = await UserInGame.findOne({ where: { gameid } });
 
   await UserInGame.create({
     gameid,
