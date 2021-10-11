@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { checkUser } from './redux/actions/userAction';
 import RegForm from './components/RegForm';
 import HomePage from './components/HomePage';
+import { NavBar } from './components/navBar';
 
 const MainWrapperDiv = styled('div')`
   display: flex;
@@ -29,6 +30,7 @@ function App() {
 
   return (
     <DiceContextProvider>
+      <NavBar />
       <MainWrapperDiv>
         <Switch>
           <Route exact path='/' component={CardBoard} />

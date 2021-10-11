@@ -11,6 +11,7 @@ const POSITION_FACTORS = {
 const Wrapper = styled('div')`
   display: flex;
   flex-direction: row-reverse;
+  border-left: 1px solid black;
   -webkit-transform: ${(prop) => POSITION_FACTORS[prop.position]};
 `;
 

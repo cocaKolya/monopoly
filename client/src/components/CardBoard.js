@@ -55,6 +55,8 @@ const dbRight = [
 
 const BoardWrapper = styled('div')`
   display: flex;
+  position: relative;
+  overflow: hidden;
   ${(props) =>
     props.transform &&
     `transform:rotateX(40deg); -webkit-transition: background 1s linear 0s;
@@ -71,8 +73,19 @@ const BoardWrapper = styled('div')`
 const Row = styled('div')`
   //   display: flex;
   // flex-direction:column
+
 `;
 
+const LineWrapLeft = styled('div')`
+  position: absolute;
+  transform: translateX(-50%);
+  left: 50px;
+`;
+const LineWrapRight = styled('div')`
+  position: absolute;
+  transform: translateX(50%);
+  right: 50px;
+`;
 const Center = styled('div')`
   ${(props) => props.rotate && '-webkit-transform: rotate(-45deg)'};
   display: flex;
@@ -80,28 +93,46 @@ const Center = styled('div')`
   justify-content: center;
   align-items: center;
   font-size: 35pt;
-  height: 550px;
-  width: 550px;
-  ${(props) => !props.rotate && 'background-color: rgb(208, 252, 242)'}
+  height: 552px;
+  ${(props) =>
+    !props.rotate &&
+    `background-color: rgb(208, 252, 242);
+    border: 1px solid #000;
+    position: relative;
+    z-index: 5
+  `}
 `;
 
+const Board = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 0 100px;
+  border: 1px solid #000;
+`;
 function CardBoard() {
   const { transform } = useDiceContext();
   return (
     <>
       <Switcher />
       <BoardWrapper transform={transform}>
-        <CardLine position={'left'} db={dbLeft} />
+        <Board>
+          <LineWrapLeft>
+            <CardLine position={'left'} db={dbLeft} />
+          </LineWrapLeft>
 
-        <Row>
-          <CardLine position={'up'} db={dbUp} />
-          <Center>
-            <Center rotate={true}>MONOPOLY</Center>
-          </Center>
-          <CardLine position={'down'} db={dbDown} />
-        </Row>
-
-        <CardLine position={'right'} db={dbRight} />
+          <Row>
+            <CardLine position={'up'} db={dbUp} />
+            <Center>
+              <Center rotate={true}>MONOPOLY</Center>
+            </Center>
+            <CardLine position={'down'} db={dbDown} />
+          </Row>
+          <LineWrapRight>
+            <CardLine position={'right'} db={dbRight} />
+          </LineWrapRight>
+        </Board>
       </BoardWrapper>
       <RollDice />
     </>
