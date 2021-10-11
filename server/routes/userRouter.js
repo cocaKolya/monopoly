@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const { User } = require('../db/models');
 
 router.route('/reg').post(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password } = req.body.user;
   if (name && email && password) {
     const hashPass = await bcrypt.hash(password, +process.env.SALT);
     try {
@@ -17,12 +17,12 @@ router.route('/reg').post(async (req, res) => {
         id: newUser.id,
         name: newUser.name,
       };
-      return res.json({ user: req.session.user });
+      return res.json({ id: newUser.id, name: newUser.name });
     } catch (error) {
-      return res.sendStatus(401);
+      return res.sendStatus(405);
     }
   } else {
-    return res.sendStatus(401);
+    return res.sendStatus(403);
   }
 });
 router.route('/login').post(async (req, res) => {
@@ -47,7 +47,7 @@ router.route('/login').post(async (req, res) => {
   }
 });
 
-router.post('/check', (req, res) => {
+router.get('/check', (req, res) => {
   if (req.session.user) {
     return res.json(req.session.user);
   }

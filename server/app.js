@@ -11,6 +11,7 @@ const WebSocket = require('ws');
 
 const { User, Game, UserInGame } = require('./db/models');
 const userRouter = require('./routes/userRouter');
+const gameRouter = require('./routes/gameRouter');
 
 const redisClient = redis.createClient();
 
@@ -49,6 +50,7 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ clientTracking: false, noServer: true });
 
 app.use('/user', userRouter);
+app.use('/game', gameRouter);
 
 // const user = await User.findAll({
 //   include: Game,
