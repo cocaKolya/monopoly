@@ -5,15 +5,14 @@ import Player from './Player';
 const CardBack = styled('div')`
   position: relative;
   box-sizing: content-box;
-  width: ${(props) => (props.isCorner ? '100px' : '60px')};
+  flex-shrink: 0;
+  width: ${(props) => (props.isCorner ? '99px' : '60px')};
   height: 100px;
-  margin: 10px 0px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  border: 1.5px solid black;
-  margin: -1px;
+  border-right: 1.5px solid black;
   background-color: rgb(208, 252, 242);
   background-size: cover;
   ${(props) => props.special && `background-image: url(/${props.special}.png);`}
@@ -25,7 +24,7 @@ const CardBack = styled('div')`
 const CardHead = styled('div')`
   display: flex;
   justify-content: space-around;
-  width: 100%;
+  width: calc(100% + 1px);
   height: 20px;
   border-bottom: 1px solid black;
   background-color: ${(props) => props.mpColor};
