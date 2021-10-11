@@ -30,11 +30,11 @@ const HomeWrapper = styled('div')`
   justify-content: space-between;
 `;
 const Row = styled('div')`
-  margin: 200px;
+  margin: 10px 200px;
 `;
 
 const Header = styled('div')`
-  margn-top: 10px;
+  margin-top: 50px;
 `;
 
 function HomePage() {
@@ -54,7 +54,7 @@ function HomePage() {
   return (
     <>
       <Header>
-        <Button text={'Создать игру'} onClick={() => GameStarter(user)}/>
+        <Button text={'Создать игру'} onClick={() => GameStarter(user)} />
       </Header>
       <HomeWrapper>
         <Row>

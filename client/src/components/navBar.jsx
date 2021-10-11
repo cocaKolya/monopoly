@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -28,13 +29,16 @@ const LinkWrapper = styled.div`
 `;
 
 export const NavBar = () => {
+  const user = useSelector((state) => state.user);
   return (
     <NavBarWrapper>
       <Logo>MONOPOLY</Logo>
+
       <LinkWrapper>
         <Link to='/home'>HOME</Link>
         <Link to='/'>GAME</Link>
-        <Link to='/reg'>REG</Link>
+        {!user && <Link to='/reg'>REG</Link>}
+        {user && <Link to='/logout'>LOGOUT</Link>}
       </LinkWrapper>
     </NavBarWrapper>
   );
