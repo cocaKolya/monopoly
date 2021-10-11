@@ -2,16 +2,12 @@
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Street extends Model {
-    static associate({ Game, User, Dohod }) {
-      this.belongsToMany(User, {
-        through: 'UserStreets',
+    static associate({ Dohod, GameStatistic }) {
+      this.hasMany(Dohod, {
         foreignKey: 'streetid',
       });
-      this.belongsToMany(Game, {
-        through: 'UserStreets',
-        foreignKey: 'streetid',
-      });
-      this.hasOne(Dohod, {
+      this.belongsToMany(GameStatistic, {
+        through: 'Estates',
         foreignKey: 'streetid',
       });
     }
@@ -19,8 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   Street.init(
     {
       name: DataTypes.STRING,
-      value: DataTypes.INTEGER,
+      cost: DataTypes.INTEGER,
       color: DataTypes.STRING,
+      maxlevel: DataTypes.INTEGER,
+      full: DataTypes.INTEGER,
     },
     {
       sequelize,

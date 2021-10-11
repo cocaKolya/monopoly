@@ -1,34 +1,34 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('UserStreets', {
+    await queryInterface.createTable('Estates', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      userid: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-      },
-      gameid: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Games',
-          key: 'id',
-        },
-      },
       streetid: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Streets',
+          key: 'id',
+        },
+      },
+      gamestatisticid: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'GameStatistics',
+          key: 'id',
+        },
+      },
+      dohodid: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Dohods',
           key: 'id',
         },
       },
@@ -43,6 +43,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('UserStreets');
+    await queryInterface.dropTable('Estates');
   },
 };

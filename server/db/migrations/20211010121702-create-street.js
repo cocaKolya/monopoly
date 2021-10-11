@@ -12,13 +12,21 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      value: {
+      cost: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
       color: {
         allowNull: false,
         type: Sequelize.STRING,
+      },
+      maxlevel: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      full: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
