@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -19,22 +20,29 @@ const LinkWrapper = styled.div`
     text-decoration: none;
     margin-right: 10px;
     padding: 10px 10px;
-    background-color: rgb(177, 126, 184);
-    color: black;
+    background-color: rgb(161, 83, 172);
+    color: white;
     &:hover {
-      background-color: rgb(161, 83, 172);
+      background-color: rgb(177, 126, 184);
     }
   }
 `;
 
+const styledImg = styled.img`
+  width: 500px;
+  background-image: src(/logoSmall.png);
+`;
+
 export const NavBar = () => {
+  const user = useSelector((state) => state.user);
   return (
     <NavBarWrapper>
       <Logo>MONOPOLY</Logo>
       <LinkWrapper>
         <Link to='/home'>HOME</Link>
         <Link to='/'>GAME</Link>
-        <Link to='/reg'>REG</Link>
+        {!user && <Link to='/reg'>REG</Link>}
+        {user && <Link to='/logout'>LOGOUT</Link>}
       </LinkWrapper>
     </NavBarWrapper>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { addGame, getGames } from '../redux/actions/gameActions';
 import { Button } from './Button';
@@ -30,24 +31,31 @@ const HomeWrapper = styled('div')`
   justify-content: space-between;
 `;
 const Row = styled('div')`
-  margin: 200px;
+  margin: 10px 200px;
 `;
 
 const Header = styled('div')`
-  margn-top: 10px;
+  margin-top: 50px;
+`;
+
+const Text = styled.p`
+  color: white;
+  font-size: 20pt;
 `;
 
 function HomePage() {
   const url = process.env.REACT_APP_URL_SOCKET;
   const socket = useRef(new WebSocket(url));
   const dispatch = useDispatch();
-
+  const history = useHistory();
+  const gameId = '2bmk34bq9xv'
   useEffect(() => {
     dispatch(getGames());
   }, []);
 
   const GameStarter = (owner) => {
     dispatch(addGame(owner));
+    history.push(`/game/${gameId}/lobby`);
   };
 
   const user = useSelector((state) => state.user);
@@ -60,11 +68,11 @@ function HomePage() {
       </Header>
       <HomeWrapper>
         <Row>
-          <p>Присоединиться к игре</p>
+          <Text>Присоединиться к игре</Text>
           <GameList db={fakeGames} />
         </Row>
         <Row>
-          <p>Продолжить игру</p>
+          <Text>Продолжить игру</Text>
           <GameList db={fakeProcessGames} />
         </Row>
       </HomeWrapper>

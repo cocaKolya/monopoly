@@ -4,9 +4,15 @@ import { Button } from './Button';
 const GameWrapper = styled('div')`
   border: 3px solid black;
   background-color: white;
+  width: 200px;
   margin: 10px;
   padding: 10px;
   border-radius: 10px;
+  > * {
+    border-bottom: 1px solid black;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+  }
 `;
 
 const PlayersWrapper = styled('div')`
