@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Game.init(
     {
-      key: DataTypes.INTEGER,
+      key: DataTypes.TEXT,
       owner: DataTypes.INTEGER,
       inprocess: DataTypes.BOOLEAN,
     },

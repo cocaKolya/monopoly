@@ -70,11 +70,6 @@ app.use('/google', googleRouter);
 app.use('/user', userRouter);
 app.use('/game', gameRouter);
 
-// const user = await User.findAll({
-//   include: Game,
-// });
-// console.log(user[0].Games[0].UserInGames);
-
 //1
 server.on('upgrade', function (request, socket, head) {
   console.log('Parsing session from request...');

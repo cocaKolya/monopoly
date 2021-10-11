@@ -16,26 +16,12 @@ module.exports = {
           key: 'id',
         },
       },
-      onecard: {
+      level: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      threecard: {
-        type: Sequelize.INTEGER,
-      },
-      onehouse: {
-        type: Sequelize.INTEGER,
-      },
-      twohouse: {
-        type: Sequelize.INTEGER,
-      },
-      threehouse: {
-        type: Sequelize.INTEGER,
-      },
-      fourhouse: {
-        type: Sequelize.INTEGER,
-      },
-      hotel: {
+      value: {
+        allowNull: false,
         type: Sequelize.INTEGER,
       },
       createdAt: {

@@ -11,13 +11,8 @@ module.exports = (sequelize, DataTypes) => {
   Dohod.init(
     {
       streetid: DataTypes.INTEGER,
-      onecard: DataTypes.INTEGER,
-      threecard: DataTypes.INTEGER,
-      onehouse: DataTypes.INTEGER,
-      twohouse: DataTypes.INTEGER,
-      threehouse: DataTypes.INTEGER,
-      fourhouse: DataTypes.INTEGER,
-      hotel: DataTypes.INTEGER,
+      level: DataTypes.INTEGER,
+      value: DataTypes.INTEGER,
     },
     {
       sequelize,

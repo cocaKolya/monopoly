@@ -1,4 +1,3 @@
-
 import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
 import Player from './Player';
@@ -38,7 +37,8 @@ const CardText = styled('div')`
   font-size: 8pt;
   justify-content: center;
   padding: 10px;
-  ${(props) => !props.mpColor && 'margin-top: 40%'};
+  ${(props) =>
+    props.special !== 'train' && !props.mpColor && 'margin-top: 40%'};
 `;
 
 function Card({ name, mpColor, isCorner, cardId, special }) {
@@ -51,7 +51,9 @@ function Card({ name, mpColor, isCorner, cardId, special }) {
           (el) => userPosition[el.id - 1] === cardId && <Player id={el.id} />
         )}
         {mpColor && <CardHead mpColor={mpColor}></CardHead>}
-        <CardText mpColor={mpColor}>{name}</CardText>
+        <CardText mpColor={mpColor} special={special}>
+          {name}
+        </CardText>
       </CardBack>
     </>
   );

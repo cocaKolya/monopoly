@@ -40,7 +40,6 @@ function* delUserWatcher() {
 function* checkUserWatcher() {
   try {
     const user = yield call(checkUser);
-    console.log(user);
     yield put({ type: DEL_USER, payload: user });
   } catch (err) {
     yield put({ type: DEL_USER, payload: null });

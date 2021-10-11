@@ -10,7 +10,7 @@ module.exports = {
       },
       key: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.TEXT,
       },
       inprocess: {
         allowNull: false,

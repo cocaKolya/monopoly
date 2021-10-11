@@ -7,6 +7,7 @@ import './style.css';
 import { useDispatch } from 'react-redux';
 import { checkUser } from './redux/actions/userAction';
 import RegForm from './components/RegForm';
+import HomePage from './components/HomePage';
 
 const MainWrapperDiv = styled('div')`
   display: flex;
@@ -27,14 +28,12 @@ function App() {
   }, []);
 
   return (
-    // <div>
-    //   <button onClick={() => {}}>tap me</button>
-    // </div>
     <DiceContextProvider>
       <MainWrapperDiv>
         <Switch>
-          <Route exact path="/" component={CardBoard} />
-          <Route exact path="/reg" component={RegForm} />
+          <Route exact path='/' component={CardBoard} />
+          <Route exact path='/reg' component={RegForm} />
+          <Route exact path='/home' component={HomePage} />
         </Switch>
       </MainWrapperDiv>
     </DiceContextProvider>
