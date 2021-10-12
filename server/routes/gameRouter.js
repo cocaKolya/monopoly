@@ -26,9 +26,12 @@ router.route('/add').post(async (req, res) => {
     inprocess: false,
   });
 
-  await UserInGame.create({
+  const userInGame = await UserInGame.create({
     gameid: game.id,
     userid: owner,
+  });
+  await GameStatistic.create({
+    uigid: userInGame.id,
     position: 0,
     money: 5500,
     queue: 1,
@@ -76,33 +79,53 @@ router.route('/add/users').post(async (req, res) => {
   res.json(users);
 });
 
+router.route('/game/users').post(async (req, res) => {
+  const { key } = req.body;
+
+  const [gameusers] = await sequelize.query(`
+  select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users" 
+  join "UserInGames" on "Users".id = "UserInGames".userid
+  join "Games" on "UserInGames".gameid = "Games".id
+  join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+  where "Games".key = ${key}
+   `);
+  console.log(gameusers);
+  res.json(users);
+});
+
 router.route('/userInGame').post(async (req, res) => {
   const { gameid, userid } = req.body;
   //max 4 person proverka
-  const gameParty = await UserInGame.findAll({ where: { gameid } });
-
-  const userInGame = await UserInGame.create({
-    gameid,
-    userid,
+  const gameParty = await Game.findOne({
+    where: { id: gameid },
+    include: User,
   });
+  //if i am in game => chto-to delat
+  console.log(gameParty.User);
+  if (gameParty.User.id !== userid) {
+    const userInGame = await UserInGame.create({
+      gameid,
+      userid,
+    });
 
-  const userStatistic = await GameStatistic.create({
-    uigid: userInGame.id,
-    position: 0,
-    money: 5500,
-    queue: (gameParty.length += 1),
-  });
-  const [test] = await sequelize.query(`
-select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users" 
-join "UserInGames" on "Users".id = "UserInGames".userid
-join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
-where "UserInGames".gameid = ${gameid}
- `);
+    const userStatistic = await GameStatistic.create({
+      uigid: userInGame.id,
+      position: 0,
+      money: 5500,
+      queue: (gameParty.length += 1),
+    });
+    const [test] = await sequelize.query(`
+  select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users" 
+  join "UserInGames" on "Users".id = "UserInGames".userid
+  join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+  where "UserInGames".gameid = ${gameid}
+   `);
 
-  console.log(test);
-  // console.log(user[0].Games[0].UserInGames);
+    // console.log(user[0].Games[0].UserInGames);
 
-  myEmitter.emit(NEW_PERSON, test);
+    myEmitter.emit(NEW_PERSON, test);
+    res.sendStatus(200);
+  }
   res.sendStatus(200);
 });
 
