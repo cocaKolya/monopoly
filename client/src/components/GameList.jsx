@@ -3,11 +3,11 @@ import GameItem from './GameItem';
 
 const GameListDiv = styled('div')``;
 
-function GameList({ db }) {
+function GameList({ db, active }) {
   return (
     <GameListDiv>
       {db.map((el) => (
-        <GameItem game={el} />
+        <GameItem game={el} active={active} />
       ))}
     </GameListDiv>
   );
