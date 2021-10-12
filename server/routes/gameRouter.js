@@ -34,6 +34,10 @@ router.route('/add').post(async (req, res) => {
     queue: 1,
   });
   // const userInGame = await Game.findOne({
+  //   where: { id: game.id },
+  //   include: User,
+  // });
+  // console.log(userInGame.User); //user witch create game
   //   // where: { id: game.id },
   //   include: User,
   // });
