@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
-        unique: true,
+        unique: false,
         allowNull: false,
         type: Sequelize.STRING,
       },
@@ -19,8 +19,12 @@ module.exports = {
         unique: true,
       },
       password: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING,
+      },
+      urlFoto: {
+        allowNull: false,
+        type: Sequelize.TEXT,
       },
       createdAt: {
         allowNull: false,
