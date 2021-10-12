@@ -81,11 +81,11 @@ router.route('/start').post(async (req, res) => {
 
 router.route('/add/users').post(async (req, res) => {
   const { userid, key } = req.body;
-
+  console.log(userid, key);
   const users = await User.findAll();
   users.filter((el) => el.id != userid);
 
-  const panding = await UserGamePanding.findAll({ where: { key } });
+  const panding = await UserGamePanding.findAll({ where: { gamekey: key } });
 
   const usersPandingFilter = user.filter((el) => {
     if (panding.findIndex((i) => i.id === el.id) != -1) {
@@ -103,7 +103,7 @@ router.route('/add/users').post(async (req, res) => {
 
 router.route('/panding').post(async (req, res) => {
   const { pandingid, key } = req.body;
-
+  console.log(pandingid, key);
   for (let i = 0; i < pandingid.length; i++) {
     await UserGamePanding.create({ userid: pandingid[i], gamekey: key });
   }
