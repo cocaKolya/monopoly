@@ -38,6 +38,10 @@ router.route('/add').post(async (req, res) => {
   //   include: User,
   // });
   // console.log(userInGame.User); //user witch create game
+  //   // where: { id: game.id },
+  //   include: User,
+  // });
+
   myEmitter.emit(NEW_GAME_CREATE, game);
   res.json(game);
 });
@@ -50,8 +54,10 @@ router.route('/del').post(async (req, res) => {
 
 router.route('/mygame').post(async (req, res) => {
   const { userid } = req.body;
-  const mygame = await UserInGame.findAll({ where: { userid } });
-  res.json(mygame);
+  console.log(userid);
+  const myGames = await UserInGame.findAll({ where: { userid } });
+
+  res.json(myGames);
 });
 
 router.route('/userInGame').post(async (req, res) => {

@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
-import { addGame, getGames } from '../redux/actions/gameActions';
-import { Button } from './Button';
+import { addGame, getGames, getUserGames } from '../redux/actions/gameActions';
+import { Button } from './atoms/Button';
 import GameList from './GameList';
 
 const fakeGames = [
@@ -48,32 +48,46 @@ function HomePage() {
   const socket = useRef(new WebSocket(url));
   const dispatch = useDispatch();
   const history = useHistory();
-  const gameId = '2bmk34bq9xv'
-  useEffect(() => {
-    dispatch(getGames());
-  }, []);
-
-  const GameStarter = (owner) => {
-    dispatch(addGame(owner));
-    history.push(`/game/${gameId}/lobby`);
-  };
 
   const user = useSelector((state) => state.user);
   const games = useSelector((state) => state.games);
-  console.log(games);
+  const currentGame = useSelector((state) => state.currentGame);
+  const userGames = useSelector((state) => state.userGames);
+
+  useEffect(() => {
+    dispatch(getGames());
+    if (user) dispatch(getUserGames(user?.id));
+  }, [user]);
+
+  console.log(userGames);
+  const GameStarter = (owner) => {
+    dispatch(addGame(owner));
+  };
+
+  const isFirstRun = useRef(true);
+  useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
+    if (currentGame) {
+      history.push(`/game/${currentGame.key}/lobby`);
+    }
+  }, [currentGame]);
+
   return (
     <>
       <Header>
-        <Button text={'Создать игру'} onClick={() => GameStarter(user.id)} />
+        <Button text={'Создать игру'} onClick={() => GameStarter(user?.id)} />
       </Header>
       <HomeWrapper>
         <Row>
-          <Text>Присоединиться к игре</Text>
-          <GameList db={fakeGames} />
+          <Text>Присоединиться к игре:</Text>
+          {games && <GameList db={games} />}
         </Row>
         <Row>
-          <Text>Продолжить игру</Text>
-          <GameList db={fakeProcessGames} />
+          <Text>Ваши активные игры:</Text>
+          {userGames && <GameList db={userGames} active={true} />}
         </Row>
       </HomeWrapper>
     </>

@@ -8,8 +8,10 @@ import { useDispatch } from 'react-redux';
 import { checkUser } from './redux/actions/userAction';
 import RegForm from './components/RegForm';
 import HomePage from './components/HomePage';
-import { NavBar } from './components/navBar';
+
 import { Lobby } from './components/Lobby';
+import { NavBar } from './components/NavBar';
+import Logout from './components/Logout';
 
 const MainWrapperDiv = styled('div')`
   display: flex;
@@ -36,6 +38,7 @@ function App() {
         <Switch>
           <Route exact path='/' component={CardBoard} />
           <Route exact path='/reg' component={RegForm} />
+          <Route exact path='/logout' component={Logout} />
           <Route exact path='/home' component={HomePage} />
           <Route exact path='/game/:id/lobby' component={Lobby} />
         </Switch>
