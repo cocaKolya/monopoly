@@ -34,8 +34,8 @@ export const addUserToGame = (gameid, userid) => async (dispatch) => {
     type: ADD_USER_TO_GAME,
   });
 };
-export const startGame = (gameid) => async (dispatch) => {
-  await axios.post('http://localhost:3001/game/start', { gameid });
+export const startGame = (key) => async (dispatch) => {
+  await axios.post('http://localhost:3001/game/start', { key });
 
   dispatch({
     type: START_GAME,

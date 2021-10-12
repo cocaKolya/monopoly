@@ -87,12 +87,11 @@ router.route('/users').post(async (req, res) => {
   join "UserInGames" on "Users".id = "UserInGames".userid
   join "Games" on "UserInGames".gameid = "Games".id
   join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
-  where "Games".key = ${key}
+  where "Games".key = '${key}'
    `);
   console.log(gameusers);
-  res.json(users);
+  res.json(gameusers);
 });
-
 
 router.route('/userInGame').post(async (req, res) => {
   const { gameid, userid } = req.body;
