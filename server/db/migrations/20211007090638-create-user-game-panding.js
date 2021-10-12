@@ -17,12 +17,21 @@ module.exports = {
         },
         
       },
-      gameid: {
+      frendid: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'Games',
+          model: 'Users',
           key: 'id',
+        },
+        
+      },
+      gamekey: {
+        allowNull: false,
+        type: Sequelize.TEXT,
+        references: {
+          model: 'Games',
+          key: 'key',
         },
       },
       createdAt: {

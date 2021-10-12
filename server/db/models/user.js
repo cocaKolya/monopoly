@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userid',
       });
       this.belongsToMany(Game, {
+        through: 'UserGamePandings',
+        foreignKey: 'frendid',
+      });
+      this.belongsToMany(Game, {
         through: 'UserInGames',
         foreignKey: 'userid',
       });

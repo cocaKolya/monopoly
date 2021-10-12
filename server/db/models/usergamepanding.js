@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   UserGamePanding.init({
     userid: DataTypes.INTEGER,
-    gameid: DataTypes.INTEGER
+    frendid: DataTypes.INTEGER,
+    gamekey: DataTypes.TEXT,
   }, {
     sequelize,
     modelName: 'UserGamePanding',

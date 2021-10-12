@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(User, { foreignKey: 'owner' });
       this.belongsToMany(User, {
         through: 'UserGamePandings',
-        foreignKey: 'gameid',
+        foreignKey: 'gamekey',
       });
       this.belongsToMany(User, {
         through: 'UserInGames',
