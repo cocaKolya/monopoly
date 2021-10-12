@@ -63,9 +63,9 @@ router.route('/mygame').post(async (req, res) => {
   res.json(myGames);
 });
 router.route('/start').post(async (req, res) => {
-  const { gameid } = req.body;
+  const { key } = req.body;
 
-  const game = await Game.findOne({ where: { id: gameid } });
+  const game = await Game.findOne({ where: { key } });
   game.inprocess = true;
 
   res.json(game);
@@ -78,7 +78,6 @@ router.route('/add/users').post(async (req, res) => {
 
   res.json(users);
 });
-
 
 router.route('/users').post(async (req, res) => {
   const { key } = req.body;

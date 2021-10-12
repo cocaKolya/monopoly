@@ -1,6 +1,9 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
+import { getAllUsers } from '../redux/actions/AllUsersActions';
+import { getGameUsers } from '../redux/actions/gameUsersActions';
 import { Button } from './atoms/Button';
 
 const LobbyWrapper = styled.div`
@@ -25,15 +28,26 @@ const GroupDiv = styled.div`
 `;
 
 export const Lobby = () => {
+  const dispatch = useDispatch();
   const params = useParams();
+
   const currentGame = useSelector((state) => state.currentGame);
-  console.log(currentGame);
-  console.log(params);
+  const user = useSelector((state) => state.user);
+  const allUsers = useSelector((state) => state.allUsers);
+  console.log(allUsers);
+
+  useEffect(() => {
+    dispatch(getGameUsers(params));
+  }, []);
+
+  const addUserHandler = () => {
+    dispatch(getAllUsers(user.id));
+  };
   return (
     <LobbyWrapper>
       <GroupDiv>
         <p>waiting for other players...</p>
-        <Button text={'add Players'}></Button>
+        <Button text={'add Players'} onClick={() => addUserHandler()}></Button>
       </GroupDiv>
       <div>
         <Button text={'Start Game'} />
