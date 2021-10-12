@@ -31,7 +31,8 @@ const GroupDiv = styled.div`
 `;
 
 export const Lobby = () => {
-  const { showAddUsers, setShowAddUsers, setCurrentKey } = useDiceContext();
+  const { showAddUsers, setShowAddUsers, currentKey, setCurrentKey } =
+    useDiceContext();
   const dispatch = useDispatch();
   const params = useParams();
   // const currentGame = useSelector((state) => state.currentGame);
@@ -46,7 +47,7 @@ export const Lobby = () => {
   }, []);
 
   const addUsersHandler = () => {
-    dispatch(getAllUsers(user.id));
+    dispatch(getAllUsers(user.id, currentKey));
     setShowAddUsers(!showAddUsers);
   };
   const startGamehandler = () => {
