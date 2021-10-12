@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Game, UserInGame, User, GameStatistic } = require('../db/models');
+const { Game, UserInGame, User, GameStatistic, sequelize } = require('../db/models');
 const { v4: uuidv4 } = require('uuid');
 const myEmitter = require('../src/ee');
 const { NEW_GAME_CREATE, NEW_PERSON } = require('../src/constants/event');
@@ -54,36 +54,55 @@ router.route('/del').post(async (req, res) => {
 
 router.route('/mygame').post(async (req, res) => {
   const { userid } = req.body;
-  console.log(userid);
+
   const myGames = await UserInGame.findAll({ where: { userid } });
 
   res.json(myGames);
 });
+router.route('/start').post(async (req, res) => {
+  const { gameid } = req.body;
+
+  const game = await Game.findOne({ where: { id: gameid } });
+  game.inprocess = true;
+
+  res.json(game);
+});
+router.route('/add/users').post(async (req, res) => {
+  const { userid } = req.body;
+
+  const users = await User.findAll();
+  users.filter((el) => el.id != userid);
+
+  res.json(users);
+});
 
 router.route('/userInGame').post(async (req, res) => {
   const { gameid, userid } = req.body;
-  const gameParty = await UserInGame.findOne({ where: { gameid } });
+  //max 4 person proverka
+  const gameParty = await UserInGame.findAll({ where: { gameid } });
 
   const userInGame = await UserInGame.create({
     gameid,
     userid,
   });
+
   const userStatistic = await GameStatistic.create({
     uigid: userInGame.id,
     position: 0,
     money: 5500,
     queue: (gameParty.length += 1),
   });
+  const [test] = await sequelize.query(`
+select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users" 
+join "UserInGames" on "Users".id = "UserInGames".userid
+join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+where "UserInGames".gameid = ${gameid}
+ `);
 
-  //max 4 person proverka
-  const user = await UserInGame.findOne({
-    where: { gameid },
-    include: GameStatistic,
-  });
-  console.log(user);
+  console.log(test);
   // console.log(user[0].Games[0].UserInGames);
 
-  // myEmitter.emit(NEW_PERSON, userInGame);
+  myEmitter.emit(NEW_PERSON, test);
   res.sendStatus(200);
 });
 

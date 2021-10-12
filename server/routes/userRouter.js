@@ -15,7 +15,7 @@ router.route('/reg').post(async (req, res) => {
         email,
         password: hashPass,
       });
-      console.log(newUser);
+
       req.session.user = {
         id: newUser.id,
         name: newUser.name,
