@@ -1,5 +1,6 @@
 body {
+  width: 100%;
   box-sizing: inherit;
   background-color: rgb(233, 96, 142);
-  /* color: rgb(161, 83, 172) */
+  margin: 0px;
 }
