@@ -81,24 +81,28 @@ router.route('/start').post(async (req, res) => {
 
 router.route('/add/users').post(async (req, res) => {
   const { userid, key } = req.body;
-  console.log(userid, key);
+
   const users = await User.findAll();
-  users.filter((el) => el.id != userid);
+  const notMe = users.filter((el) => el.id != userid);
 
   const panding = await UserGamePanding.findAll({ where: { gamekey: key } });
+  if (panding.length > 0) {
+    const usersPandingFilter = notMe.filter((el) => {
+      if (panding.findIndex((i) => i.id === el.id) != -1) {
+        return true;
+      } else return false;
+    });
+    const user = usersPandingFilter.map((el) => {
+      return { id: el.id, name: el.name };
+    });
 
-  const usersPandingFilter = user.filter((el) => {
-    if (panding.findIndex((i) => i.id === el.id) != -1) {
-      return true;
-    } else return false;
-  });
-
-  console.log(users);
-  const user = usersPandingFilter.map((el) => {
-    return { id: el.id, name: el.name };
-  });
-
-  res.json(user);
+    return res.json(user);
+  } else {
+    const user = notMe.map((el) => {
+      return { id: el.id, name: el.name };
+    });
+    return res.json(user);
+  }
 });
 
 router.route('/panding').post(async (req, res) => {
