@@ -3,6 +3,9 @@ import { createContext, useContext, useState } from 'react';
 const DiceContext = createContext();
 
 const DiceContextProvider = ({ children }) => {
+  const [showAddUsers, setShowAddUsers] = useState(false);
+  const [currentKey, setCurrentKey] = useState(false);
+
   const players = [
     { id: 1, name: 'fedor' },
     { id: 2, name: 'oleg' },
@@ -40,6 +43,10 @@ const DiceContextProvider = ({ children }) => {
         setPlayerTurn,
         transform,
         changeTransform,
+        showAddUsers,
+        setShowAddUsers,
+        currentKey,
+        setCurrentKey,
       }}
     >
       {children}

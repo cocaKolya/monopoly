@@ -14,6 +14,9 @@ export const addGame = (owner) => {
     payload: owner,
   };
 };
+
+
+
 export const getGames = (action) => {
   return {
     type: FIND_GAMES,
