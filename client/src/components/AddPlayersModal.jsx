@@ -68,7 +68,7 @@ export const AddPlayersModal = () => {
   };
 
   const addPlayersHandler = () => {
-    dispatch(addPendingUsers(currentKey, showAddUsers));
+    dispatch(addPendingUsers(currentKey, selectedPlayers));
     setShowAddUsers(false);
   };
 
