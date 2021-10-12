@@ -9,7 +9,7 @@ const NavBarWrapper = styled.div`
   background-color: white;
   height: 50px;
   padding: 0px 30px;
-  width: 97%;
+
 `;
 const Logo = styled.div`
   font-size: 20pt;

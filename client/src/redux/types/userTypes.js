@@ -9,3 +9,4 @@ export const CHECK_USER = 'CHECK_USER';
 
 export const GET_ALL_USERS = 'GET_ALL_USERS';
 export const GET_GAME_USERS = 'GET_GAME_USERS';
+export const ADD_PENDING_USERS = 'ADD_PENDING_USERS';

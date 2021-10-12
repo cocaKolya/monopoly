@@ -5,6 +5,7 @@ const initState = {
   currentGame: false,
   userGames: [],
   gameUsers: [],
+  pendingUsers: [],
 };
 
 export default initState;

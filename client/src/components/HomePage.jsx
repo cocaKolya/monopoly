@@ -27,11 +27,16 @@ const fakeProcessGames = [
 
 const HomeWrapper = styled('div')`
   display: flex;
-  width: 80%;
+  flex-direction: column;
+  padding: 0 40px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
   justify-content: space-between;
 `;
 const Row = styled('div')`
-  margin: 10px 200px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled('div')`
@@ -82,12 +87,12 @@ function HomePage() {
       </Header>
       <HomeWrapper>
         <Row>
-          <Text>Присоединиться к игре:</Text>
-          {games && <GameList db={games} />}
-        </Row>
-        <Row>
           <Text>Ваши активные игры:</Text>
           {userGames && <GameList db={userGames} active={true} />}
+        </Row>
+        <Row>
+          <Text>Присоединиться к игре:</Text>
+          {games && <GameList db={games} />}
         </Row>
       </HomeWrapper>
     </>

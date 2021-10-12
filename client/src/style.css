@@ -1,6 +1,9 @@
 body {
   width: 100%;
-  box-sizing: inherit;
   background-color: rgb(233, 96, 142);
   margin: 0px;
+}
+
+* {
+  box-sizing: border-box;
 }
