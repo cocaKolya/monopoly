@@ -88,10 +88,15 @@ router.route('/add/users').post(async (req, res) => {
   const panding = await UserGamePanding.findAll({ where: { gamekey: key } });
   if (panding.length > 0) {
     const usersPandingFilter = notMe.filter((el) => {
-      if (panding.findIndex((i) => i.id === el.id) != -1) {
-        return true;
-      } else return false;
+      if (
+        panding.findIndex((i) => {
+          return i.id === el.id;
+        }) != -1
+      ) {
+        return false;
+      } else return true;
     });
+
     const user = usersPandingFilter.map((el) => {
       return { id: el.id, name: el.name };
     });
@@ -107,7 +112,7 @@ router.route('/add/users').post(async (req, res) => {
 
 router.route('/panding').post(async (req, res) => {
   const { pandingid, key } = req.body;
-  console.log(pandingid, key);
+
   for (let i = 0; i < pandingid.length; i++) {
     await UserGamePanding.create({ userid: pandingid[i], gamekey: key });
   }
@@ -124,7 +129,6 @@ router.route('/users').post(async (req, res) => {
   join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
   where "Games".key = '${key}'
    `);
-  console.log(gameusers);
   res.json(gameusers);
 });
 
