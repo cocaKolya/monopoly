@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { getAllUsers } from '../redux/actions/AllUsersActions';
+import { startGame } from '../redux/actions/gameActions';
 import { getGameUsers } from '../redux/actions/gameUsersActions';
 import { Button } from './atoms/Button';
 
@@ -30,18 +31,21 @@ const GroupDiv = styled.div`
 export const Lobby = () => {
   const dispatch = useDispatch();
   const params = useParams();
-
+  console.log(params);
   const currentGame = useSelector((state) => state.currentGame);
   const user = useSelector((state) => state.user);
   const allUsers = useSelector((state) => state.allUsers);
   console.log(allUsers);
 
   useEffect(() => {
-    dispatch(getGameUsers(params));
+    dispatch(getGameUsers(params.id));
   }, []);
 
   const addUserHandler = () => {
     dispatch(getAllUsers(user.id));
+  };
+  const startGamehandler = () => {
+    dispatch(startGame(params.id));
   };
   return (
     <LobbyWrapper>
@@ -50,7 +54,7 @@ export const Lobby = () => {
         <Button text={'add Players'} onClick={() => addUserHandler()}></Button>
       </GroupDiv>
       <div>
-        <Button text={'Start Game'} />
+        <Button text={'Start Game'} onClick={() => startGamehandler()} />
       </div>
     </LobbyWrapper>
   );
