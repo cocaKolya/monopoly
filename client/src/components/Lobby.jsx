@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { getAllUsers } from '../redux/actions/AllUsersActions';
+import { getGameUsers } from '../redux/actions/gameUsersActions';
 import { Button } from './atoms/Button';
 
 const LobbyWrapper = styled.div`
@@ -35,7 +36,9 @@ export const Lobby = () => {
   const allUsers = useSelector((state) => state.allUsers);
   console.log(allUsers);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    dispatch(getGameUsers(params));
+  }, []);
 
   const addUserHandler = () => {
     dispatch(getAllUsers(user.id));

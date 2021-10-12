@@ -79,7 +79,7 @@ router.route('/add/users').post(async (req, res) => {
   res.json(users);
 });
 
-router.route('/game/users').post(async (req, res) => {
+router.route('/users').post(async (req, res) => {
   const { key } = req.body;
 
   const [gameusers] = await sequelize.query(`

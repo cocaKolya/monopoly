@@ -4,6 +4,7 @@ const initState = {
   games: [],
   currentGame: false,
   userGames: [],
+  gameUsers: [],
 };
 
 export default initState;

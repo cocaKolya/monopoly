@@ -8,3 +8,4 @@ export const GET_CHECK_USER = 'GET_CHECK_USER';
 export const CHECK_USER = 'CHECK_USER';
 
 export const GET_ALL_USERS = 'GET_ALL_USERS';
+export const GET_GAME_USERS = 'GET_GAME_USERS';
