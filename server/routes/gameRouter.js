@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Game, UserInGame, User } = require('../db/models');
+const { Game, UserInGame, User, GameStatistic } = require('../db/models');
 const { v4: uuidv4 } = require('uuid');
 const myEmitter = require('../src/ee');
 const { NEW_GAME_CREATE, NEW_PERSON } = require('../src/constants/event');
@@ -58,21 +58,26 @@ router.route('/userInGame').post(async (req, res) => {
   const { gameid, userid } = req.body;
   const gameParty = await UserInGame.findOne({ where: { gameid } });
 
-  await UserInGame.create({
+  const userInGame = await UserInGame.create({
     gameid,
     userid,
+  });
+  const userStatistic = await GameStatistic.create({
+    uigid: userInGame.id,
     position: 0,
     money: 5500,
     queue: (gameParty.length += 1),
   });
+
   //max 4 person proverka
-  const userInGame = await User.findAll({
+  const user = await UserInGame.findOne({
     where: { gameid },
-    include: Game,
+    include: GameStatistic,
   });
+  console.log(user);
   // console.log(user[0].Games[0].UserInGames);
 
-  myEmitter.emit(NEW_PERSON, userInGame);
+  // myEmitter.emit(NEW_PERSON, userInGame);
   res.sendStatus(200);
 });
 

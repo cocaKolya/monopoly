@@ -5,14 +5,17 @@ const { User } = require('../db/models');
 
 router.route('/reg').post(async (req, res) => {
   const { name, email, password } = req.body.user;
+
   if (name && email && password) {
     const hashPass = await bcrypt.hash(password, +process.env.SALT);
     try {
+
       const newUser = await User.create({
         name,
         email,
         password: hashPass,
       });
+      console.log(newUser);
       req.session.user = {
         id: newUser.id,
         name: newUser.name,
@@ -30,10 +33,7 @@ router.route('/login').post(async (req, res) => {
   if (email && password) {
     try {
       const currentUser = await User.findOne({ where: { email } });
-      if (
-        currentUser &&
-        (await bcrypt.compare(password, currentUser.password))
-      ) {
+      if (currentUser && (await bcrypt.compare(password, currentUser.password))) {
         req.session.user = {
           id: currentUser.id,
           name: currentUser.name,
