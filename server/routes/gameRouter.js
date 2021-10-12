@@ -33,11 +33,11 @@ router.route('/add').post(async (req, res) => {
     money: 5500,
     queue: 1,
   });
-  const userInGame = await Game.findOne({
-    // where: { id: game.id },
-    include: User,
-  });
-  console.log(userInGame);
+  // const userInGame = await Game.findOne({
+  //   where: { id: game.id },
+  //   include: User,
+  // });
+  // console.log(userInGame.User); //user witch create game
   myEmitter.emit(NEW_GAME_CREATE, game);
   res.json(game);
 });
