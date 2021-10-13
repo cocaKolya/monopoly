@@ -19,7 +19,6 @@ function GameItem({ game, active }) {
 
   const continueGame = (gameKey, inProgress) => {
     const game = games.find((el) => el.key === gameKey);
-    console.log(games);
     inProgress
       ? history.push(`/game/${game.key}`)
       : history.push(`/game/${game.key}/lobby`);
