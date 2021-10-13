@@ -52,20 +52,28 @@ router.route('/add').post(async (req, res) => {
   //   include: User,
   // });
 
-  myEmitter.emit(NEW_GAME_CREATE, game);
+  //Отправить данные о новой игре всем игрокам
+  // myEmitter.emit(NEW_GAME_CREATE, game);
   res.json(game);
 });
 
 router.route('/del').post(async (req, res) => {
   const { userid, gameid } = req.body;
   await Game.destoy({ where: { gameid, userid } });
+
+  //???отправить всем игрокам новый список игр????
   res.sendStatus(200);
 });
 
 router.route('/mygame').post(async (req, res) => {
   const { userid } = req.body;
 
-  const myGames = await UserInGame.findAll({ where: { userid } });
+  const myGames = await Game.findAll({
+    include: {
+      model: User,
+      where: { id: userid },
+    },
+  });
 
   res.json(myGames);
 });
@@ -75,7 +83,7 @@ router.route('/start').post(async (req, res) => {
 
   const game = await Game.findOne({ where: { key } });
   game.inprocess = true;
-
+  //??Отправить всем игрокам в лобби статус игры?
   res.json(game);
 });
 
@@ -116,6 +124,7 @@ router.route('/panding').post(async (req, res) => {
   for (let i = 0; i < pandingid.length; i++) {
     await UserGamePanding.create({ userid: pandingid[i], gamekey: key });
   }
+  //Отправлять определенному юзеру приглос
   res.sendStatus(200);
 });
 
@@ -129,6 +138,7 @@ router.route('/users').post(async (req, res) => {
   join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
   where "Games".key = '${key}'
    `);
+
   res.json(gameusers);
 });
 
@@ -162,8 +172,8 @@ router.route('/userInGame').post(async (req, res) => {
       join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
       where "UserInGames".gameid = ${gameid}
        `);
-
-      myEmitter.emit(NEW_PERSON, test);
+      //Отправить данные игрока всем, кто с ним в игре
+      // myEmitter.emit(NEW_PERSON, test);
       return res.sendStatus(200);
     } else return res.sendStatus(403);
   }
