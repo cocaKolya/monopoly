@@ -17,6 +17,7 @@ const registerWsMessages = require('./src/ws/wsMessages');
 const userRouter = require('./routes/userRouter');
 const gameRouter = require('./routes/gameRouter');
 const googleRouter = require('./routes/googleRouter');
+const { lookup } = require('dns');
 
 // session
 const PORT = 3001;
@@ -94,7 +95,6 @@ wss.on('connection', function (ws, request) {
   const userId = request.session.user.id;
 
   map.set(userId, ws);
-
   registerWsEmitter(map);
 
   registerWsMessages(map, ws);

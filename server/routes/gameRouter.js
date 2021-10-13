@@ -13,7 +13,7 @@ const {
   NEW_GAME_CREATE,
   NEW_PERSON,
   DEL_GAME,
-  START_GAME,
+  START_GAME_SOCKET,
 } = require('../src/constants/event');
 
 router.route('/').get(async (req, res) => {
@@ -25,7 +25,6 @@ router.route('/').get(async (req, res) => {
       },
     ],
   });
-
 
   res.json(game);
 });
@@ -109,7 +108,7 @@ router.route('/start').post(async (req, res) => {
   const users = game.UserInGamesAliase;
   //Отправить всем игрокам в лобби статус игры
 
-  myEmitter.emit(START_GAME, users ,game.id);
+  myEmitter.emit(START_GAME_SOCKET, { users, gameid: game.id });
 
   res.json(game);
 });
