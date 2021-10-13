@@ -57,19 +57,18 @@ function HomePage() {
   const history = useHistory();
 
   const user = useSelector((state) => state.user);
+  const localUser = JSON.parse(window.localStorage.getItem('user'));
   const games = useSelector((state) => state.games);
   const currentGame = useSelector((state) => state.currentGame);
   const userGames = useSelector((state) => state.userGames);
   // const notUserGames = games.filter((el) => el.owner !== user.id);
-  console.log('im gameeee', games);
+
   useEffect(() => {
     const socketOnMessage = createSocketOnMessage(dispatch);
     socket.current.onmessage = socketOnMessage;
-
-
     dispatch(getGames());
-    dispatch(checkUser());
-    if (user) dispatch(getUserGames(user?.id));
+    console.log('1111111111user', localUser);
+    if (localUser) dispatch(getUserGames(localUser?.id));
   }, []);
 
   const GameStarter = (owner) => {

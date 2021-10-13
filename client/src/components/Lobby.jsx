@@ -41,16 +41,12 @@ export const Lobby = () => {
   const history = useHistory();
   const params = useParams();
 
-  // const currentGame = useSelector((state) => state.currentGame);
+
   const user = useSelector((state) => state.user);
-  // const games = useSelector((state) => state.games);
+ 
   const allUsers = useSelector((state) => state.allUsers);
   const gameUsers = useSelector((state) => state.gameUsers);
-  // const currentGame = games.filter((el) => el.key === params);
 
-  // if (currentGame.owner === user.id) setIsOwner(true);
-  // console.log();
-  // console.log('isOwner:', params);
   useEffect(() => {
     setCurrentKey(params.id);
     dispatch(getGameUsers(params.id));

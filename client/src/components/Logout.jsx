@@ -7,10 +7,11 @@ function Logout() {
   const dispatch = useDispatch();
   const history = useHistory();
   useEffect(() => {
+    window.localStorage.clear();
     dispatch(delUser());
     history.push('/');
   }, []);
-  return <div>1</div>;
+  return <div></div>;
 }
 
 export default Logout;

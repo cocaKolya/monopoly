@@ -23,6 +23,7 @@ const checkUser = () => {
 function* addUserWatcher(action) {
   try {
     const user = yield call(addUser, action.payload);
+    window.localStorage.setItem('user', JSON.stringify(user));
     yield put({ type: ADD_USER, payload: user });
   } catch (err) {
     yield put({ type: ADD_USER, payload: null });
@@ -32,6 +33,7 @@ function* addUserWatcher(action) {
 function* delUserWatcher() {
   try {
     yield call(delUser);
+
     yield put({ type: DEL_USER, payload: null });
   } catch (err) {
     yield put({ type: DEL_USER, payload: null });

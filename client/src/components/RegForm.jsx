@@ -29,6 +29,7 @@ function RegForm() {
     console.log(formInput);
   };
   const submitForm = (e) => {
+    window.localStorage.setItem('user', formInput);
     e.preventDefault();
     dispatch(addUser(formInput));
   };
@@ -48,9 +49,9 @@ function RegForm() {
         />
         <button type='submit'>reg</button>
       </RegFormForma>
-      <form action="http://localhost:3001/google" method="get">
-      <button type="submit">Google</button>
-    </form>
+      <form action='http://localhost:3001/google' method='get'>
+        <button type='submit'>Google</button>
+      </form>
     </>
   );
 }

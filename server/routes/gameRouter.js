@@ -82,11 +82,12 @@ router.route('/mygame').post(async (req, res) => {
     where: { id: userid },
     include: {
       model: Game,
+      as: 'UserInGamesAliase',
     },
   });
-  console.log(myGames[0].Games);
+  // console.log('------1', myGames);
 
-  res.json(myGames[0].Games);
+  res.json(myGames[0].UserInGamesAliase);
 });
 
 router.route('/start').post(async (req, res) => {
@@ -184,7 +185,7 @@ router.route('/userInGame').post(async (req, res) => {
       uigid: userInGame.id,
       position: 0,
       money: 5500,
-      queue: test[test.length - 1].queue,
+      queue: test[test.length - 1].queue+1,
     });
 
     //Отправить данные игрока всем, кто с ним в игре
