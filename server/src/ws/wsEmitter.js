@@ -37,13 +37,14 @@ function registerWsEmitter(map) {
 myEmitter.on(START_GAME_SOCKET, (users, gameid) => {
   for (let [id, userConnect] of map) {
     users.map((el) => {
-      if (id === el.id)
+      if (id === el.id) {
         userConnect.send(
           JSON.stringify({
             type: START_GAME_SOCKET,
             payload: gameid,
           })
         );
+      }
     });
   }
 });

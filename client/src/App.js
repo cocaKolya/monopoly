@@ -31,7 +31,7 @@ function App() {
     socket.current.onmessage = socketOnMessage;
     dispatch(checkUser());
     dispatch(getGames());
-  }, [location]);
+  }, []);
 
   return (
     <DiceContextProvider>
