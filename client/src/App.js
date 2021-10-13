@@ -15,6 +15,7 @@ import Logout from './components/Logout';
 import { AddPlayersModal } from './components/AddPlayersModal';
 import { getGames } from './redux/actions/gameActions';
 import { createSocketOnMessage } from './utils/socket.message';
+import LogIn from './components/LogIn';
 
 const MainWrapperDiv = styled('div')`
   display: flex;
@@ -48,6 +49,7 @@ function App() {
           <Route exact path='/game/:id' component={CardBoard} />
           <Route exact path='/' component={CardBoard} />
           <Route exact path='/reg' component={RegForm} />
+          <Route exact path='/login' component={LogIn} />
           <Route exact path='/logout' component={Logout} />
           <Route exact path='/home' component={HomePage} />
           <Route exact path='/game/:id/lobby' component={Lobby} />

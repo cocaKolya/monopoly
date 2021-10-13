@@ -17,6 +17,7 @@ export const NavBar = () => {
           <Link to='/home'>HOME</Link>
           <Link to='/'>GAME</Link>
           {!user && <Link to='/reg'>REG</Link>}
+          {!user && <Link to='/login'>LOGIN</Link>}
           {user && <Link to='/logout'>LOGOUT</Link>}
         </LinkWrapper>
       </RightWrapper>
