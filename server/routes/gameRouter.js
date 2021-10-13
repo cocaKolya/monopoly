@@ -1,5 +1,12 @@
 const router = require('express').Router();
-const { Game, UserInGame, User, GameStatistic, sequelize } = require('../db/models');
+const {
+  Game,
+  UserInGame,
+  User,
+  GameStatistic,
+  sequelize,
+  UserGamePanding,
+} = require('../db/models');
 const { v4: uuidv4 } = require('uuid');
 const myEmitter = require('../src/ee');
 const { NEW_GAME_CREATE, NEW_PERSON } = require('../src/constants/event');
@@ -62,6 +69,7 @@ router.route('/mygame').post(async (req, res) => {
 
   res.json(myGames);
 });
+
 router.route('/start').post(async (req, res) => {
   const { key } = req.body;
 
@@ -70,13 +78,45 @@ router.route('/start').post(async (req, res) => {
 
   res.json(game);
 });
+
 router.route('/add/users').post(async (req, res) => {
-  const { userid } = req.body;
+  const { userid, key } = req.body;
 
   const users = await User.findAll();
-  users.filter((el) => el.id != userid);
+  const notMe = users.filter((el) => el.id != userid);
 
-  res.json(users);
+  const panding = await UserGamePanding.findAll({ where: { gamekey: key } });
+  if (panding.length > 0) {
+    const usersPandingFilter = notMe.filter((el) => {
+      if (
+        panding.findIndex((i) => {
+          return i.id === el.id;
+        }) != -1
+      ) {
+        return false;
+      } else return true;
+    });
+
+    const user = usersPandingFilter.map((el) => {
+      return { id: el.id, name: el.name };
+    });
+
+    return res.json(user);
+  } else {
+    const user = notMe.map((el) => {
+      return { id: el.id, name: el.name };
+    });
+    return res.json(user);
+  }
+});
+
+router.route('/panding').post(async (req, res) => {
+  const { pandingid, key } = req.body;
+
+  for (let i = 0; i < pandingid.length; i++) {
+    await UserGamePanding.create({ userid: pandingid[i], gamekey: key });
+  }
+  res.sendStatus(200);
 });
 
 router.route('/users').post(async (req, res) => {
@@ -89,44 +129,44 @@ router.route('/users').post(async (req, res) => {
   join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
   where "Games".key = '${key}'
    `);
-  console.log(gameusers);
   res.json(gameusers);
 });
 
 router.route('/userInGame').post(async (req, res) => {
   const { gameid, userid } = req.body;
   //max 4 person proverka
-  const gameParty = await Game.findOne({
-    where: { id: gameid },
-    include: User,
+
+  const gameParty = await User.findAll({
+    include: {
+      model: Game,
+      where: { id: gameid },
+    },
   });
-  //if i am in game => chto-to delat
-  console.log(gameParty.User);
-  if (gameParty.User.id !== userid) {
-    const userInGame = await UserInGame.create({
-      gameid,
-      userid,
-    });
 
-    const userStatistic = await GameStatistic.create({
-      uigid: userInGame.id,
-      position: 0,
-      money: 5500,
-      queue: (gameParty.length += 1),
-    });
-    const [test] = await sequelize.query(`
-  select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users" 
-  join "UserInGames" on "Users".id = "UserInGames".userid
-  join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
-  where "UserInGames".gameid = ${gameid}
-   `);
+  for (let i = 0; i < gameParty.length; i++) {
+    if (gameParty[i].id !== userid) {
+      const userInGame = await UserInGame.create({
+        gameid,
+        userid,
+      });
 
-    // console.log(user[0].Games[0].UserInGames);
+      await GameStatistic.create({
+        uigid: userInGame.id,
+        position: 0,
+        money: 5500,
+        queue: 1,
+      });
+      const [test] = await sequelize.query(`
+      select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
+      join "UserInGames" on "Users".id = "UserInGames".userid
+      join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+      where "UserInGames".gameid = ${gameid}
+       `);
 
-    myEmitter.emit(NEW_PERSON, test);
-    res.sendStatus(200);
+      myEmitter.emit(NEW_PERSON, test);
+      return res.sendStatus(200);
+    } else return res.sendStatus(403);
   }
-  res.sendStatus(200);
 });
 
 module.exports = router;
