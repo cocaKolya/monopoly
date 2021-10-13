@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { addGame, getGames, getUserGames } from '../redux/actions/gameActions';
+import { checkUser } from '../redux/actions/userAction';
 import { Button } from './atoms/Button';
 import GameList from './GameList';
 
@@ -61,8 +62,9 @@ function HomePage() {
   const notUserGames = games.filter((el) => el.owner !== user.id);
   useEffect(() => {
     dispatch(getGames());
+    dispatch(checkUser());
     if (user) dispatch(getUserGames(user?.id));
-  }, [user]);
+  }, []);
 
   const GameStarter = (owner) => {
     dispatch(addGame(owner));
