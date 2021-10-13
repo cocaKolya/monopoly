@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
 import { addPendingUsers } from '../redux/actions/PendingUsersActions';
 import { Button } from './atoms/Button';
-import { PlayerItem } from './PlayerItem';
+import { AddPlayerItem } from './AddPlayerItem';
 
 const Modal = styled.div`
   position: absolute;
@@ -79,7 +79,7 @@ export const AddPlayersModal = () => {
         <UsersWrapper>
           <form>
             {allUsers?.map((el) => (
-              <PlayerItem player={el} onChange={() => changeHandler(el.id)} />
+              <AddPlayerItem player={el} onChange={() => changeHandler(el.id)} />
             ))}
           </form>
         </UsersWrapper>

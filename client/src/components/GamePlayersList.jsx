@@ -1,21 +1,21 @@
 import styled from 'styled-components';
-import { PlayerItem } from './PlayerItem';
+import { GamePlayerItem } from './GamePlayersItem';
 
 const PlayersWrapper = styled.div`
   display: flex;
   width: 100%;
 `;
 
-export const PlayersList = ({ players }) => {
+const GamePlayersList = ({ players }) => {
   console.log('123123123', players);
   return (
     <PlayersWrapper>
       {players?.map((el) => (
         <>
-          <p>1</p>
-          <PlayerItem player={el} />
+          <GamePlayerItem />
         </>
       ))}
     </PlayersWrapper>
   );
 };
+export default GamePlayersList;
