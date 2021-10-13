@@ -1,4 +1,4 @@
-const { NEW_GAME_CREATE, NEW_PERSON } = require('../constants/event');
+const { NEW_GAME_CREATE, NEW_PERSON, DEL_GAME, START_GAME } = require('../constants/event');
 const myEmitter = require('../ee');
 
 function registerWsEmitter(map) {
@@ -13,6 +13,7 @@ function registerWsEmitter(map) {
       );
     }
   });
+
   myEmitter.on(NEW_PERSON, (test) => {
     for (let [id, userConnect] of map) {
       test.map((el) => {
@@ -27,6 +28,18 @@ function registerWsEmitter(map) {
       });
     }
   });
+
 }
+
+myEmitter.on(START_GAME, (gameid) => {
+  for (let [id, userConnect] of map) {
+    userConnect.send(
+      JSON.stringify({
+        type: DEL_GAME,
+        payload: gameid,
+      })
+    );
+  }
+});
 
 module.exports = registerWsEmitter;

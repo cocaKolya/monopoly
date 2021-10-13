@@ -9,7 +9,12 @@ const {
 } = require('../db/models');
 const { v4: uuidv4 } = require('uuid');
 const myEmitter = require('../src/ee');
-const { NEW_GAME_CREATE, NEW_PERSON } = require('../src/constants/event');
+const {
+  NEW_GAME_CREATE,
+  NEW_PERSON,
+  DEL_GAME,
+  START_GAME,
+} = require('../src/constants/event');
 
 router.route('/').get(async (req, res) => {
   const game = await Game.findAll({
@@ -57,12 +62,10 @@ router.route('/add').post(async (req, res) => {
   //   include: User,
   // });
   // console.log(userInGame.User); //user witch create game
-  //   // where: { id: game.id },
-  //   include: User,
-  // });
 
   // Отправить данные о новой игре всем игрокам
   myEmitter.emit(NEW_GAME_CREATE, game);
+
   res.json(game);
 });
 
@@ -70,8 +73,8 @@ router.route('/del').post(async (req, res) => {
   const { userid, gameid } = req.body;
   await Game.destoy({ where: { gameid, userid } });
 
-  //???отправить всем игрокам новый список игр????
-  //отправить айди удаленной игры, чтобы все ее удалили
+  //отправить id удаленной игры, чтобы все ее удалили
+  myEmitter.emit(DEL_GAME, gameid);
   res.sendStatus(200);
 });
 
@@ -82,9 +85,9 @@ router.route('/mygame').post(async (req, res) => {
     where: { id: userid },
     include: {
       model: Game,
+      as: 'UserInGamesAliase',
     },
   });
-  console.log(myGames[0].Games);
 
   res.json(myGames[0].Games);
 });
@@ -92,10 +95,22 @@ router.route('/mygame').post(async (req, res) => {
 router.route('/start').post(async (req, res) => {
   const { key } = req.body;
 
-  const game = await Game.findOne({ where: { key } });
+  const game = await Game.findOne({
+    where: { key },
+    include: [
+      {
+        model: User,
+        as: 'UserInGamesAliase',
+      },
+    ],
+  });
   game.inprocess = true;
   await game.save();
+  console.log(game);
   //Отправить всем игрокам в лобби статус игры
+
+  // myEmitter.emit(START_GAME, game.id);
+
   res.json(game);
 });
 
@@ -183,7 +198,7 @@ router.route('/userInGame').post(async (req, res) => {
       uigid: userInGame.id,
       position: 0,
       money: 5500,
-      queue: test[test.length - 1].queue,
+      queue: test[test.length - 1].queue + 1,
     });
 
     //Отправить данные игрока всем, кто с ним в игре

@@ -1,7 +1,12 @@
 const NEW_GAME_CREATE = 'NEW_GAME_CREATE';
 const NEW_PERSON = 'NEW_PERSON';
+const DEL_GAME = 'DEL_GAME';
+const START_GAME = 'START_GAME';
 
 module.exports = {
   NEW_GAME_CREATE,
   NEW_PERSON,
+  DEL_GAME,
+  START_GAME
+
 };
