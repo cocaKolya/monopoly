@@ -33,14 +33,14 @@ function GameItem({ game, active }) {
   const games = useSelector((state) => state.games);
 
   const joinGame = (gameid, userid) => {
-    console.log('12312310', gameid, userid);
+    // console.log('12312310', gameid, userid);
     dispatch(addUserToGame(gameid, userid));
     const game = games.find((el) => el.id === gameid);
     history.push(`/game/${game.key}/lobby`);
   };
 
   const continueGame = (gameKey) => {
-    const game = games.find((el) => el.id === gameKey);
+    const game = games.find((el) => el.key === gameKey);
     console.log(game);
     history.push(`/game/${game.key}/lobby`);
   };
@@ -57,7 +57,7 @@ function GameItem({ game, active }) {
         {game.gamer4 && <Player>{game.gamer4}</Player>} */}
       </PlayersWrapper>
       {active ? (
-        <Button text={'continue'} onClick={() => continueGame(game.gameid)} />
+        <Button text={'continue'} onClick={() => continueGame(game.key)} />
       ) : (
         <Button text={'join'} onClick={() => joinGame(game.id, user.id)} />
       )}
