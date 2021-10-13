@@ -58,7 +58,7 @@ function HomePage() {
   const games = useSelector((state) => state.games);
   const currentGame = useSelector((state) => state.currentGame);
   const userGames = useSelector((state) => state.userGames);
-
+  const notUserGames = games.filter((el) => el.owner !== user.id);
   useEffect(() => {
     dispatch(getGames());
     if (user) dispatch(getUserGames(user?.id));
@@ -91,7 +91,7 @@ function HomePage() {
         </Row>
         <Row>
           <Text>Присоединиться к игре:</Text>
-          {games && <GameList db={games} />}
+          {games && <GameList db={notUserGames} />}
         </Row>
       </HomeWrapper>
     </>

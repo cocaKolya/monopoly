@@ -69,14 +69,15 @@ router.route('/del').post(async (req, res) => {
 router.route('/mygame').post(async (req, res) => {
   const { userid } = req.body;
 
-  const myGames = await Game.findAll({
+  const myGames = await User.findAll({
+    where: { id: userid },
     include: {
-      model: User,
-      where: { id: userid },
+      model: Game,
     },
   });
+  console.log(myGames[0].Games);
 
-  res.json(myGames);
+  res.json(myGames[0].Games);
 });
 
 router.route('/start').post(async (req, res) => {
@@ -147,23 +148,21 @@ router.route('/userInGame').post(async (req, res) => {
   const { gameid, userid } = req.body;
   //max 4 person proverka
 
-  const gameParty = await User.findAll({
-    include: {
-      model: Game,
-      where: { id: gameid },
-    },
-    raw: true,
-  });
+  // const gameParty = await User.findAll({
+  //   include: {
+  //     model: Game,
+  //     where: { id: gameid },
+  //   },
+  //   raw: true,
+  // });
+
   const user = await UserInGame.findAll({ where: { userid, gameid } });
-  console.log(user);
+
   if (user.length === 0) {
     const userInGame = await UserInGame.create({
       gameid,
       userid,
     });
-
-    // const user = await UserInGame.findAll({ raw: true });
-    // console.log(user);
     const [test] = await sequelize.query(`
       select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
       join "UserInGames" on "Users".id = "UserInGames".userid
