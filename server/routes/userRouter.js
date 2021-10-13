@@ -3,10 +3,16 @@ const bcrypt = require('bcrypt');
 
 const { User } = require('../db/models');
 
+function validateEmail(email) 
+    {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
 router.route('/reg').post(async (req, res) => {
   const { name, email, password } = req.body.user;
 
-  if (name && email && password) {
+  if (name && validateEmail(email) && password) {
     const hashPass = await bcrypt.hash(password, +process.env.SALT);
     try {
       const newUser = await User.create({
