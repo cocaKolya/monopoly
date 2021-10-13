@@ -93,8 +93,9 @@ server.on('upgrade', function (request, socket, head) {
 //2
 wss.on('connection', function (ws, request) {
   const userId = request.session.user.id;
-
+  console.log(request.session.user, 12345678);
   map.set(userId, ws);
+
   registerWsEmitter(map);
 
   registerWsMessages(map, ws);

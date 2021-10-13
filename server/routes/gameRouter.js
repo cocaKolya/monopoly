@@ -108,7 +108,7 @@ router.route('/start').post(async (req, res) => {
   const users = game.UserInGamesAliase;
   //Отправить всем игрокам в лобби статус игры
 
-  myEmitter.emit(START_GAME_SOCKET, { users, gameid: game.id });
+  myEmitter.emit(START_GAME_SOCKET,  users,  game.id );
 
   res.json(game);
 });
