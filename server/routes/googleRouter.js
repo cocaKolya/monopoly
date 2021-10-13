@@ -11,16 +11,13 @@ router.get('/callback',
   async function (req, res) {
     if (req.user.displayName && req.user.emails[0].value && req.user.photos[0].value) {
       try {
-
         const currentUser = await User.findOne({ where: { email: req.user.emails[0].value } })
-        console.log('===>>>currentUser', currentUser.email)
-        console.log('====>>>>req.user', req.user.emails[0].value)
         if (req.user.emails[0].value === currentUser.email) {
           req.session.user = {
             id: currentUser.id,
             name: currentUser.name,
           }
-          return res.clearCookie('sesid').redirect('http://localhost:3000');
+          return res.clearCookie('sesid').redirect('http://localhost:3000/home');
         } else {
           const newUser = User.create({
             name: req.user.displayName,
@@ -32,7 +29,7 @@ router.get('/callback',
           id: newUser.id,
           name: newUser.name,
         }
-        return res.redirect('http://localhost:3000');
+        return res.redirect('http://localhost:3000/home');
       } catch (error) {
         return res.sendStatus(405);
       }
@@ -40,16 +37,6 @@ router.get('/callback',
       return res.sendStatus(403);
     }
   });
-router.get('/login', passport.authenticate('google', { scope: ['profile', 'email'] }), function (req, res) {
-  if (req.user.displayName && req.user.emails[0].value && req.user.photos[0].value) {
-    console.log('=====>>>>>', req.user)
-    try {
-
-    } catch (error) {
-      return res.sendStatus(405)
-    }
-  }
-})
 
 
 module.exports = router;

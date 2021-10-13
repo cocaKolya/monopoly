@@ -46,7 +46,7 @@ function LogIn() {
         />
         <button type='submit'>login</button>
       </RegFormForma>
-      <form action='http://localhost:3001/google/login' method='get'>
+      <form action='http://localhost:3001/google' method='get'>
         <button type='submit'>Google Login</button>
       </form>
     </>
