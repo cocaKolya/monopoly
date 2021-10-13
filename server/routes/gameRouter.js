@@ -136,24 +136,6 @@ router.route('/userInGame').post(async (req, res) => {
   const { gameid, userid } = req.body;
   //max 4 person proverka
 
-<<<<<<< HEAD
-  await UserInGame.create({
-    gameid,
-    userid,
-    position: 0,
-    money: 5500,
-    queue: (gameParty.length += 1),
-  });
-  //max 4 person proverka
-  const userInGame = await User.findAll({
-    where: { gameid },
-    include: Game,
-  });
-  // console.log(user[0].Games[0].UserInGames);
-
-  myEmitter.emit(NEW_PERSON, userInGame);
-  res.sendStatus(200);
-=======
   const gameParty = await User.findAll({
     include: {
       model: Game,
@@ -185,7 +167,6 @@ router.route('/userInGame').post(async (req, res) => {
       return res.sendStatus(200);
     } else return res.sendStatus(403);
   }
->>>>>>> ad2432ed7209f6743f528e7a39dcf845220e346f
 });
 
 module.exports = router;
