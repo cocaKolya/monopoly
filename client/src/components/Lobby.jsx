@@ -11,6 +11,7 @@ import GamePlayersList from './GamePlayersList';
 import { useHistory } from 'react-router';
 
 const LobbyWrapper = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -29,6 +30,19 @@ const GroupDiv = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+`;
+
+const CloseButton = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+  background-color: rgba(168, 168, 168, 0.514);
+  border-radius: 5px;
+  padding: 3px;
+  &:hover {
+    background-color: rgba(168, 168, 168, 0.8);
+  }
 `;
 
 export const Lobby = () => {
@@ -66,6 +80,7 @@ export const Lobby = () => {
   return (
     <LobbyWrapper>
       <GroupDiv>
+        <CloseButton onClick={() => history.push('/home')}>close</CloseButton>
         <GamePlayersList players={gameUsers} />
         <p>waiting for other players...</p>
         <Button text={'add Players'} onClick={() => addUsersHandler()}></Button>

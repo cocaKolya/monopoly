@@ -15,6 +15,7 @@ import Logout from './components/Logout';
 import { AddPlayersModal } from './components/AddPlayersModal';
 import { getGames } from './redux/actions/gameActions';
 import { createSocketOnMessage } from './utils/socket.message';
+import { GamePlayingProcess } from './components/GamePlayingProcess';
 
 function App() {
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ function App() {
       <MainWrapperDiv>
         <AddPlayersModal />
         <Switch>
-          <Route exact path='/game/:id' component={CardBoard} />
+          <Route exact path='/game/:id' component={GamePlayingProcess} />
           <Route exact path='/' component={CardBoard} />
           <Route exact path='/reg' component={RegForm} />
           <Route exact path='/logout' component={Logout} />
