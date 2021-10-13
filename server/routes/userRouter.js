@@ -9,7 +9,6 @@ router.route('/reg').post(async (req, res) => {
   if (name && email && password) {
     const hashPass = await bcrypt.hash(password, +process.env.SALT);
     try {
-
       const newUser = await User.create({
         name,
         email,
