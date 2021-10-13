@@ -5,14 +5,13 @@ import {
 } from '../redux/actions/socketActions/gameActionsSocket';
 
 export const createSocketOnMessage = (dispatch) => (event) => {
-  console.log(47474747);
+
   const parsedData = JSON.parse(event.data);
   switch (parsedData.type) {
     case START_GAME_SOCKET:
       dispatch(startGameSocket(parsedData.payload));
       break;
     case CREATE_GAME_SOCKET:
-
       dispatch(createGameSocket(parsedData.payload));
       break;
 

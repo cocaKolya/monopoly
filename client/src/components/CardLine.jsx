@@ -21,6 +21,7 @@ function CardLine({ position, db }) {
       <Wrapper position={position}>
         {db.map((el) => (
           <Card
+            key={el.id}
             name={el.name}
             mpColor={el.mpColor}
             isCorner={el.isCorner}

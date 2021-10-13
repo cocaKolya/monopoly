@@ -97,6 +97,7 @@ wss.on('connection', function (ws, request) {
   map.set(userId, ws);
 
   registerWsEmitter(map);
+  
   // registerWsMessages(map, ws);
   // console.log(registerWsMessages(map, ws));
 

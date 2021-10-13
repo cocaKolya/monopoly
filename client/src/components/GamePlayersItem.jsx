@@ -23,7 +23,7 @@ const Circle = styled.div`
 
 export const GamePlayerItem = ({ player }) => {
   return (
-    <PlayerWrapper>
+    <PlayerWrapper key={player.id}>
       <Circle queue={player.queue} />
       {player.name}
     </PlayerWrapper>

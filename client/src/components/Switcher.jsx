@@ -13,6 +13,8 @@ const SwitcherDiv = styled('div')`
   -moz-border-radius: 10px;
   border-radius: 10px;
   cursor: pointer;
+  margin: 10px;
+  align-self: ;
 `;
 
 function Switcher() {

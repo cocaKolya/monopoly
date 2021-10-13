@@ -1,5 +1,9 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
+import { getGameUsers } from '../redux/actions/gameUsersActions';
 import CardLine from './CardLine';
 import RollDice from './RollDice';
 import Switcher from './Switcher';
@@ -54,16 +58,26 @@ const dbRight = [
 ];
 
 function CardBoard() {
+  // const localUser = JSON.parse(window.localStorage.getItem('user'));
   const { transform } = useDiceContext();
+  // const dispatch = useDispatch();
+  // const params = useParams();
+  // useEffect(() => {
+  //   dispatch(getGameUsers(params.id));
+  // }, []);
+
+  // const gameUsers = useSelector((state) => state.gameUsers);
+  // console.log(localUser);
+  // console.log(gameUsers);
+  // const currUser = gameUsers.find((el) => (el.id = localUser.id));
+  // console.log(currUser);
   return (
     <>
-      <Switcher />
       <BoardWrapper transform={transform}>
         <Board>
           <LineWrapLeft>
             <CardLine position={'left'} db={dbLeft} />
           </LineWrapLeft>
-
           <Row>
             <CardLine position={'up'} db={dbUp} />
             <Center>
@@ -76,7 +90,7 @@ function CardBoard() {
           </LineWrapRight>
         </Board>
       </BoardWrapper>
-      <RollDice />
+      
     </>
   );
 }

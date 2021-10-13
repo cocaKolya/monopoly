@@ -14,6 +14,7 @@ const {
   NEW_PERSON,
   DEL_GAME,
   START_GAME_SOCKET,
+  ROLL_DICE_SOCKET,
 } = require('../src/constants/event');
 
 router.route('/').get(async (req, res) => {
@@ -38,18 +39,18 @@ router.route('/checkGame').get(async (req, res) => {
 
 router.route('/add').post(async (req, res) => {
   const { owner } = req.body;
-  
+
   const game = await Game.create({
     key: uuidv4(),
     owner,
     inprocess: false,
   });
-  
+
   const userInGame = await UserInGame.create({
     gameid: game.id,
     userid: owner,
   });
-  
+
   await GameStatistic.create({
     uigid: userInGame.id,
     position: 0,
@@ -58,16 +59,15 @@ router.route('/add').post(async (req, res) => {
   });
   const users = await User.findAll();
   // const userInGame = await Game.findOne({
-    //   where: { id: game.id },
-    //   include: User,
-    // });
-    // console.log(userInGame.User); //user witch create game
-    
-    // Отправить данные о новой игре всем игрокам
-    
+  //   where: { id: game.id },
+  //   include: User,
+  // });
+  // console.log(userInGame.User); //user witch create game
 
-    myEmitter.emit(CREATE_GAME_SOCKET, game);
-    
+  // Отправить данные о новой игре всем игрокам
+
+  // console.log( myEmitter.emit(CREATE_GAME_SOCKET, game));
+  myEmitter.emit(CREATE_GAME_SOCKET, game);
 
   res.json(game);
 });
@@ -208,6 +208,38 @@ router.route('/userInGame').post(async (req, res) => {
     // myEmitter.emit(NEW_PERSON, test);
     return res.sendStatus(200);
   } else return res.sendStatus(403);
+});
+
+router.route('/dice').post(async (req, res) => {
+  const { dice, userid, gamekey } = req.body;
+
+  const [gameusers] = await sequelize.query(`
+  select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users" 
+  join "UserInGames" on "Users".id = "UserInGames".userid
+  join "Games" on "UserInGames".gameid = "Games".id
+  join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+  where "Games".key = '${gamekey}'
+   `);
+
+  const curgame = await Game.findOne({ where: { key: gamekey } });
+
+  const UserInGameS = await UserInGame.findone({
+    where: { userid, gameid: curgame.id },
+  });
+
+  const blablabla = await GameStatistic.findOne({ where: { uigid: UserInGameS.id } });
+  blablabla.position += dice;  
+  await blablabla.save();
+
+  if (blablabla.position > 39) {
+    blablabla.position = blablabla.position - 40;
+    await blablabla.save();
+  }
+  await blablabla.save();
+
+  myEmitter.emit(ROLL_DICE_SOCKET, (gameusers, dice));
+
+  res.sendStatus(200);
 });
 
 module.exports = router;
