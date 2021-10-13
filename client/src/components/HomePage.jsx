@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { addGame, getGames, getUserGames } from '../redux/actions/gameActions';
+import { checkUser } from '../redux/actions/userAction';
+import { createSocketOnMessage } from '../utils/socket.message';
 import { Button } from './atoms/Button';
 import GameList from './GameList';
 
@@ -55,14 +57,19 @@ function HomePage() {
   const history = useHistory();
 
   const user = useSelector((state) => state.user);
+  const localUser = JSON.parse(window.localStorage.getItem('user'));
   const games = useSelector((state) => state.games);
   const currentGame = useSelector((state) => state.currentGame);
   const userGames = useSelector((state) => state.userGames);
+  // const notUserGames = games.filter((el) => el.owner !== user.id);
 
   useEffect(() => {
+    const socketOnMessage = createSocketOnMessage(dispatch);
+    socket.current.onmessage = socketOnMessage;
     dispatch(getGames());
-    if (user) dispatch(getUserGames(user?.id));
-  }, [user]);
+    console.log('1111111111user', localUser);
+    if (localUser) dispatch(getUserGames(localUser?.id));
+  }, []);
 
   const GameStarter = (owner) => {
     dispatch(addGame(owner));

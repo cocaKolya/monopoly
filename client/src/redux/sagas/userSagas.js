@@ -1,6 +1,7 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import {
   ADD_USER,
+  CHECK_USER,
   DEL_USER,
   GET_ADD_USER,
   GET_CHECK_USER,
@@ -22,6 +23,7 @@ const checkUser = () => {
 function* addUserWatcher(action) {
   try {
     const user = yield call(addUser, action.payload);
+    window.localStorage.setItem('user', JSON.stringify(user));
     yield put({ type: ADD_USER, payload: user });
   } catch (err) {
     yield put({ type: ADD_USER, payload: null });
@@ -31,6 +33,7 @@ function* addUserWatcher(action) {
 function* delUserWatcher() {
   try {
     yield call(delUser);
+
     yield put({ type: DEL_USER, payload: null });
   } catch (err) {
     yield put({ type: DEL_USER, payload: null });
@@ -40,9 +43,10 @@ function* delUserWatcher() {
 function* checkUserWatcher() {
   try {
     const user = yield call(checkUser);
-    yield put({ type: DEL_USER, payload: user });
+    yield put({ type: CHECK_USER, payload: user });
   } catch (err) {
-    yield put({ type: DEL_USER, payload: null });
+    console.log(err);
+    yield put({ type: CHECK_USER, payload: null });
   }
 }
 

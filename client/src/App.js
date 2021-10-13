@@ -13,6 +13,7 @@ import { Lobby } from './components/Lobby';
 import { NavBar } from './components/NavBar';
 import Logout from './components/Logout';
 import { AddPlayersModal } from './components/AddPlayersModal';
+import { getGames } from './redux/actions/gameActions';
 
 const MainWrapperDiv = styled('div')`
   display: flex;
@@ -30,6 +31,7 @@ function App() {
 
   useEffect(() => {
     dispatch(checkUser());
+    dispatch(getGames());
   }, []);
 
   return (

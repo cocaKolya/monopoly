@@ -32,7 +32,10 @@ router.route('/login').post(async (req, res) => {
   if (email && password) {
     try {
       const currentUser = await User.findOne({ where: { email } });
-      if (currentUser && (await bcrypt.compare(password, currentUser.password))) {
+      if (
+        currentUser &&
+        (await bcrypt.compare(password, currentUser.password))
+      ) {
         req.session.user = {
           id: currentUser.id,
           name: currentUser.name,

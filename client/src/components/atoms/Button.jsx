@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledButton = styled.button`
+  margin: 5px;
   border: 2px solid black;
   padding: 5px;
   border-radius: 5px;

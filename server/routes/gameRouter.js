@@ -26,8 +26,8 @@ router.route('/').get(async (req, res) => {
     ],
   });
 
-  const noStartGame = game.filter((el) => !el.inprocess);
-  res.json(noStartGame);
+
+  res.json(game);
 });
 
 router.route('/checkGame').get(async (req, res) => {
@@ -89,7 +89,7 @@ router.route('/mygame').post(async (req, res) => {
     },
   });
 
-  res.json(myGames[0].Games);
+  res.json(myGames[0].UserInGamesAliase);
 });
 
 router.route('/start').post(async (req, res) => {
@@ -106,10 +106,10 @@ router.route('/start').post(async (req, res) => {
   });
   game.inprocess = true;
   await game.save();
-  console.log(game);
+  const users = game.UserInGamesAliase;
   //Отправить всем игрокам в лобби статус игры
 
-  // myEmitter.emit(START_GAME, game.id);
+  myEmitter.emit(START_GAME, users ,game.id);
 
   res.json(game);
 });

@@ -34,11 +34,16 @@ const GroupDiv = styled.div`
 export const Lobby = () => {
   const { showAddUsers, setShowAddUsers, currentKey, setCurrentKey } =
     useDiceContext();
+
+  const [isOwner, setIsOwner] = useState(false);
+
   const dispatch = useDispatch();
   const history = useHistory();
   const params = useParams();
-  // const currentGame = useSelector((state) => state.currentGame);
+
+
   const user = useSelector((state) => state.user);
+ 
   const allUsers = useSelector((state) => state.allUsers);
   const gameUsers = useSelector((state) => state.gameUsers);
 

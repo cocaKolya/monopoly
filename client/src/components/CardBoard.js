@@ -53,6 +53,36 @@ const dbRight = [
   { id: 0, name: 'Start', isCorner: true, special: 'start' },
 ];
 
+function CardBoard() {
+  const { transform } = useDiceContext();
+  return (
+    <>
+      <Switcher />
+      <BoardWrapper transform={transform}>
+        <Board>
+          <LineWrapLeft>
+            <CardLine position={'left'} db={dbLeft} />
+          </LineWrapLeft>
+
+          <Row>
+            <CardLine position={'up'} db={dbUp} />
+            <Center>
+              <Center rotate={true}>MONOPOLY</Center>
+            </Center>
+            <CardLine position={'down'} db={dbDown} />
+          </Row>
+          <LineWrapRight>
+            <CardLine position={'right'} db={dbRight} />
+          </LineWrapRight>
+        </Board>
+      </BoardWrapper>
+      <RollDice />
+    </>
+  );
+}
+
+export default CardBoard;
+
 const BoardWrapper = styled('div')`
   display: flex;
   position: relative;
@@ -70,10 +100,10 @@ const BoardWrapper = styled('div')`
 	-o-transition: transform 1s linear 0s;
 	transition:transform 1s linear 0s`};
 `;
+
 const Row = styled('div')`
   //   display: flex;
   // flex-direction:column
-
 `;
 
 const LineWrapLeft = styled('div')`
@@ -111,32 +141,3 @@ const Board = styled('div')`
   padding: 0 100px;
   border: 1px solid #000;
 `;
-function CardBoard() {
-  const { transform } = useDiceContext();
-  return (
-    <>
-      <Switcher />
-      <BoardWrapper transform={transform}>
-        <Board>
-          <LineWrapLeft>
-            <CardLine position={'left'} db={dbLeft} />
-          </LineWrapLeft>
-
-          <Row>
-            <CardLine position={'up'} db={dbUp} />
-            <Center>
-              <Center rotate={true}>MONOPOLY</Center>
-            </Center>
-            <CardLine position={'down'} db={dbDown} />
-          </Row>
-          <LineWrapRight>
-            <CardLine position={'right'} db={dbRight} />
-          </LineWrapRight>
-        </Board>
-      </BoardWrapper>
-      <RollDice />
-    </>
-  );
-}
-
-export default CardBoard;
