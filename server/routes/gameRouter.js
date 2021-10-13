@@ -20,9 +20,7 @@ router.route('/').get(async (req, res) => {
       },
     ],
   });
-
-  const noStartGame = game.filter((el) => !el.inprocess);
-  res.json(noStartGame);
+  res.json(game);
 });
 
 router.route('/checkGame').get(async (req, res) => {

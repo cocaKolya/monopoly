@@ -51,8 +51,8 @@ const Text = styled.p`
 `;
 
 function HomePage() {
-  const url = process.env.REACT_APP_URL_SOCKET;
-  const socket = useRef(new WebSocket(url));
+  
+  
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -64,10 +64,8 @@ function HomePage() {
   // const notUserGames = games.filter((el) => el.owner !== user.id);
 
   useEffect(() => {
-    const socketOnMessage = createSocketOnMessage(dispatch);
-    socket.current.onmessage = socketOnMessage;
+    
     dispatch(getGames());
-    console.log('1111111111user', localUser);
     if (localUser) dispatch(getUserGames(localUser?.id));
   }, []);
 

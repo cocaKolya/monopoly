@@ -11,7 +11,7 @@ export const getGameUsers = (key) => async (dispatch) => {
   } else {
     users = data;
   }
-  console.log(users);
+
   dispatch({
     type: GET_GAME_USERS,
     payload: users,

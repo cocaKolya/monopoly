@@ -1,13 +1,16 @@
-import { NEW_GAME_CREATE } from "../constants/socket";
+import { START_GAME_SOCKET } from '../constants/socket';
+import { startGameSocket } from '../redux/actions/gameActions';
 
 export const createSocketOnMessage = (dispatch) => (event) => {
-  const parsedData = JSON.parse(event.data)
+  console.log('1');
+  const parsedData = JSON.parse(event.data);
+  console.log(parsedData);
   switch (parsedData.type) {
-    case NEW_GAME_CREATE:
-      // dispatch(AC(data))
+    case START_GAME_SOCKET:
+      dispatch(startGameSocket(parsedData.payload));
       break;
 
     default:
       break;
   }
-}; 
+};
