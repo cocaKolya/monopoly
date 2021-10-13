@@ -10,7 +10,7 @@ const {
 const { v4: uuidv4 } = require('uuid');
 const myEmitter = require('../src/ee');
 const {
-  NEW_GAME_CREATE,
+  CREATE_GAME_SOCKET,
   NEW_PERSON,
   DEL_GAME,
   START_GAME_SOCKET,
@@ -63,7 +63,7 @@ router.route('/add').post(async (req, res) => {
   // console.log(userInGame.User); //user witch create game
 
   // Отправить данные о новой игре всем игрокам
-  myEmitter.emit(NEW_GAME_CREATE, game);
+  myEmitter.emit(CREATE_GAME_SOCKET, game);
 
   res.json(game);
 });
