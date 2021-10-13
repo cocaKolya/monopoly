@@ -11,7 +11,7 @@ export const gameReducer = (state = [], action) => {
       return state;
     }
     case START_GAME_SOCKET: {
-      console.log(1);
+
       return state.map((el) =>
         el.id === payload ? { ...el, inprocess: true } : el
       );

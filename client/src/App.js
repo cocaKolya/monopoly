@@ -23,13 +23,12 @@ function App() {
   let location = useLocation();
   const localUser = window.localStorage.getItem('user');
   const history = useHistory();
-  console.log(location.pathname);
+
   if (!localUser && location.pathname !== '/reg') history.push('/reg');
   useEffect(() => {
-    console.log('App js');
+
     const socketOnMessage = createSocketOnMessage(dispatch);
     socket.current = new WebSocket(url);
-    console.log('>>>>>>>', socket.current);
     socket.current.onmessage = socketOnMessage;
     dispatch(checkUser());
     dispatch(getGames());

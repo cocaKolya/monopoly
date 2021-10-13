@@ -27,7 +27,6 @@ const DiceContextProvider = ({ children }) => {
 
   const increment = () => {
     setUserPosition((prev) => {
-      console.log(userPosition);
       return prev + 1;
     });
   };
