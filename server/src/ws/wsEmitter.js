@@ -32,20 +32,22 @@ function registerWsEmitter(map) {
       });
     }
   });
+
+  myEmitter.on(START_GAME_SOCKET, (data) => {
+    for (let [id, userConnect] of map) {
+      console.log(data);
+      data.users.map((el) => {
+        if (id === el.id) {
+          console.log(1);
+          userConnect.send(
+            JSON.stringify({
+              type: START_GAME_SOCKET,
+              payload: data.gameid,
+            })
+          );
+        }
+      });
+    }
+  });
 }
-
-myEmitter.on(START_GAME_SOCKET, (users, gameid) => {
-  for (let [id, userConnect] of map) {
-    users.map((el) => {
-      if (id === el.id)
-        userConnect.send(
-          JSON.stringify({
-            type: START_GAME_SOCKET,
-            payload: gameid,
-          })
-        );
-    });
-  }
-});
-
 module.exports = registerWsEmitter;

@@ -35,7 +35,7 @@ function registerWsMessages(map, ws) {
         //       type: 'err',
         //       payload: 'err',
         //     })
-        console.log(dataFromFront);
+
         //   );
         // }
         break;
