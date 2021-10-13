@@ -12,9 +12,13 @@ const myEmitter = require('../src/ee');
 const { NEW_GAME_CREATE, NEW_PERSON } = require('../src/constants/event');
 
 router.route('/').get(async (req, res) => {
-  const game = await Game.findAll();
-  game.filter((el) => !el.inprocess);
-  res.json(game);
+  const game = await Game.findAll({
+    include: {
+      model: User,
+    },
+  });
+  const noStartGame = game.filter((el) => !el.inprocess);
+  res.json(noStartGame);
 });
 
 router.route('/checkGame').get(async (req, res) => {
