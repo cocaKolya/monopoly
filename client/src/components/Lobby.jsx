@@ -7,7 +7,8 @@ import { getAllUsers } from '../redux/actions/AllUsersActions';
 import { startGame } from '../redux/actions/gameActions';
 import { getGameUsers } from '../redux/actions/gameUsersActions';
 import { Button } from './atoms/Button';
-import { PlayersList } from './Playerslist';
+import GamePlayersList from './GamePlayersList';
+import { useHistory } from 'react-router';
 
 const LobbyWrapper = styled.div`
   display: flex;
@@ -33,13 +34,18 @@ const GroupDiv = styled.div`
 export const Lobby = () => {
   const { showAddUsers, setShowAddUsers, currentKey, setCurrentKey } =
     useDiceContext();
+
+  const [isOwner, setIsOwner] = useState(false);
+
   const dispatch = useDispatch();
+  const history = useHistory();
   const params = useParams();
-  // const currentGame = useSelector((state) => state.currentGame);
+
+
   const user = useSelector((state) => state.user);
+ 
   const allUsers = useSelector((state) => state.allUsers);
   const gameUsers = useSelector((state) => state.gameUsers);
-  console.log(gameUsers);
 
   useEffect(() => {
     setCurrentKey(params.id);
@@ -52,10 +58,12 @@ export const Lobby = () => {
   };
   const startGamehandler = () => {
     dispatch(startGame(params.id));
+    history.push(`/game/${params.id}`);
   };
   return (
     <LobbyWrapper>
       <GroupDiv>
+        <GamePlayersList players={gameUsers} />
         <p>waiting for other players...</p>
         <Button text={'add Players'} onClick={() => addUsersHandler()}></Button>
       </GroupDiv>

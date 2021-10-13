@@ -23,7 +23,6 @@ module.exports = {
         type: Sequelize.STRING,
       },
       urlFoto: {
-        allowNull: false,
         type: Sequelize.TEXT,
       },
       createdAt: {

@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
 import { addPendingUsers } from '../redux/actions/PendingUsersActions';
 import { Button } from './atoms/Button';
-import { PlayerItem } from './PlayerItem';
+import { AddPlayerItem } from './AddPlayerItem';
 
 const Modal = styled.div`
   position: absolute;
@@ -53,7 +53,11 @@ export const AddPlayersModal = () => {
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const { showAddUsers, setShowAddUsers, currentKey } = useDiceContext();
   const allUsers = useSelector((state) => state.allUsers);
-  console.log(selectedPlayers);
+
+  useEffect(() => {
+    setSelectedPlayers([]);
+  }, [showAddUsers]);
+
   const changeHandler = (id) => {
     setSelectedPlayers((prev) => {
       let prevCopy = [...prev];
@@ -79,7 +83,11 @@ export const AddPlayersModal = () => {
         <UsersWrapper>
           <form>
             {allUsers?.map((el) => (
-              <PlayerItem player={el} onChange={() => changeHandler(el.id)} />
+              <AddPlayerItem
+                key={el.id}
+                player={el}
+                onChange={() => changeHandler(el.id)}
+              />
             ))}
           </form>
         </UsersWrapper>

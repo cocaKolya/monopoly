@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const PlayerWrapper = styled.div`
@@ -48,8 +49,8 @@ const StyledInput = styled.input`
   // margin: -1px;
 `;
 
-export const PlayerItem = ({ player, onChange }) => {
-  // console.log(player);
+export const AddPlayerItem = ({ player, onChange }) => {
+
   return (
     <PlayerWrapper>
       <StyledInput

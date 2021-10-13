@@ -1,4 +1,4 @@
-import { ADD_USER, DEL_USER } from "../types/userTypes";
+import { ADD_USER, CHECK_USER, DEL_USER } from '../types/userTypes';
 
 export const userReducer = (user = null, action) => {
   const { type, payload } = action;
@@ -7,6 +7,9 @@ export const userReducer = (user = null, action) => {
       return payload;
     }
     case DEL_USER: {
+      return payload;
+    }
+    case CHECK_USER: {
       return payload;
     }
     default:

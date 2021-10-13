@@ -7,10 +7,12 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsToMany(User, {
         through: 'UserGamePandings',
         foreignKey: 'gamekey',
+        as: 'UserGamePandingsAliase',
       });
       this.belongsToMany(User, {
         through: 'UserInGames',
         foreignKey: 'gameid',
+        as: 'UserInGamesAliase',
       });
     }
   }
