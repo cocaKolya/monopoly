@@ -52,7 +52,7 @@ router.route('/add').post(async (req, res) => {
   //   include: User,
   // });
 
-  myEmitter.emit(NEW_GAME_CREATE, game);
+  // myEmitter.emit(NEW_GAME_CREATE, game);
   res.json(game);
 });
 
@@ -163,7 +163,7 @@ router.route('/userInGame').post(async (req, res) => {
       where "UserInGames".gameid = ${gameid}
        `);
 
-      myEmitter.emit(NEW_PERSON, test);
+      // myEmitter.emit(NEW_PERSON, test);
       return res.sendStatus(200);
     } else return res.sendStatus(403);
   }

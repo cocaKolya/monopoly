@@ -62,7 +62,7 @@ function HomePage() {
   useEffect(() => {
     dispatch(getGames());
     if (user) dispatch(getUserGames(user?.id));
-  }, [user]);
+  }, [user,]);
 
   console.log(userGames);
   const GameStarter = (owner) => {

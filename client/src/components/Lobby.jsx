@@ -8,6 +8,7 @@ import { startGame } from '../redux/actions/gameActions';
 import { getGameUsers } from '../redux/actions/gameUsersActions';
 import { Button } from './atoms/Button';
 import GamePlayersList from './GamePlayersList';
+import { useHistory } from 'react-router';
 
 const LobbyWrapper = styled.div`
   display: flex;
@@ -34,12 +35,13 @@ export const Lobby = () => {
   const { showAddUsers, setShowAddUsers, currentKey, setCurrentKey } =
     useDiceContext();
   const dispatch = useDispatch();
+  const history = useHistory();
   const params = useParams();
   // const currentGame = useSelector((state) => state.currentGame);
   const user = useSelector((state) => state.user);
   const allUsers = useSelector((state) => state.allUsers);
   const gameUsers = useSelector((state) => state.gameUsers);
-  console.log(gameUsers);
+  console.log('gameusers', gameUsers);
 
   useEffect(() => {
     setCurrentKey(params.id);
@@ -52,6 +54,7 @@ export const Lobby = () => {
   };
   const startGamehandler = () => {
     dispatch(startGame(params.id));
+    history.push('/');
   };
   return (
     <LobbyWrapper>

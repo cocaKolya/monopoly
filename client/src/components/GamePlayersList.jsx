@@ -12,7 +12,7 @@ const GamePlayersList = ({ players }) => {
     <PlayersWrapper>
       {players?.map((el) => (
         <>
-          <GamePlayerItem />
+          <GamePlayerItem player={el} />
         </>
       ))}
     </PlayersWrapper>
