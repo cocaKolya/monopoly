@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
@@ -53,7 +53,11 @@ export const AddPlayersModal = () => {
   const [selectedPlayers, setSelectedPlayers] = useState([]);
   const { showAddUsers, setShowAddUsers, currentKey } = useDiceContext();
   const allUsers = useSelector((state) => state.allUsers);
-  console.log(selectedPlayers);
+
+  useEffect(() => {
+    setSelectedPlayers([]);
+  }, [showAddUsers]);
+
   const changeHandler = (id) => {
     setSelectedPlayers((prev) => {
       let prevCopy = [...prev];
@@ -66,6 +70,7 @@ export const AddPlayersModal = () => {
       return prevCopy;
     });
   };
+  console.log('players', selectedPlayers);
 
   const addPlayersHandler = () => {
     dispatch(addPendingUsers(currentKey, selectedPlayers));
@@ -79,7 +84,10 @@ export const AddPlayersModal = () => {
         <UsersWrapper>
           <form>
             {allUsers?.map((el) => (
-              <AddPlayerItem player={el} onChange={() => changeHandler(el.id)} />
+              <AddPlayerItem
+                player={el}
+                onChange={() => changeHandler(el.id)}
+              />
             ))}
           </form>
         </UsersWrapper>

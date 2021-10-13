@@ -2,12 +2,18 @@ import axios from 'axios';
 import { GET_GAME_USERS } from '../types/userTypes';
 
 export const getGameUsers = (key) => async (dispatch) => {
-  const users = await axios.post('http://localhost:3001/game/users', {
+  const { data } = await axios.post('http://localhost:3001/game/users', {
     key,
   });
-  console.log(users.data);
+  let users = [];
+  if (data.length >= 4) {
+    users = data.slice(0, 4);
+  } else {
+    users = data;
+  }
+  console.log(users);
   dispatch({
     type: GET_GAME_USERS,
-    payload: users.data,
+    payload: users,
   });
 };

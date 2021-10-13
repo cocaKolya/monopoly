@@ -41,7 +41,6 @@ export const Lobby = () => {
   const user = useSelector((state) => state.user);
   const allUsers = useSelector((state) => state.allUsers);
   const gameUsers = useSelector((state) => state.gameUsers);
-  console.log('gameusers', gameUsers);
 
   useEffect(() => {
     setCurrentKey(params.id);
@@ -54,7 +53,7 @@ export const Lobby = () => {
   };
   const startGamehandler = () => {
     dispatch(startGame(params.id));
-    history.push('/');
+    history.push(`/game/${params.id}`);
   };
   return (
     <LobbyWrapper>
