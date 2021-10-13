@@ -48,7 +48,7 @@ const StyledInput = styled.input`
   // margin: -1px;
 `;
 
-export const PlayerItem = ({ player, onChange }) => {
+export const AddPlayerItem = ({ player, onChange }) => {
   // console.log(player);
   return (
     <PlayerWrapper>

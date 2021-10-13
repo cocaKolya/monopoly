@@ -7,7 +7,7 @@ import { getAllUsers } from '../redux/actions/AllUsersActions';
 import { startGame } from '../redux/actions/gameActions';
 import { getGameUsers } from '../redux/actions/gameUsersActions';
 import { Button } from './atoms/Button';
-import { PlayersList } from './Playerslist';
+import GamePlayersList from './GamePlayersList';
 
 const LobbyWrapper = styled.div`
   display: flex;
@@ -56,6 +56,7 @@ export const Lobby = () => {
   return (
     <LobbyWrapper>
       <GroupDiv>
+        <GamePlayersList players={gameUsers} />
         <p>waiting for other players...</p>
         <Button text={'add Players'} onClick={() => addUsersHandler()}></Button>
       </GroupDiv>
