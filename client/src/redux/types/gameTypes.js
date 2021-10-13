@@ -1,4 +1,6 @@
+export const START_GAME = 'START_GAME';
 export const ADD_GAME = 'ADD_GAME';
+export const CHANGE_GAME = 'CHANGE_GAME';
 export const CREATE_GAME = 'CREATE_GAME';
 export const GET_GAMES = 'GET_GAMES';
 export const GET_USER_GAMES = 'GET_USER_GAMES';

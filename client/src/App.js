@@ -12,6 +12,7 @@ import HomePage from './components/HomePage';
 import { Lobby } from './components/Lobby';
 import { NavBar } from './components/NavBar';
 import Logout from './components/Logout';
+import { AddPlayersModal } from './components/AddPlayersModal';
 
 const MainWrapperDiv = styled('div')`
   display: flex;
@@ -35,6 +36,7 @@ function App() {
     <DiceContextProvider>
       <NavBar />
       <MainWrapperDiv>
+          <AddPlayersModal />
         <Switch>
           <Route exact path='/' component={CardBoard} />
           <Route exact path='/reg' component={RegForm} />

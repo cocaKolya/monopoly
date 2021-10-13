@@ -13,9 +13,9 @@ function registerWsEmitter(map) {
       );
     }
   });
-  myEmitter.on(NEW_PERSON, (userInGame) => {
+  myEmitter.on(NEW_PERSON, (test) => {
     for (let [id, userConnect] of map) {
-      userInGame.map((el) => {
+      test.map((el) => {
         if (el.id == id) {
           userConnect.send(
             JSON.stringify({

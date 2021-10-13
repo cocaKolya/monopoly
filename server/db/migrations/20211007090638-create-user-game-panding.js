@@ -15,14 +15,20 @@ module.exports = {
           model: 'Users',
           key: 'id',
         },
-        
       },
-      gameid: {
-        allowNull: false,
+      frendid: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Games',
+          model: 'Users',
           key: 'id',
+        },
+      },
+      gamekey: {
+        allowNull: false,
+        type: Sequelize.TEXT,
+        references: {
+          model: 'Games',
+          key: 'key',
         },
       },
       createdAt: {

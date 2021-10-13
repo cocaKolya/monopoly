@@ -1,8 +1,11 @@
 const initState = {
   user: null,
+  allUsers: [],
   games: [],
   currentGame: false,
-  userGames:  []
+  userGames: [],
+  gameUsers: [],
+  pendingUsers: [],
 };
 
 export default initState;

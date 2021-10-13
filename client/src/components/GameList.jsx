@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 import GameItem from './GameItem';
 
-const GameListDiv = styled('div')``;
+const GameListDiv = styled('div')`
+  display: flex;
+  flex-wrap: wrap;
+`;
 
 function GameList({ db, active }) {
   return (

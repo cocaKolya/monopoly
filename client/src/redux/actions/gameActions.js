@@ -4,6 +4,7 @@ import {
   CREATE_GAME,
   FIND_GAMES,
   FIND_USER_GAMES,
+  START_GAME,
 } from '../types/gameTypes';
 
 export const addGame = (owner) => {
@@ -13,6 +14,9 @@ export const addGame = (owner) => {
     payload: owner,
   };
 };
+
+
+
 export const getGames = (action) => {
   return {
     type: FIND_GAMES,
@@ -31,5 +35,12 @@ export const addUserToGame = (gameid, userid) => async (dispatch) => {
   console.log(userid);
   dispatch({
     type: ADD_USER_TO_GAME,
+  });
+};
+export const startGame = (key) => async (dispatch) => {
+  await axios.post('http://localhost:3001/game/start', { key });
+
+  dispatch({
+    type: START_GAME,
   });
 };

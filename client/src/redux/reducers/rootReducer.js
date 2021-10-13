@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux';
-import userGamesWatcher from '../sagas/userGameSagas';
+import { allUsersReducer } from './allUsersReducers';
 import { currentGameReducer } from './currentGameReducer';
 import { gameReducer } from './gameReducer';
+import { gameUsersReducer } from './gameUsersReducers';
+import { pendingUsersReducer } from './pendingUsersReducers';
 import { userGameReducer } from './userGameReducers';
 import { userReducer } from './userReducer';
 
@@ -10,4 +12,7 @@ export const rootReducer = combineReducers({
   games: gameReducer,
   currentGame: currentGameReducer,
   userGames: userGameReducer,
+  allUsers: allUsersReducer,
+  gameUsers: gameUsersReducer,
+  pendingUsers: pendingUsersReducer,
 });
