@@ -4,6 +4,7 @@ const { FIND_USER_GAMES, GET_USER_GAMES } = require('../types/gameTypes');
 const url = process.env.REACT_APP_URL;
 
 const findUserGames = (userid) => {
+  console.log('userid', userid);
   return axios.post(`${url}/game/mygame`, { userid }).then((res) => res.data);
 };
 

@@ -39,10 +39,12 @@ function GameItem({ game, active }) {
     history.push(`/game/${game.key}/lobby`);
   };
 
-  const continueGame = (gameKey) => {
+  const continueGame = (gameKey, inProgress) => {
     const game = games.find((el) => el.key === gameKey);
     console.log(game);
-    history.push(`/game/${game.key}/lobby`);
+    inProgress
+      ? history.push(`/game/${game.key}`)
+      : history.push(`/game/${game.key}/lobby`);
   };
 
   console.log(game);
@@ -57,7 +59,10 @@ function GameItem({ game, active }) {
         {game.gamer4 && <Player>{game.gamer4}</Player>} */}
       </PlayersWrapper>
       {active ? (
-        <Button text={'continue'} onClick={() => continueGame(game.key)} />
+        <Button
+          text={'continue'}
+          onClick={() => continueGame(game.key, game.inprogress)}
+        />
       ) : (
         <Button text={'join'} onClick={() => joinGame(game.id, user.id)} />
       )}

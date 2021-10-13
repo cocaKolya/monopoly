@@ -101,7 +101,8 @@ router.route('/add/users').post(async (req, res) => {
   if (panding.length > 0) {
     const usersPandingFilter = notMe.filter(
       (user) =>
-        panding.findIndex((pandingUser) => pandingUser.userid === user.id) === -1
+        panding.findIndex((pandingUser) => pandingUser.userid === user.id) ===
+        -1
     );
 
     const user = usersPandingFilter.map((el) => {
@@ -153,8 +154,8 @@ router.route('/userInGame').post(async (req, res) => {
     },
     raw: true,
   });
-  const user = await UserInGame.findAll({ where: { userid } });
-
+  const user = await UserInGame.findAll({ where: { userid, gameid } });
+  console.log(user);
   if (user.length === 0) {
     const userInGame = await UserInGame.create({
       gameid,

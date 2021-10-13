@@ -62,8 +62,7 @@ function HomePage() {
   useEffect(() => {
     dispatch(getGames());
     if (user) dispatch(getUserGames(user?.id));
-  }, [user,]);
-
+  }, [user]);
 
   const GameStarter = (owner) => {
     dispatch(addGame(owner));
