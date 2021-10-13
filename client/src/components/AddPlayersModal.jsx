@@ -85,6 +85,7 @@ export const AddPlayersModal = () => {
           <form>
             {allUsers?.map((el) => (
               <AddPlayerItem
+                key={el.id}
                 player={el}
                 onChange={() => changeHandler(el.id)}
               />

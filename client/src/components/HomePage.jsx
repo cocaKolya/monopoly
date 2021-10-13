@@ -4,6 +4,7 @@ import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { addGame, getGames, getUserGames } from '../redux/actions/gameActions';
 import { checkUser } from '../redux/actions/userAction';
+import { createSocketOnMessage } from '../utils/socket.message';
 import { Button } from './atoms/Button';
 import GameList from './GameList';
 
@@ -59,8 +60,13 @@ function HomePage() {
   const games = useSelector((state) => state.games);
   const currentGame = useSelector((state) => state.currentGame);
   const userGames = useSelector((state) => state.userGames);
-  const notUserGames = games.filter((el) => el.owner !== user.id);
+  // const notUserGames = games.filter((el) => el.owner !== user.id);
+  console.log('im gameeee', games);
   useEffect(() => {
+    const socketOnMessage = createSocketOnMessage(dispatch);
+    socket.current.onmessage = socketOnMessage;
+
+
     dispatch(getGames());
     dispatch(checkUser());
     if (user) dispatch(getUserGames(user?.id));
@@ -93,7 +99,7 @@ function HomePage() {
         </Row>
         <Row>
           <Text>Присоединиться к игре:</Text>
-          {games && <GameList db={notUserGames} />}
+          {games && <GameList db={games} />}
         </Row>
       </HomeWrapper>
     </>
