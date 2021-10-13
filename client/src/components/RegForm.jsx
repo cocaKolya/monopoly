@@ -26,10 +26,8 @@ function RegForm() {
 
   const inputChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formInput);
   };
   const submitForm = (e) => {
-    window.localStorage.setItem('user', formInput);
     e.preventDefault();
     dispatch(addUser(formInput));
   };

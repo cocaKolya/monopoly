@@ -12,7 +12,6 @@ function GameItem({ game, active }) {
   const games = useSelector((state) => state.games);
 
   const joinGame = (gameid, userid) => {
-    // console.log('12312310', gameid, userid);
     dispatch(addUserToGame(gameid, userid));
     const game = games.find((el) => el.id === gameid);
     history.push(`/game/${game.key}/lobby`);
@@ -20,13 +19,12 @@ function GameItem({ game, active }) {
 
   const continueGame = (gameKey, inProgress) => {
     const game = games.find((el) => el.key === gameKey);
-    console.log(game);
+    console.log(games);
     inProgress
       ? history.push(`/game/${game.key}`)
       : history.push(`/game/${game.key}/lobby`);
   };
 
-  console.log(game);
   return (
     <GameWrapper>
       <div>{game.id}</div>

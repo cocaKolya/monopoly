@@ -1,1 +1,1 @@
-export const NEW_GAME_CREATE = 'NEW_GAME_CREATE';
+export const START_GAME_SOCKET = 'START_GAME_SOCKET';

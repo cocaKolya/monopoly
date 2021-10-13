@@ -70,7 +70,6 @@ export const AddPlayersModal = () => {
       return prevCopy;
     });
   };
-  console.log('players', selectedPlayers);
 
   const addPlayersHandler = () => {
     dispatch(addPendingUsers(currentKey, selectedPlayers));
