@@ -7,7 +7,7 @@ router.get('/', passport.authenticate('google', { scope: ['profile', 'email'] })
 router.get('/callback',
   passport.authenticate('google', { failureRedirect: '/failed' }),
   function (req, res) {
-    console.log('====>>>> name', req.user.displayName, '====>>>>> email', req.user.emails[0].value, '=====>>>>', req.user.photos[0].value)
+    // console.log('====>>>> name', req.user.displayName, '====>>>>> email', req.user.emails[0].value, '=====>>>>', req.user.photos[0].value)
     res.redirect('/');
   }
 );
