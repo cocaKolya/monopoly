@@ -37,6 +37,7 @@ router.route('/add').post(async (req, res) => {
     gameid: game.id,
     userid: owner,
   });
+
   await GameStatistic.create({
     uigid: userInGame.id,
     position: 0,
@@ -90,20 +91,18 @@ router.route('/start').post(async (req, res) => {
 router.route('/add/users').post(async (req, res) => {
   const { userid, key } = req.body;
 
-  const users = await User.findAll();
+  const users = await User.findAll({});
   const notMe = users.filter((el) => el.id != userid);
 
-  const panding = await UserGamePanding.findAll({ where: { gamekey: key } });
+  const panding = await UserGamePanding.findAll({
+    where: { gamekey: key },
+  });
+
   if (panding.length > 0) {
-    const usersPandingFilter = notMe.filter((el) => {
-      if (
-        panding.findIndex((i) => {
-          return i.id === el.id;
-        }) != -1
-      ) {
-        return false;
-      } else return true;
-    });
+    const usersPandingFilter = notMe.filter(
+      (user) =>
+        panding.findIndex((pandingUser) => pandingUser.userid === user.id) === -1
+    );
 
     const user = usersPandingFilter.map((el) => {
       return { id: el.id, name: el.name };
@@ -124,6 +123,7 @@ router.route('/panding').post(async (req, res) => {
   for (let i = 0; i < pandingid.length; i++) {
     await UserGamePanding.create({ userid: pandingid[i], gamekey: key });
   }
+
   //Отправлять определенному юзеру приглос
   res.sendStatus(200);
 });
@@ -151,32 +151,36 @@ router.route('/userInGame').post(async (req, res) => {
       model: Game,
       where: { id: gameid },
     },
+    raw: true,
   });
+  const user = await UserInGame.findAll({ where: { userid } });
 
-  for (let i = 0; i < gameParty.length; i++) {
-    if (gameParty[i].id !== userid) {
-      const userInGame = await UserInGame.create({
-        gameid,
-        userid,
-      });
+  if (user.length === 0) {
+    const userInGame = await UserInGame.create({
+      gameid,
+      userid,
+    });
 
-      await GameStatistic.create({
-        uigid: userInGame.id,
-        position: 0,
-        money: 5500,
-        queue: 1,
-      });
-      const [test] = await sequelize.query(`
+    // const user = await UserInGame.findAll({ raw: true });
+    // console.log(user);
+    const [test] = await sequelize.query(`
       select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
       join "UserInGames" on "Users".id = "UserInGames".userid
       join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
       where "UserInGames".gameid = ${gameid}
        `);
-      //Отправить данные игрока всем, кто с ним в игре
-      // myEmitter.emit(NEW_PERSON, test);
-      return res.sendStatus(200);
-    } else return res.sendStatus(403);
-  }
+
+    await GameStatistic.create({
+      uigid: userInGame.id,
+      position: 0,
+      money: 5500,
+      queue: test[test.length - 1].queue,
+    });
+
+    //Отправить данные игрока всем, кто с ним в игре
+    // myEmitter.emit(NEW_PERSON, test);
+    return res.sendStatus(200);
+  } else return res.sendStatus(403);
 });
 
 module.exports = router;

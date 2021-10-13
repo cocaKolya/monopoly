@@ -35,6 +35,8 @@ function GameItem({ game, active }) {
   const joinGame = (gameid, userid) => {
     console.log('12312310', gameid, userid);
     dispatch(addUserToGame(gameid, userid));
+    const game = games.find((el) => el.id === gameid);
+    history.push(`/game/${game.key}/lobby`);
   };
 
   const continueGame = (gameKey) => {
@@ -43,6 +45,7 @@ function GameItem({ game, active }) {
     history.push(`/game/${game.key}/lobby`);
   };
 
+  console.log(game);
   return (
     <GameWrapper>
       <div>{game.id}</div>
