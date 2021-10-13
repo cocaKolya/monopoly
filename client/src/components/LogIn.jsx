@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { loginUser } from '../redux/actions/loginAction';
 
 const RegFormForma = styled('form')`
   display: flex;
@@ -29,7 +30,7 @@ function LogIn() {
   };
   const submitForm = (e) => {
     e.preventDefault();
-    dispatch((formInput));
+    dispatch(loginUser(formInput))
   };
 
   return (
@@ -43,7 +44,7 @@ function LogIn() {
           value={formInput.password}
           onChange={inputChange}
         />
-        <button type='submit'>reg</button>
+        <button type='submit'>login</button>
       </RegFormForma>
     </>
   );

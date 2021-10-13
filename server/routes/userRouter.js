@@ -34,7 +34,8 @@ router.route('/reg').post(async (req, res) => {
   }
 });
 router.route('/login').post(async (req, res) => {
-  const { email, password } = req.body;
+  console.log(req.body)
+  const { email, password } = req.body.loginForm;
   if (email && password) {
     try {
       const currentUser = await User.findOne({ where: { email } });
