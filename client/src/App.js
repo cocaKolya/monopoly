@@ -36,13 +36,15 @@ function App() {
     <DiceContextProvider>
       <NavBar />
       <MainWrapperDiv>
-          <AddPlayersModal />
+        <AddPlayersModal />
         <Switch>
+          <Route exact path='/game/:id' component={CardBoard} />
           <Route exact path='/' component={CardBoard} />
           <Route exact path='/reg' component={RegForm} />
           <Route exact path='/logout' component={Logout} />
           <Route exact path='/home' component={HomePage} />
           <Route exact path='/game/:id/lobby' component={Lobby} />
+          <Route exact path='/profile' component={Lobby} />
         </Switch>
       </MainWrapperDiv>
     </DiceContextProvider>

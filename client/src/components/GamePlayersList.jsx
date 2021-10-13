@@ -7,7 +7,7 @@ const PlayersWrapper = styled.div`
 `;
 
 const GamePlayersList = ({ players }) => {
-  console.log('123123123', players);
+
   return (
     <PlayersWrapper>
       {players?.map((el) => (

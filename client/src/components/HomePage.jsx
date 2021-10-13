@@ -64,7 +64,7 @@ function HomePage() {
     if (user) dispatch(getUserGames(user?.id));
   }, [user,]);
 
-  console.log(userGames);
+
   const GameStarter = (owner) => {
     dispatch(addGame(owner));
   };
