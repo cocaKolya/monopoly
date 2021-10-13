@@ -2,7 +2,14 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
 
+// npm пакет для звуков где useSound это хук
+import useSound from 'use-sound';
+import cubes from './sound/cubes.mp3'
+
 function RollDice() {
+
+  const [play] = useSound(cubes)
+
   const { userPosition, setUserPosition, playerTurn, nextPlayer, players } =
     useDiceContext();
   const [dice, setDice] = useState(0);
@@ -73,7 +80,10 @@ function RollDice() {
   return (
     <>
       {!inProgress ? (
-        <Button onClick={rollHandler}> ROLL!</Button>
+        <Button onClick={() => {
+          rollHandler()
+          play()
+        } }> ROLL!</Button>
       ) : (
         <Button style={{ backgroundColor: 'pink' }}> ROLL!</Button>
       )}
