@@ -38,32 +38,36 @@ router.route('/checkGame').get(async (req, res) => {
 
 router.route('/add').post(async (req, res) => {
   const { owner } = req.body;
-
+  
   const game = await Game.create({
     key: uuidv4(),
     owner,
     inprocess: false,
   });
-
+  
   const userInGame = await UserInGame.create({
     gameid: game.id,
     userid: owner,
   });
-
+  
   await GameStatistic.create({
     uigid: userInGame.id,
     position: 0,
     money: 5500,
     queue: 1,
   });
+  const users = await User.findAll();
   // const userInGame = await Game.findOne({
-  //   where: { id: game.id },
-  //   include: User,
-  // });
-  // console.log(userInGame.User); //user witch create game
+    //   where: { id: game.id },
+    //   include: User,
+    // });
+    // console.log(userInGame.User); //user witch create game
+    
+    // Отправить данные о новой игре всем игрокам
+    
 
-  // Отправить данные о новой игре всем игрокам
-  myEmitter.emit(CREATE_GAME_SOCKET, game);
+    myEmitter.emit(CREATE_GAME_SOCKET, game);
+    
 
   res.json(game);
 });
@@ -108,7 +112,7 @@ router.route('/start').post(async (req, res) => {
   const users = game.UserInGamesAliase;
   //Отправить всем игрокам в лобби статус игры
 
-  myEmitter.emit(START_GAME_SOCKET,  users,  game.id );
+  myEmitter.emit(START_GAME_SOCKET, users, game.id);
 
   res.json(game);
 });

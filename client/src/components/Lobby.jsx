@@ -45,7 +45,7 @@ export const Lobby = () => {
   const games = useSelector((state) => state.games);
   const allUsers = useSelector((state) => state.allUsers);
   const gameUsers = useSelector((state) => state.gameUsers);
-  console.log(games);
+
   useEffect(() => {
     setCurrentKey(params.id);
     dispatch(getGameUsers(params.id));

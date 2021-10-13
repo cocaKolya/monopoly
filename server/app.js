@@ -12,12 +12,12 @@ const passport = require('passport');
 require('./passportSetup');
 
 const registerWsEmitter = require('./src/ws/wsEmitter');
-const registerWsMessages = require('./src/ws/wsMessages');
+
 
 const userRouter = require('./routes/userRouter');
 const gameRouter = require('./routes/gameRouter');
 const googleRouter = require('./routes/googleRouter');
-const { lookup } = require('dns');
+
 
 // session
 const PORT = 3001;
@@ -93,12 +93,12 @@ server.on('upgrade', function (request, socket, head) {
 //2
 wss.on('connection', function (ws, request) {
   const userId = request.session.user.id;
-  
+
   map.set(userId, ws);
 
   registerWsEmitter(map);
-
-  registerWsMessages(map, ws);
+  // registerWsMessages(map, ws);
+  // console.log(registerWsMessages(map, ws));
 
   ws.on('close', function () {
     map.delete(userId);
