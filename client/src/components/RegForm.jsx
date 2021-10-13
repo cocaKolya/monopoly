@@ -48,6 +48,9 @@ function RegForm() {
         />
         <button type='submit'>reg</button>
       </RegFormForma>
+      <form action="http://localhost:3001/google" method="get">
+      <button type="submit">Google</button>
+    </form>
     </>
   );
 }

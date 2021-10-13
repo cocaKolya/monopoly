@@ -13,10 +13,14 @@ const { NEW_GAME_CREATE, NEW_PERSON } = require('../src/constants/event');
 
 router.route('/').get(async (req, res) => {
   const game = await Game.findAll({
-    include: {
-      model: User,
-    },
+    include: [
+      {
+        model: User,
+        as: 'UserInGamesAliase',
+      },
+    ],
   });
+
   const noStartGame = game.filter((el) => !el.inprocess);
   res.json(noStartGame);
 });
@@ -57,8 +61,8 @@ router.route('/add').post(async (req, res) => {
   //   include: User,
   // });
 
-  //Отправить данные о новой игре всем игрокам
-  // myEmitter.emit(NEW_GAME_CREATE, game);
+  // Отправить данные о новой игре всем игрокам
+  myEmitter.emit(NEW_GAME_CREATE, game);
   res.json(game);
 });
 
@@ -67,6 +71,7 @@ router.route('/del').post(async (req, res) => {
   await Game.destoy({ where: { gameid, userid } });
 
   //???отправить всем игрокам новый список игр????
+  //отправить айди удаленной игры, чтобы все ее удалили
   res.sendStatus(200);
 });
 
@@ -89,7 +94,8 @@ router.route('/start').post(async (req, res) => {
 
   const game = await Game.findOne({ where: { key } });
   game.inprocess = true;
-  //??Отправить всем игрокам в лобби статус игры?
+  await game.save();
+  //Отправить всем игрокам в лобби статус игры
   res.json(game);
 });
 
