@@ -8,7 +8,8 @@ function Card({ name, mpColor, isCorner, cardId, special }) {
     <>
       <CardBack key={cardId} isCorner={isCorner} special={special}>
         {players?.map(
-          (el, i) => userPosition[i] === cardId && <Player key={el.id} id={i} />
+          (el, i) =>
+            userPosition[i] === cardId && <Player key={el.id} id={el.queue} />
         )}
         {mpColor && <CardHead mpColor={mpColor}></CardHead>}
         <CardText mpColor={mpColor} special={special}>

@@ -177,7 +177,6 @@ router.route('/userInGame').post(async (req, res) => {
   const curgame = await Game.findOne({ where: { id: gameid } });
   //max 4 person proverka
 
-
   const user = await UserInGame.findAll({ where: { userid, gameid } });
 
   if (user.length === 0) {
@@ -226,8 +225,8 @@ router.route('/dice').post(async (req, res) => {
    `);
 
   const curgame = await Game.findOne({ where: { key: gamekey } });
-
-  const UserInGameS = await UserInGame.findone({
+console.log(gameusers);
+  const UserInGameS = await UserInGame.findOne({
     where: { userid, gameid: curgame.id },
   });
 
@@ -243,7 +242,7 @@ router.route('/dice').post(async (req, res) => {
   }
   await blablabla.save();
 
-  myEmitter.emit(ROLL_DICE_SOCKET, (gameusers, dice));
+  myEmitter.emit(ROLL_DICE_SOCKET, gameusers, dice);
 
   res.sendStatus(200);
 });

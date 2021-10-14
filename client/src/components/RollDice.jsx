@@ -16,12 +16,14 @@ function RollDice({ user }) {
   const { userPosition, setUserPosition, playerTurn, nextPlayer, players } =
     useDiceContext();
   const [dice, setDice] = useState(0);
-  const [inProgress, setInProgress] = useState(false);
-  let currentPos = userPosition[playerTurn];
+  // const [inProgress, setInProgress] = useState(false);
+  let currentPos = userPosition[playerTurn - 1];
+  // console.log('+++++>', userPosition);
+  // console.log('++========>', players);
 
   useEffect(() => {
     const interval = () => {
-      let newPosition = dice + userPosition[playerTurn];
+      let newPosition = dice + userPosition[playerTurn - 1];
 
       let timerId = setInterval(() => {
         currentPos++;
@@ -29,16 +31,16 @@ function RollDice({ user }) {
           newPosition = newPosition - currentPos;
           currentPos = 0;
           setUserPosition((prev) =>
-            prev.map((el, i) => (i === playerTurn ? 0 : el))
+            prev.map((el, i) => (i === playerTurn - 1 ? 0 : el))
           );
         } else
           setUserPosition((prev) =>
-            prev.map((el, i) => (i === playerTurn ? el + 1 : el))
+            prev.map((el, i) => (i === playerTurn - 1 ? el + 1 : el))
           );
-       
+
         if (currentPos === newPosition) {
           clearInterval(timerId);
-          setInProgress(false);
+          // setInProgress(false);
           setDice(0);
           nextPlayer();
         }
@@ -48,7 +50,7 @@ function RollDice({ user }) {
   }, [dice, players]);
 
   const rollHandler = () => {
-    setInProgress(true);
+    // setInProgress(true);
     let x = Math.floor(Math.random() * 6 + 1);
     let y = Math.floor(Math.random() * 6 + 1);
     let dicetotal = x + y;
@@ -56,16 +58,12 @@ function RollDice({ user }) {
     dispatch(rollDice(dicetotal, params.id, user.id));
   };
 
-  const Button = styled('div')`
-    background-color: black;
-    cursor: pointer;
-    color: white;
-    margin: 20px;
-  `;
+  console.log('im user', user);
+  console.log(playerTurn);
 
   return (
     <>
-      {!inProgress ? (
+      {true ? (
         <Button
           onClick={() => {
             rollHandler();
@@ -87,3 +85,10 @@ function RollDice({ user }) {
 }
 
 export default RollDice;
+
+const Button = styled('div')`
+  background-color: black;
+  cursor: pointer;
+  color: white;
+  margin: 20px;
+`;
