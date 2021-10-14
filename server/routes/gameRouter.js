@@ -288,7 +288,7 @@ router.route('/currentcard').post(async (req, res) => {
     const userInGame = await UserInGame.findOne({
       where: { userid, gameid: game.id },
     });
-    const card = await Street.findOne({
+    card = await Street.findOne({
       where: { boardid },
     });
 
@@ -301,7 +301,6 @@ router.route('/currentcard').post(async (req, res) => {
       where: { streetid: card.id, gamestatisticid: userstatistic.id },
     });
     cardBoardValue = await Dohod.findOne({ where: { streetid: card.id } });
-
     if (cardowner.length === 0) {
       isFree = true;
     } else {
@@ -333,7 +332,7 @@ router.route('/currentcard').post(async (req, res) => {
 
 router.route('/cardbuy').post(async (req, res) => {
   const { boardid, userid, gamekey } = req.body;
-  console.log(boardid, userid, gamekey);
+
   const game = await Game.findOne({ where: { key: gamekey } });
 
   const userInGame = await UserInGame.findOne({
@@ -352,6 +351,8 @@ router.route('/cardbuy').post(async (req, res) => {
 
   await userstatistic.save();
 
+
+
   const [gameusers] = await sequelize.query(`
   select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
   join "UserInGames" on "Users".id = "UserInGames".userid
@@ -359,20 +360,10 @@ router.route('/cardbuy').post(async (req, res) => {
   join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
   where "Games".key = '${gamekey}'
    `);
-  const [usersstreet] = await sequelize.query(`
-  select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
-  join "UserInGames" on "Users".id = "UserInGames".userid
-  join "Games" on "UserInGames".gameid = "Games".id
-  join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
-  join "Estates" on "GameStatistics".id = "Estates".gamestatisticid
-  join "Streets" on "Streets".id = "Estates".streetid
-  where "Games".key = '${gamekey}'
-   `);
 
-  console.log(usersstreet);
-  
+
   await Estate.create({
-    streetid,
+    streetid:street.id,
     gamestatisticid: userstatistic.id,
     dohodid: dohod.id,
   });

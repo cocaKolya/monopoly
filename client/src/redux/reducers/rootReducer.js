@@ -10,6 +10,7 @@ import { pendingUsersReducer } from './pendingUsersReducers';
 import { turnReducer } from './turnReducer';
 import { userGameReducer } from './userGameReducers';
 import { userReducer } from './userReducer';
+import { userInGameStatsReducer } from './UsersInGameStatsReducer';
 
 export const rootReducer = combineReducers({
   user: userReducer,
@@ -23,4 +24,5 @@ export const rootReducer = combineReducers({
   turn: turnReducer,
   allCards: allCardsReducer,
   currentCard: currentCardReducer,
+  userInGameStats: userInGameStatsReducer,
 });

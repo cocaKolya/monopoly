@@ -1,6 +1,7 @@
 import {
   CLEAR_DICE_SOCKET,
   CREATE_GAME_SOCKET,
+  GET_CARD_USER_SOCKET,
   GET_GAME_USERS_SOCKET,
   ROLL_DICE_SOCKET,
   START_GAME_SOCKET,
@@ -37,5 +38,11 @@ export const turnSocket = (turn) => {
   return {
     type: TURN_SOCKET,
     payload: turn,
+  };
+};
+export const getStatsSocket = (stats) => {
+  return {
+    type: GET_CARD_USER_SOCKET,
+    payload: stats,
   };
 };
