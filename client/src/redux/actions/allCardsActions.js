@@ -2,8 +2,8 @@ import axios from 'axios';
 import { GET_ALL_CARDS } from '../types/cardTypes';
 
 export const getAllCards = () => async (dispatch) => {
-  const cards = await axios.get('http://localhost:3001/game/cardboard');
-
+  const response = await axios.get('http://localhost:3001/game/cardboard');
+const cards = response.data
   const cardsObj = {};
   cardsObj.down = cards.slice(0, 9);
   cardsObj.left = cards.slice(9, 20);
