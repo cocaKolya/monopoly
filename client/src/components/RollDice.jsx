@@ -5,8 +5,8 @@ import { useDiceContext } from '../contexts/DiceContext';
 // npm пакет для звуков где useSound это хук
 import useSound from 'use-sound';
 import cubes from './sound/cubes.mp3';
-import { rollDice } from '../redux/actions/diceAction';
-import { useDispatch } from 'react-redux';
+import { clearDice, rollDice } from '../redux/actions/diceAction';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
 function RollDice({ user }) {
@@ -15,15 +15,16 @@ function RollDice({ user }) {
   const dispatch = useDispatch();
   const { userPosition, setUserPosition, playerTurn, nextPlayer, players } =
     useDiceContext();
-  const [dice, setDice] = useState(0);
-  // const [inProgress, setInProgress] = useState(false);
+  const [dice, setDice] = useState(false);
+
   let currentPos = userPosition[playerTurn - 1];
-  // console.log('+++++>', userPosition);
-  // console.log('++========>', players);
+
+  const diceSocket = useSelector((state) => state.dice);
+  console.log('=================', diceSocket);
 
   useEffect(() => {
     const interval = () => {
-      let newPosition = dice + userPosition[playerTurn - 1];
+      let newPosition = diceSocket + userPosition[playerTurn - 1];
 
       let timerId = setInterval(() => {
         currentPos++;
@@ -40,21 +41,20 @@ function RollDice({ user }) {
 
         if (currentPos === newPosition) {
           clearInterval(timerId);
-          // setInProgress(false);
-          setDice(0);
+          dispatch(clearDice());
           nextPlayer();
         }
       }, 100);
     };
-    if (dice !== 0) interval();
-  }, [dice, players]);
+    if (diceSocket > 0) interval();
+  }, [diceSocket]);
 
   const rollHandler = () => {
     // setInProgress(true);
     let x = Math.floor(Math.random() * 6 + 1);
     let y = Math.floor(Math.random() * 6 + 1);
     let dicetotal = x + y;
-    setDice(dicetotal);
+    // setDice(dicetotal);
     dispatch(rollDice(dicetotal, params.id, user.id));
   };
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ROLL_DICE } from '../types/gameTypes';
+import { CLEAR_DICE, ROLL_DICE } from '../types/gameTypes';
 
 export const rollDice = (dice, gamekey, userid) => async (dispatch) => {
   console.log('2');
@@ -12,4 +12,10 @@ export const rollDice = (dice, gamekey, userid) => async (dispatch) => {
   dispatch({
     type: ROLL_DICE,
   });
+};
+
+export const clearDice = () => {
+  return {
+    type: CLEAR_DICE,
+  };
 };

@@ -224,11 +224,11 @@ router.route('/dice').post(async (req, res) => {
   where "Games".key = '${gamekey}'
    `);
 
-  gameusers.map((el) => {
-    if (el.queue < 1) {
-      return { ...el, queue: 4 };
-    } else return { ...el, queue: el.queue - 1 };
-  });
+  // gameusers.map((el) => {
+  //   if (el.queue < 1) {
+  //     return { ...el, queue: 4 };
+  //   } else return { ...el, queue: el.queue - 1 };
+  // });
   const curgame = await Game.findOne({ where: { key: gamekey } });
 // console.log(gameusers);
 
