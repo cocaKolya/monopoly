@@ -135,7 +135,8 @@ router.route('/add/users').post(async (req, res) => {
   if (panding.length > 0) {
     const usersPandingFilter = notMe.filter(
       (user) =>
-        panding.findIndex((pandingUser) => pandingUser.userid === user.id) === -1
+        panding.findIndex((pandingUser) => pandingUser.userid === user.id) ===
+        -1
     );
 
     const user = usersPandingFilter.map((el) => {
@@ -265,7 +266,7 @@ router.route('/currentcard').post(async (req, res) => {
   const { boardid, userid, gamekey } = req.body;
 
   let isFree = false;
-  let card = null;
+  let card = null
   let cardBoardValue = null;
   const money = {};
 
@@ -287,7 +288,7 @@ router.route('/currentcard').post(async (req, res) => {
     const userInGame = await UserInGame.findOne({
       where: { userid, gameid: game.id },
     });
-    const card = await Street.findOne({
+     card = await Street.findOne({
       where: { boardid },
     });
 
@@ -299,8 +300,8 @@ router.route('/currentcard').post(async (req, res) => {
     const cardowner = await Estate.findAll({
       where: { streetid: card.id, gamestatisticid: userstatistic.id },
     });
-
-    if (cardowner) {
+    cardBoardValue = await Dohod.findOne({ where: { streetid: card.id } });
+    if (cardowner.length === 0) {
       isFree = true;
     } else {
       for (let i = 0; i < gameusers.length; i++) {
@@ -325,7 +326,6 @@ router.route('/currentcard').post(async (req, res) => {
       }
     }
   }
-  cardBoardValue = await Dohod.findOne({ where: { streetid: card.id } });
 
   res.json({ card, cardBoardValue, isFree, money });
 });

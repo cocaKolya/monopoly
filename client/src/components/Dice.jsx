@@ -90,7 +90,8 @@ export const Dice = ({ user }) => {
         ref={reactDice}
       />
 
-      {user.queue === turnSocket ? (
+      {/* {user?.queue === turnSocket ? ( */}
+      {true ? (
         <Button
           text={'ROLL'}
           onClick={() => {
