@@ -6,6 +6,8 @@ import { getGameUsers } from '../redux/actions/gameUsersActions';
 import CardBoard from './CardBoard';
 import RollDice from './RollDice';
 import Switcher from './Switcher';
+import styled from 'styled-components';
+import { Dice } from './Dice';
 
 export const GamePlayingProcess = () => {
   const localUser = JSON.parse(window.localStorage.getItem('user'));
@@ -18,10 +20,41 @@ export const GamePlayingProcess = () => {
   const gameUsers = useSelector((state) => state.gameUsers);
   const currUser = gameUsers.find((el) => el.id === localUser.id);
   return (
-    <>
-      <Switcher />
-      <CardBoard />
-      <RollDice user={currUser} />
-    </>
+    <MainWrapperDiv>
+      <Col>
+        <Dice />
+      </Col>
+      <Center>
+        <Wrapper3d>
+          <Switcher />
+          <CardBoard />
+        </Wrapper3d>
+      </Center>
+      <Col>asasd</Col>
+    </MainWrapperDiv>
   );
 };
+
+const MainWrapperDiv = styled('div')`
+  display: flex;
+`;
+
+const Wrapper3d = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 1000px;
+  width: 100%;
+  transform-style: preserve-3d;
+  perspective: 900px;
+`;
+
+const Center = styled.div`
+  flex-grow: 1;
+`;
+
+const Col = styled.div`
+  width: 29%;
+  border: 1px solid black;
+`;
