@@ -173,6 +173,7 @@ router.route('/users').post(async (req, res) => {
 
 router.route('/userInGame').post(async (req, res) => {
   const { gameid, userid } = req.body;
+  const curgame = await Game.findOne({ where: { id: gameid } });
   //max 4 person proverka
 
   // const gameParty = await User.findAll({
@@ -190,20 +191,19 @@ router.route('/userInGame').post(async (req, res) => {
       gameid,
       userid,
     });
+
     const [test] = await sequelize.query(`
       select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
       join "UserInGames" on "Users".id = "UserInGames".userid
       join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
       where "UserInGames".gameid = ${gameid}
        `);
-
     await GameStatistic.create({
       uigid: userInGame.id,
       position: 0,
       money: 5500,
       queue: test[test.length - 1].queue + 1,
     });
-    const curgame = await Game.findOne({ where: { id: gameid } });
 
     const [gameusers] = await sequelize.query(`
     select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users" 

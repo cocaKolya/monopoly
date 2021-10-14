@@ -9,7 +9,6 @@ import Switcher from './Switcher';
 
 export const GamePlayingProcess = () => {
   const localUser = JSON.parse(window.localStorage.getItem('user'));
-  const { transform } = useDiceContext();
   const dispatch = useDispatch();
   const params = useParams();
   useEffect(() => {
@@ -25,7 +24,7 @@ export const GamePlayingProcess = () => {
     <>
       <Switcher />
       <CardBoard />
-      <RollDice />
+      <RollDice user ={currUser}/>
     </>
   );
 };

@@ -1,8 +1,8 @@
 import {
   CREATE_GAME_SOCKET,
   GET_GAME_USERS_SOCKET,
+  ROLL_DICE_SOCKET,
   START_GAME_SOCKET,
-  
 } from '../../../constants/socket';
 
 export const startGameSocket = (gameId) => {
@@ -18,10 +18,16 @@ export const createGameSocket = (game) => {
   };
 };
 
-
 export const getGameUsersSocket = (users) => {
   return {
     type: GET_GAME_USERS_SOCKET,
     payload: users,
+  };
+};
+
+export const rollDiceSocket = (dice) => {
+  return {
+    type: ROLL_DICE_SOCKET,
+    payload: dice,
   };
 };

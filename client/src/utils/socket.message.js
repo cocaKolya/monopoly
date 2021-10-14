@@ -2,9 +2,12 @@ import {
   CREATE_GAME_SOCKET,
   START_GAME_SOCKET,
   GET_GAME_USERS_SOCKET,
+  ROLL_DICE_SOCKET,
 } from '../constants/socket';
+
 import {
   createGameSocket,
+  rollDiceSocket,
   startGameSocket,
   getGameUsersSocket,
 } from '../redux/actions/socketActions/gameActionsSocket';
@@ -22,6 +25,10 @@ export const createSocketOnMessage = (dispatch) => (event) => {
       console.log(parsedData.payload);
 
       dispatch(getGameUsersSocket(parsedData.payload));
+      break;
+
+    case ROLL_DICE_SOCKET:
+      dispatch(rollDiceSocket(parsedData.payload));
       break;
 
     default:

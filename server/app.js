@@ -93,17 +93,12 @@ registerWsEmitter(map);
 //2
 wss.on('connection', function (ws, request) {
   const userId = request.session.user.id;
-  console.log('WS CONNECTION');
-
   map.set(userId, ws);
-
-  
 
   // registerWsMessages(map, ws);
   // console.log(registerWsMessages(map, ws));
 
   ws.on('close', function () {
-    console.log('DELETE WS CONNECTION');
     map.delete(userId);
   });
 });

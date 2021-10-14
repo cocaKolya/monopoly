@@ -1,6 +1,6 @@
 const {
   CREATE_GAME_SOCKET,
-  NEW_PERSON_SOCKET,
+  GET_GAME_USERS_SOCKET,
   DEL_GAME,
   ROLL_DICE_SOCKET,
   START_GAME_SOCKET,
@@ -11,6 +11,7 @@ function registerWsEmitter(map) {
   myEmitter.on(CREATE_GAME_SOCKET, (game) => {
     console.log(1111);
     for (let [id, userConnect] of map) {
+      console.log(id);
       userConnect.send(
         JSON.stringify({
           type: CREATE_GAME_SOCKET,
@@ -20,14 +21,14 @@ function registerWsEmitter(map) {
     }
   });
 
-  myEmitter.on(NEW_PERSON_SOCKET, (test, gameusers) => {
+  myEmitter.on(GET_GAME_USERS_SOCKET, (test, gameusers) => {
     for (let [id, userConnect] of map) {
       
       gameusers.map((el) => {
         if (el.id == id) {
           userConnect.send(
             JSON.stringify({
-              type: NEW_PERSON_SOCKET,
+              type: GET_GAME_USERS_SOCKET,
               payload: test,
             })
           );
