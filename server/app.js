@@ -13,11 +13,9 @@ require('./passportSetup');
 
 const registerWsEmitter = require('./src/ws/wsEmitter');
 
-
 const userRouter = require('./routes/userRouter');
 const gameRouter = require('./routes/gameRouter');
 const googleRouter = require('./routes/googleRouter');
-
 
 // session
 const PORT = 3001;
@@ -90,18 +88,22 @@ server.on('upgrade', function (request, socket, head) {
   });
 });
 
+registerWsEmitter(map);
+
 //2
 wss.on('connection', function (ws, request) {
   const userId = request.session.user.id;
+  console.log('WS CONNECTION');
 
   map.set(userId, ws);
 
-  registerWsEmitter(map);
   
+
   // registerWsMessages(map, ws);
   // console.log(registerWsMessages(map, ws));
 
   ws.on('close', function () {
+    console.log('DELETE WS CONNECTION');
     map.delete(userId);
   });
 });

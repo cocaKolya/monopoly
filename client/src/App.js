@@ -32,7 +32,7 @@ function App() {
   const dispatch = useDispatch();
   const url = process.env.REACT_APP_URL_SOCKET;
   const socket = useRef();
-  socket.current = new WebSocket(url);
+
   let location = useLocation();
   const localUser = window.localStorage.getItem('user');
   const history = useHistory();
@@ -41,6 +41,7 @@ function App() {
     history.push('/reg');
 
   useEffect(() => {
+    socket.current = new WebSocket(url);
     const socketOnMessage = createSocketOnMessage(dispatch);
     socket.current.onmessage = socketOnMessage;
     dispatch(checkUser());

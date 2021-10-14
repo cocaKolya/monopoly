@@ -11,7 +11,7 @@ const { v4: uuidv4 } = require('uuid');
 const myEmitter = require('../src/ee');
 const {
   CREATE_GAME_SOCKET,
-  NEW_PERSON,
+  NEW_PERSON_SOCKET,
   DEL_GAME,
   START_GAME_SOCKET,
   ROLL_DICE_SOCKET,
@@ -57,7 +57,7 @@ router.route('/add').post(async (req, res) => {
     money: 5500,
     queue: 1,
   });
-  const users = await User.findAll();
+  // const users = await User.findAll();
   // const userInGame = await Game.findOne({
   //   where: { id: game.id },
   //   include: User,
@@ -203,9 +203,17 @@ router.route('/userInGame').post(async (req, res) => {
       money: 5500,
       queue: test[test.length - 1].queue + 1,
     });
+    const curgame = await Game.findOne({ where: { id: gameid } });
 
+    const [gameusers] = await sequelize.query(`
+    select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users" 
+    join "UserInGames" on "Users".id = "UserInGames".userid
+    join "Games" on "UserInGames".gameid = "Games".id
+    join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+    where "Games".key = '${curgame.key}'
+     `);
     //Отправить данные игрока всем, кто с ним в игре
-    // myEmitter.emit(NEW_PERSON, test);
+    myEmitter.emit(NEW_PERSON_SOCKET, (test, gameusers));
     return res.sendStatus(200);
   } else return res.sendStatus(403);
 });
@@ -227,8 +235,10 @@ router.route('/dice').post(async (req, res) => {
     where: { userid, gameid: curgame.id },
   });
 
-  const blablabla = await GameStatistic.findOne({ where: { uigid: UserInGameS.id } });
-  blablabla.position += dice;  
+  const blablabla = await GameStatistic.findOne({
+    where: { uigid: UserInGameS.id },
+  });
+  blablabla.position += dice;
   await blablabla.save();
 
   if (blablabla.position > 39) {

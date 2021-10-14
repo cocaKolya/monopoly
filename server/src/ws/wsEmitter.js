@@ -1,6 +1,6 @@
 const {
   CREATE_GAME_SOCKET,
-  NEW_PERSON,
+  NEW_PERSON_SOCKET,
   DEL_GAME,
   ROLL_DICE_SOCKET,
   START_GAME_SOCKET,
@@ -9,6 +9,7 @@ const myEmitter = require('../ee');
 
 function registerWsEmitter(map) {
   myEmitter.on(CREATE_GAME_SOCKET, (game) => {
+    console.log(1111);
     for (let [id, userConnect] of map) {
       userConnect.send(
         JSON.stringify({
@@ -19,20 +20,21 @@ function registerWsEmitter(map) {
     }
   });
 
-  // myEmitter.on(NEW_PERSON, (test) => {
-  //   for (let [id, userConnect] of map) {
-  //     test.map((el) => {
-  //       if (el.id == id) {
-  //         userConnect.send(
-  //           JSON.stringify({
-  //             type: NEW_PERSON,
-  //             payload: game,
-  //           })
-  //         );
-  //       }
-  //     });
-  //   }
-  // });
+  myEmitter.on(NEW_PERSON_SOCKET, (test, gameusers) => {
+    for (let [id, userConnect] of map) {
+      
+      gameusers.map((el) => {
+        if (el.id == id) {
+          userConnect.send(
+            JSON.stringify({
+              type: NEW_PERSON_SOCKET,
+              payload: test,
+            })
+          );
+        }
+      });
+    }
+  });
 
   myEmitter.on(START_GAME_SOCKET, (users, gameid) => {
     for (let [id, userConnect] of map) {

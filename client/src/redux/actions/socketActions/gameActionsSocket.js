@@ -1,4 +1,9 @@
-import { CREATE_GAME_SOCKET, GET_GAME_USERS_SOCKET, START_GAME_SOCKET } from "../../../constants/socket";
+import {
+  CREATE_GAME_SOCKET,
+  GET_GAME_USERS_SOCKET,
+  START_GAME_SOCKET,
+  
+} from '../../../constants/socket';
 
 export const startGameSocket = (gameId) => {
   return {
@@ -12,6 +17,7 @@ export const createGameSocket = (game) => {
     payload: game,
   };
 };
+
 
 export const getGameUsersSocket = (users) => {
   return {
