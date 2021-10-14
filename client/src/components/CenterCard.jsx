@@ -10,7 +10,7 @@ export const CenterCard = () => {
   const turn = useSelector((state) => state.turn);
   const currentCard = useSelector((state) => state.currentCard);
   const { currentPosition } = useDiceContext();
-  console.log(currentCard);
+  console.log('asdasdasd',currentCard);
   const localUser = JSON.parse(window.localStorage.getItem('user'));
   const params = useParams();
 
@@ -50,7 +50,7 @@ const CardBack = styled('div')`
   border: 1.5px solid black;
   background-color: white;
   background-size: cover;
-  ${(props) => props.special && `background-image: url(/${props.special}.png);`}
+  ${(props) => props.special==='train' && `background-image: url(/${props.special}.png);`}
   ${(props) =>
     props.special === 'train' &&
     'background-size: 50px; background-repeat: no-repeat; background-position-x: center; background-position-y: 90%;'}

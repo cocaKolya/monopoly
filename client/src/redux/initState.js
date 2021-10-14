@@ -12,6 +12,7 @@ const initState = {
   allCards: {},
   currentCard: [],
   userInGameStats: {},
+  currentUserCards: {},
 };
 
 export default initState;

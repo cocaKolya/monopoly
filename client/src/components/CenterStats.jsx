@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { buyCard } from '../redux/actions/currentCardActions';
 import { Button } from './atoms/Button';
@@ -7,6 +7,7 @@ import { useParams } from 'react-router';
 export const CenterStats = () => {
   const localUser = JSON.parse(window.localStorage.getItem('user'));
   const params = useParams();
+  const dispatch = useDispatch();
   const currCard = useSelector((state) => state.currentCard);
   console.log(currCard);
   return (
@@ -14,7 +15,9 @@ export const CenterStats = () => {
       {currCard?.card?.cost && currCard?.isFree && (
         <Button
           onClick={() =>
-            buyCard(currCard?.card?.boardid, localUser?.id, params?.id)
+            dispatch(
+              buyCard(currCard?.card?.boardid, localUser?.id, params?.id)
+            )
           }
           text={`Купить за ${currCard?.card?.cost}к`}
         />
