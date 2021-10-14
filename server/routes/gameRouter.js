@@ -176,13 +176,6 @@ router.route('/userInGame').post(async (req, res) => {
   const curgame = await Game.findOne({ where: { id: gameid } });
   //max 4 person proverka
 
-  // const gameParty = await User.findAll({
-  //   include: {
-  //     model: Game,
-  //     where: { id: gameid },
-  //   },
-  //   raw: true,
-  // });
 
   const user = await UserInGame.findAll({ where: { userid, gameid } });
 
@@ -191,8 +184,14 @@ router.route('/userInGame').post(async (req, res) => {
       gameid,
       userid,
     });
-    console.log(userInGame);
-   
+
+    const [test] = await sequelize.query(`
+      select "Users".id, name, "GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
+      join "UserInGames" on "Users".id = "UserInGames".userid
+      join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+      where "UserInGames".gameid = ${gameid} 
+       `);
+
     await GameStatistic.create({
       uigid: userInGame.id,
       position: 0,
@@ -208,7 +207,7 @@ router.route('/userInGame').post(async (req, res) => {
     where "Games".key = '${curgame.key}'
      `);
     //Отправить данные игрока всем, кто с ним в игре
-
+    console.log(gameusers);
     myEmitter.emit(GET_GAME_USERS_SOCKET, gameusers);
     return res.sendStatus(200);
   } else return res.sendStatus(403);
