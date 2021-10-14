@@ -3,6 +3,12 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('Dohods', [
+      // {
+      //   streetid: 777,
+      //   value: 200,
+      //   createdAt: new Date(),
+      //   updatedAt: new Date(),
+      // },
       {
         streetid: 1,
 
