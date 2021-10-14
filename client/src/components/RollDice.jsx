@@ -8,8 +8,17 @@ import cubes from './sound/cubes.mp3'
 
 function RollDice() {
 
-  const [play] = useSound(cubes)
-
+// делаем стейт для изменения настроек аудио 
+  const [soundEnabled, setSoundEnabled] = useState(true)
+// вторым аргументом useSound лежит объект с опциями аудио, для отключения или включения soundEnabled кот. Boolean
+  const [play] = useSound(cubes, {
+    soundEnabled,
+  })
+// по нажатию изменяем состояние значения soundEnabled
+  const soundOnOffHandler = () => {
+    setSoundEnabled(!soundEnabled)
+  }
+  
   const { userPosition, setUserPosition, playerTurn, nextPlayer, players } =
     useDiceContext();
   const [dice, setDice] = useState(0);
@@ -91,6 +100,7 @@ function RollDice() {
         Ходит игрок: {players[playerTurn].name} <br />
         На кубиках выпало: {dice > 0 ? dice : '??'}
       </p>
+      <Button onClick={soundOnOffHandler}>Stop sound ROLL</Button>
     </>
   );
 }
