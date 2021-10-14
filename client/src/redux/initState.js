@@ -10,6 +10,7 @@ const initState = {
   dice: null,
   turn: null,
   allCards: {},
+  currentCard: [],
 };
 
 export default initState;

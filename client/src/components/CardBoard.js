@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
 import { getAllCards } from '../redux/actions/allCardsActions';
+import { BoardCenter } from './BoardCenter';
 import CardLine from './CardLine';
+import { CenterCard } from './CenterCard';
 
 const dbDown = [
   // { id: 1, name: 'житная', mpColor: 'brown' },
@@ -74,9 +76,7 @@ function CardBoard() {
           </LineWrapLeft>
           <Row>
             <CardLine position={'up'} db={allCards?.up} />
-            <Center>
-              <Center rotate={'true'}>MONOPOLY</Center>
-            </Center>
+            <BoardCenter/>
             <CardLine position={'down'} db={allCards?.down} />
           </Row>
           <LineWrapRight>
@@ -122,22 +122,6 @@ const LineWrapRight = styled('div')`
   position: absolute;
   transform: translateX(50%);
   right: 50px;
-`;
-const Center = styled('div')`
-  ${(props) => props.rotate && '-webkit-transform: rotate(-45deg)'};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 35pt;
-  height: 552px;
-  ${(props) =>
-    !props.rotate &&
-    `background-color: rgb(208, 252, 242);
-    border: 1px solid #000;
-    position: relative;
-    z-index: 5
-  `}
 `;
 
 const Board = styled('div')`
