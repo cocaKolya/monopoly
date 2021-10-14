@@ -15,7 +15,7 @@ const {
   DEL_GAME,
   START_GAME_SOCKET,
   ROLL_DICE_SOCKET,
-  TURN_SOCKET
+  TURN_SOCKET,
 } = require('../src/constants/event');
 
 router.route('/').get(async (req, res) => {
@@ -112,10 +112,25 @@ router.route('/start').post(async (req, res) => {
   game.inprocess = true;
   await game.save();
   const users = game.UserInGamesAliase;
+
+  const [gameusers] = await sequelize.query(`
+  select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users" 
+  join "UserInGames" on "Users".id = "UserInGames".userid
+  join "Games" on "UserInGames".gameid = "Games".id
+  join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+  where "Games".key = '${key}'
+   `);
+
+  game.turn += 1;
+  await game.save();
+  if (game.turn > gameusers.length) {
+    game.turn = 1;
+    await game.save();
+  }
   //Отправить всем игрокам в лобби статус игры
 
   myEmitter.emit(START_GAME_SOCKET, users, game.id);
-
+  myEmitter.emit(TURN_SOCKET, gameusers, game.turn);
   res.json(game);
 });
 
@@ -255,7 +270,6 @@ router.route('/dice').post(async (req, res) => {
   }
 
   myEmitter.emit(ROLL_DICE_SOCKET, gameusers, dice, curgame.turn);
-  myEmitter.emit(TURN_SOCKET, gameusers, curgame.turn);
 
   res.sendStatus(200);
 });
