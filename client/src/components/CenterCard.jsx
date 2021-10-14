@@ -8,11 +8,12 @@ export const CenterCard = () => {
   const dispatch = useDispatch();
   const turn = useSelector((state) => state.turn);
   const allCards = useSelector((state) => state.allCards);
-  const { userPosition, players } = useDiceContext();
-  console.log('123123123123123', userPosition[turn - 1]);
+  const { currentPosition } = useDiceContext();
+
   useEffect(() => {
-    dispatch(getCurrentCard(userPosition[turn - 1]));
-  }, []);
+    console.log('WORKING', currentPosition);
+    dispatch(getCurrentCard(currentPosition));
+  }, [currentPosition]);
   // const currCard = allCards.find((el) => el.boardid === userPosition[turn - 1]);
   const color = 'red';
   const special = 'train';
