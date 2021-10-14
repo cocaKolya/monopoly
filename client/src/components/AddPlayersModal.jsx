@@ -82,7 +82,7 @@ export const AddPlayersModal = () => {
       <Overlay onClick={() => setShowAddUsers(false)} />
       <Modal>
         <UsersWrapper>
-          {allUsers === [] ? (
+          {allUsers !== [] ? (
             <form>
               {allUsers?.map((el) => (
                 <AddPlayerItem
@@ -96,7 +96,7 @@ export const AddPlayersModal = () => {
             <p>некого добавлять</p>
           )}
         </UsersWrapper>
-        {allUsers === [] ? (
+        {allUsers !== [] ? (
           <Button
             text='ADD'
             onClick={() => {

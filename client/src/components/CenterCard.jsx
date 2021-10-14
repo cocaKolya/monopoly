@@ -10,7 +10,7 @@ export const CenterCard = () => {
   const turn = useSelector((state) => state.turn);
   const currentCard = useSelector((state) => state.currentCard);
   const { currentPosition } = useDiceContext();
-
+  console.log(currentCard);
   const localUser = JSON.parse(window.localStorage.getItem('user'));
   const params = useParams();
 
@@ -19,8 +19,6 @@ export const CenterCard = () => {
     dispatch(getCurrentCard(currentPosition, localUser?.id, params?.id));
   }, [currentPosition]);
 
-  const color = 'red';
-  const special = 'train';
   return (
     <CardBack key={1} special={currentCard?.card?.special}>
       {currentCard?.card?.color && (
@@ -33,7 +31,7 @@ export const CenterCard = () => {
         {currentCard?.card?.name}
       </CardText>
       {currentCard?.card?.cost && (
-        <CardText>{currentCard?.card?.cost}k</CardText>
+        <CardText> Цена {currentCard?.card?.cost}к</CardText>
       )}
     </CardBack>
   );

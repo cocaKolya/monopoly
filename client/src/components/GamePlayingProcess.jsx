@@ -20,9 +20,9 @@ export const GamePlayingProcess = () => {
   const gameUsers = useSelector((state) => state.gameUsers);
   const currUser = gameUsers.find((el) => el.id === localUser.id);
 
-  console.log('localuser------', localUser);
-  console.log('123123------', gameUsers);
-  console.log('1qqqqqqq------', currUser);
+  // console.log('localuser------', localUser);
+  // console.log('123123------', gameUsers);
+  // console.log('1qqqqqqq------', currUser);
 
   return (
     <MainWrapperDiv>

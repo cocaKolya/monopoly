@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
 
-export const Dice = ({user}) => {
+export const Dice = ({ user }) => {
   const reactDice = useRef(null);
   const params = useParams();
   const dispatch = useDispatch();
@@ -27,7 +27,6 @@ export const Dice = ({user}) => {
   const turnSocket = useSelector((state) => state.turn);
 
   let currentPos = userPosition[turnSocket - 1];
-
   const [soundEnabled, setSoundEnabled] = useState(true);
 
   const [play] = useSound(cubes, {
@@ -91,7 +90,7 @@ export const Dice = ({user}) => {
         ref={reactDice}
       />
 
-      {user?.queue === turnSocket ? (
+      {user.queue === turnSocket ? (
         <Button
           text={'ROLL'}
           onClick={() => {
