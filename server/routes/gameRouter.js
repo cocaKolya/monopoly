@@ -332,7 +332,6 @@ router.route('/currentcard').post(async (req, res) => {
 
 router.route('/cardbuy').post(async (req, res) => {
   const { boardid, userid, gamekey } = req.body;
-
   const game = await Game.findOne({ where: { key: gamekey } });
 
   const userInGame = await UserInGame.findOne({
@@ -344,7 +343,7 @@ router.route('/cardbuy').post(async (req, res) => {
   });
 
   const street = await Street.findOne({ where: { boardid } });
-
+console.log(street);
   const dohod = await Dohod.findOne({ where: { streetid: street.id } });
 
   userstatistic.money -= street.cost;
@@ -369,7 +368,7 @@ router.route('/cardbuy').post(async (req, res) => {
   });
 
   myEmitter.emit(GET_CARD_USER_SOCKET, gameusers, street);
-  res.sendStatus(200);
+  res.json({ gameusers:gameusers[0], street });
 });
 
 module.exports = router;

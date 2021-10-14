@@ -8,9 +8,9 @@ export const CenterStats = () => {
   const dispatch = useDispatch();
   const localUser = JSON.parse(window.localStorage.getItem('user'));
   const params = useParams();
-  const dispatch = useDispatch();
   const currCard = useSelector((state) => state.currentCard);
-  console.log(currCard);
+  const currentUserCards = useSelector((state) => state.currentUserCards);
+  console.log('asdasdasdasdasd', currentUserCards);
   return (
     <Wrapper>
       {currCard?.card?.cost && currCard?.isFree && (

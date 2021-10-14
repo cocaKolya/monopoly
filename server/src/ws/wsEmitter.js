@@ -41,7 +41,7 @@ function registerWsEmitter(map) {
         if (el.id == id) {
           userConnect.send(
             JSON.stringify({
-              type: GET_GAME_USERS_SOCKET,
+              type: GET_CARD_USER_SOCKET,
               payload: { gameusers, street },
             })
           );
