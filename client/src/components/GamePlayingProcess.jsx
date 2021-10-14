@@ -7,6 +7,7 @@ import CardBoard from './CardBoard';
 import RollDice from './RollDice';
 import Switcher from './Switcher';
 import styled from 'styled-components';
+import { Dice } from './Dice';
 
 export const GamePlayingProcess = () => {
   const localUser = JSON.parse(window.localStorage.getItem('user'));
@@ -20,15 +21,16 @@ export const GamePlayingProcess = () => {
   const currUser = gameUsers.find((el) => el.id === localUser.id);
   return (
     <MainWrapperDiv>
-      <Col></Col>
+      <Col>
+        <Dice />
+      </Col>
       <Center>
         <Wrapper3d>
           <Switcher />
           <CardBoard />
-          <RollDice user={currUser} />
         </Wrapper3d>
       </Center>
-      <Col></Col>
+      <Col>asasd</Col>
     </MainWrapperDiv>
   );
 };
