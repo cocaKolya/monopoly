@@ -28,7 +28,9 @@ export const CenterCard = () => {
       >
         {currentCard?.card?.name}
       </CardText>
-      <CardText>{currentCard?.card?.cost}k</CardText>
+      {currentCard?.card?.cost && (
+        <CardText>{currentCard?.card?.cost}k</CardText>
+      )}
     </CardBack>
   );
 };
@@ -37,7 +39,7 @@ const CardBack = styled('div')`
   position: relative;
   box-sizing: content-box;
   flex-shrink: 0;
-  width: 23%;
+  width: 120px;
   height: 200px;
   display: flex;
   flex-direction: column;
@@ -65,7 +67,7 @@ const CardHead = styled('div')`
 const CardText = styled('div')`
   display: flex;
   padding: 5px;
-  font-size: 12pt;
+  font-size: 10pt;
   justify-content: center;
   padding: 10px;
   ${(props) => props.special !== 'train' && !props.color && 'margin-top: 40%'};

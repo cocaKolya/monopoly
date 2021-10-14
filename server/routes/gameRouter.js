@@ -143,7 +143,8 @@ router.route('/add/users').post(async (req, res) => {
   if (panding.length > 0) {
     const usersPandingFilter = notMe.filter(
       (user) =>
-        panding.findIndex((pandingUser) => pandingUser.userid === user.id) === -1
+        panding.findIndex((pandingUser) => pandingUser.userid === user.id) ===
+        -1
     );
 
     const user = usersPandingFilter.map((el) => {
@@ -271,8 +272,8 @@ router.route('/cardboard').get(async (req, res) => {
 });
 router.route('/currentcard').post(async (req, res) => {
   const { boardid } = req.body;
-  const card = {};
-  const cardBoardValue = {};
+  let card = {};
+  let cardBoardValue = {};
   if (boardid === 0) {
     card.name = 'START';
   } else {

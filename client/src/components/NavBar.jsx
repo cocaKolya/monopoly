@@ -26,6 +26,7 @@ export const NavBar = () => {
 };
 
 const NavBarWrapper = styled.div`
+  font-weight: 700;
   display: flex;
   justify-content: space-between;
   align-items: center;
