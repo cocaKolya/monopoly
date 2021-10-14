@@ -10,7 +10,7 @@ const findGames = () => {
 function* findGamesWorker(action) {
   try {
     const games = yield call(findGames);
-    // console.log(games);
+
     yield put({ type: GET_GAMES, payload: games });
   } catch (err) {
     yield put({ type: GET_GAMES, payload: null });

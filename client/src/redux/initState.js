@@ -6,6 +6,11 @@ const initState = {
   userGames: [],
   gameUsers: [],
   pendingUsers: [],
+  playersPosition: [],
+  dice: null,
+  turn: null,
+  allCards: {},
+  currentCard: [],
 };
 
 export default initState;

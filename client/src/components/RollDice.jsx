@@ -4,101 +4,90 @@ import { useDiceContext } from '../contexts/DiceContext';
 
 // npm пакет для звуков где useSound это хук
 import useSound from 'use-sound';
-import cubes from './sound/cubes.mp3'
+import cubes from './sound/cubes.mp3';
+import { clearDice, rollDice } from '../redux/actions/diceAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 
-function RollDice() {
+function RollDice({ user }) {
+  const params = useParams();
 
-// делаем стейт для изменения настроек аудио 
-  const [soundEnabled, setSoundEnabled] = useState(true)
-// вторым аргументом useSound лежит объект с опциями аудио, для отключения или включения soundEnabled кот. Boolean
+  const dispatch = useDispatch();
+  const { userPosition, setCurrentPosition, setUserPosition, nextPlayer, players } =
+    useDiceContext();
+
+  const diceSocket = useSelector((state) => state.dice);
+  const turnSocket = useSelector((state) => state.turn);
+
+  let currentPos = userPosition[turnSocket - 1];
+
+  const [soundEnabled, setSoundEnabled] = useState(true);
+
   const [play] = useSound(cubes, {
     soundEnabled,
-  })
-// по нажатию изменяем состояние значения soundEnabled
+  });
+
   const soundOnOffHandler = () => {
-    setSoundEnabled(!soundEnabled)
-  }
-  
-  const { userPosition, setUserPosition, playerTurn, nextPlayer, players } =
-    useDiceContext();
-  const [dice, setDice] = useState(0);
-  const [inProgress, setInProgress] = useState(false);
-  let currentPos = userPosition[playerTurn];
+    setSoundEnabled(!soundEnabled);
+  };
 
   useEffect(() => {
     const interval = () => {
-      let newPosition = dice + userPosition[playerTurn];
-      console.log(
-        'dice:',
-        dice,
-        'userPos:',
-        userPosition,
-        'newPos',
-        newPosition
-      );
+      let newPosition = diceSocket + userPosition[turnSocket - 1];
 
       let timerId = setInterval(() => {
-        console.log('setInt:', inProgress);
         currentPos++;
         if (currentPos > 39) {
           newPosition = newPosition - currentPos;
           currentPos = 0;
           setUserPosition((prev) =>
-            prev.map((el, i) => (i === playerTurn ? 0 : el))
+            prev.map((el, i) => (i === turnSocket - 1 ? 0 : el))
           );
         } else
           setUserPosition((prev) =>
-            prev.map((el, i) => (i === playerTurn ? el + 1 : el))
+            prev.map((el, i) => (i === turnSocket - 1 ? el + 1 : el))
           );
-        console.log(
-          'curPos:',
-          currentPos,
-          'userPos:',
-          userPosition,
-          'newPos',
-          newPosition
-        );
+
         if (currentPos === newPosition) {
+          console.log('inside it');
+          setCurrentPosition(currentPos);
           clearInterval(timerId);
-          setInProgress(false);
-          setDice(0);
+          dispatch(clearDice());
           nextPlayer();
         }
-      }, 50);
+      }, 100);
     };
-    if (dice !== 0) interval();
-  }, [dice]);
+    if (diceSocket > 0) interval();
+  }, [diceSocket]);
 
   const rollHandler = () => {
-    setInProgress(true);
     let x = Math.floor(Math.random() * 6 + 1);
     let y = Math.floor(Math.random() * 6 + 1);
     let dicetotal = x + y;
-    setDice(dicetotal);
 
-    console.log('rollH:', inProgress);
+    dispatch(rollDice(dicetotal, params.id, user.id));
   };
-
-  const Button = styled('div')`
-    background-color: black;
-    cursor: pointer;
-    color: white;
-    margin: 20px;
-  `;
 
   return (
     <>
-      {!inProgress ? (
-        <Button onClick={() => {
-          rollHandler()
-          play()
-        } }> ROLL!</Button>
+      {user?.queue === turnSocket ? (
+        <Button
+          onClick={() => {
+            rollHandler();
+            play();
+          }}
+        >
+          ROLL!
+        </Button>
       ) : (
-        <Button style={{ backgroundColor: 'pink' }}> ROLL!</Button>
+        <Button style={{ backgroundColor: 'pink' }}>
+          {' '}
+          PLAYER {players[turnSocket - 1]?.name} TURN
+        </Button>
       )}
       <p>
-        Ходит игрок: {players[playerTurn].name} <br />
-        На кубиках выпало: {dice > 0 ? dice : '??'}
+        Ходит игрок: {players[turnSocket - 1]?.name} <br />
+        На кубиках выпало: {diceSocket > 0 ? diceSocket : '??'}
       </p>
       <Button onClick={soundOnOffHandler}>Stop sound ROLL</Button>
     </>
@@ -106,3 +95,10 @@ function RollDice() {
 }
 
 export default RollDice;
+
+const Button = styled('div')`
+  background-color: black;
+  cursor: pointer;
+  color: white;
+  margin: 20px;
+`;

@@ -1,42 +1,38 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const DiceContext = createContext();
 
 const DiceContextProvider = ({ children }) => {
   const [showAddUsers, setShowAddUsers] = useState(false);
   const [currentKey, setCurrentKey] = useState(false);
+  const players = useSelector((state) => state.gameUsers);
 
-  const players = [
-    { id: 1, name: 'fedor' },
-    { id: 2, name: 'oleg' },
-    { id: 3, name: 'ivan' },
-    { id: 4, name: 'stas' },
-  ];
-  const [userPosition, setUserPosition] = useState(players.map((el) => 0));
-  const [playerTurn, setPlayerTurn] = useState(0);
+  const [userPosition, setUserPosition] = useState([]);
+  const [currentPosition, setCurrentPosition] = useState(null);
+  const [playerTurn, setPlayerTurn] = useState(1);
+
   const [transform, setTransform] = useState(false);
-
   const changeTransform = () => setTransform(!transform);
 
+  useEffect(() => {
+    if (!userPosition.length || userPosition.length !== players.length) {
+      setUserPosition(players.map((el) => (el = el.position)));
+    }
+  }, [players]);
+
   const nextPlayer = () => {
-    const playerNum = players.map((el) => el.id);
-    if (playerTurn < playerNum.length - 1) {
+    const playerNum = players.map((el, i) => i + 1);
+    if (playerTurn < playerNum.length) {
       setPlayerTurn((prev) => prev + 1);
-    } else setPlayerTurn(0);
+    } else setPlayerTurn(1);
   };
 
-  const increment = () => {
-    setUserPosition((prev) => {
-      console.log(userPosition);
-      return prev + 1;
-    });
-  };
   return (
     <DiceContext.Provider
       value={{
         userPosition,
         setUserPosition,
-        increment,
         players,
         nextPlayer,
         playerTurn,
@@ -47,6 +43,8 @@ const DiceContextProvider = ({ children }) => {
         setShowAddUsers,
         currentKey,
         setCurrentKey,
+        currentPosition,
+        setCurrentPosition,
       }}
     >
       {children}

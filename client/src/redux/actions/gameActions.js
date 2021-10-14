@@ -40,9 +40,4 @@ export const startGame = (key) => async (dispatch) => {
     type: START_GAME,
   });
 };
-export const startGameSocket = (gameId) => {
-  return {
-    type: START_GAME_SOCKET,
-    payload: gameId,
-  };
-};
+

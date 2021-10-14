@@ -1,9 +1,13 @@
 import { combineReducers } from 'redux';
+import { allCardsReducer } from './allCardsReducer';
 import { allUsersReducer } from './allUsersReducers';
+import { currentCardReducer } from './currentCardReducer';
 import { currentGameReducer } from './currentGameReducer';
+import { diceReducer } from './diceReducer';
 import { gameReducer } from './gameReducer';
 import { gameUsersReducer } from './gameUsersReducers';
 import { pendingUsersReducer } from './pendingUsersReducers';
+import { turnReducer } from './turnReducer';
 import { userGameReducer } from './userGameReducers';
 import { userReducer } from './userReducer';
 
@@ -15,4 +19,8 @@ export const rootReducer = combineReducers({
   allUsers: allUsersReducer,
   gameUsers: gameUsersReducer,
   pendingUsers: pendingUsersReducer,
+  dice: diceReducer,
+  turn: turnReducer,
+  allCards: allCardsReducer,
+  currentCard: currentCardReducer,
 });

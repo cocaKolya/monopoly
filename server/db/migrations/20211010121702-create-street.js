@@ -9,23 +9,32 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
+        type: Sequelize.STRING,
+      },
+      special: {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      cost: {
+      corner: {
         allowNull: false,
+        type: Sequelize.BOOLEAN,
+      },
+      cost: {
+        type: Sequelize.INTEGER,
+      },
+      boardid: {
         type: Sequelize.INTEGER,
       },
       color: {
-        allowNull: false,
+
         type: Sequelize.STRING,
       },
       maxlevel: {
-        allowNull: false,
+
         type: Sequelize.INTEGER,
       },
       full: {
-        allowNull: false,
+
         type: Sequelize.INTEGER,
       },
       createdAt: {

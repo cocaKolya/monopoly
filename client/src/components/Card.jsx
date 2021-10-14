@@ -2,6 +2,26 @@ import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
 import Player from './Player';
 
+function Card({ name, color, isCorner, cardId, special }) {
+  const { userPosition, players } = useDiceContext();
+  return (
+    <>
+      <CardBack key={cardId} isCorner={isCorner} special={special}>
+        {players?.map(
+          (el, i) =>
+            userPosition[i] === cardId && <Player key={el.id} id={el.queue} />
+        )}
+        {color && <CardHead color={color}></CardHead>}
+        <CardText color={color} special={special}>
+          {name}
+        </CardText>
+      </CardBack>
+    </>
+  );
+}
+
+export default Card;
+
 const CardBack = styled('div')`
   position: relative;
   box-sizing: content-box;
@@ -27,7 +47,7 @@ const CardHead = styled('div')`
   width: calc(100% + 1px);
   height: 20px;
   border-bottom: 1px solid black;
-  background-color: ${(props) => props.mpColor};
+  background-color: ${(props) => props.color};
 `;
 
 const CardText = styled('div')`
@@ -37,25 +57,5 @@ const CardText = styled('div')`
   justify-content: center;
   padding: 10px;
   ${(props) =>
-    props.special !== 'train' && !props.mpColor && 'margin-top: 40%'};
+    props.special !== 'train' && !props.color && 'margin-top: 40%'};
 `;
-
-function Card({ name, mpColor, isCorner, cardId, special }) {
-  const { userPosition, players } = useDiceContext();
-
-  return (
-    <>
-      <CardBack isCorner={isCorner} special={special}>
-        {players.map(
-          (el) => userPosition[el.id - 1] === cardId && <Player id={el.id} />
-        )}
-        {mpColor && <CardHead mpColor={mpColor}></CardHead>}
-        <CardText mpColor={mpColor} special={special}>
-          {name}
-        </CardText>
-      </CardBack>
-    </>
-  );
-}
-
-export default Card;

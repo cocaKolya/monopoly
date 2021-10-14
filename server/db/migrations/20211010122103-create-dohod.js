@@ -16,10 +16,6 @@ module.exports = {
           key: 'id',
         },
       },
-      level: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
       value: {
         allowNull: false,
         type: Sequelize.INTEGER,

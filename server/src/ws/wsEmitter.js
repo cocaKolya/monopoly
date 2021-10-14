@@ -1,31 +1,33 @@
 const {
-  NEW_GAME_CREATE,
-  NEW_PERSON,
+  CREATE_GAME_SOCKET,
+  GET_GAME_USERS_SOCKET,
   DEL_GAME,
+  ROLL_DICE_SOCKET,
   START_GAME_SOCKET,
+  TURN_SOCKET,
 } = require('../constants/event');
 const myEmitter = require('../ee');
 
 function registerWsEmitter(map) {
-  myEmitter.on(NEW_GAME_CREATE, (game) => {
+  myEmitter.on(CREATE_GAME_SOCKET, (game) => {
     for (let [id, userConnect] of map) {
       userConnect.send(
         JSON.stringify({
-          type: NEW_GAME_CREATE,
+          type: CREATE_GAME_SOCKET,
           payload: game,
         })
       );
     }
   });
 
-  myEmitter.on(NEW_PERSON, (test) => {
+  myEmitter.on(GET_GAME_USERS_SOCKET, (gameusers) => {
     for (let [id, userConnect] of map) {
-      test.map((el) => {
+      gameusers.map((el) => {
         if (el.id == id) {
           userConnect.send(
             JSON.stringify({
-              type: NEW_PERSON,
-              payload: game,
+              type: GET_GAME_USERS_SOCKET,
+              payload: gameusers,
             })
           );
         }
@@ -33,16 +35,43 @@ function registerWsEmitter(map) {
     }
   });
 
-  myEmitter.on(START_GAME_SOCKET, (data) => {
+  myEmitter.on(START_GAME_SOCKET, (users, gameid) => {
     for (let [id, userConnect] of map) {
-      console.log(data);
-      data.users.map((el) => {
+      users.map((el) => {
         if (id === el.id) {
-          console.log(1);
           userConnect.send(
             JSON.stringify({
               type: START_GAME_SOCKET,
-              payload: data.gameid,
+              payload: gameid,
+            })
+          );
+        }
+      });
+    }
+  });
+
+  myEmitter.on(ROLL_DICE_SOCKET, (users, dice) => {
+    for (let [id, userConnect] of map) {
+      users.map((el) => {
+        if (id === el.id) {
+          userConnect.send(
+            JSON.stringify({
+              type: ROLL_DICE_SOCKET,
+              payload: dice,
+            })
+          );
+        }
+      });
+    }
+  });
+  myEmitter.on(TURN_SOCKET, (users, turn) => {
+    for (let [id, userConnect] of map) {
+      users.map((el) => {
+        if (id === el.id) {
+          userConnect.send(
+            JSON.stringify({
+              type: TURN_SOCKET,
+              payload: turn,
             })
           );
         }

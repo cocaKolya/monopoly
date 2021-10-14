@@ -3,29 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { addGame, getGames, getUserGames } from '../redux/actions/gameActions';
-import { checkUser } from '../redux/actions/userAction';
-import { createSocketOnMessage } from '../utils/socket.message';
 import { Button } from './atoms/Button';
 import GameList from './GameList';
 
-const fakeGames = [
-  { name: 'игра', gamer1: 'stas', gamer2: 'taras', gamer3: 'oleg' },
-  { name: 'игра', gamer1: 'stas', gamer2: 'taras' },
-  {
-    name: 'игра',
-    gamer1: 'stas',
-    gamer2: 'taras',
-    gamer3: 'oleg',
-    games4: 'ivan',
-  },
-  { name: 'игра', gamer1: 'stas', gamer2: 'taras', gamer3: 'oleg' },
-];
-
-const fakeProcessGames = [
-  { name: 'игра', gamer1: 'stas', gamer2: 'taras', gamer3: 'oleg' },
-  { name: 'игра', gamer1: 'stas', gamer2: 'taras' },
-  { name: 'игра', gamer1: 'stas', gamer2: 'taras', gamer3: 'oleg' },
-];
 
 const HomeWrapper = styled('div')`
   display: flex;
@@ -52,20 +32,19 @@ const Text = styled.p`
 
 function HomePage() {
   
-  
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const user = useSelector((state) => state.user);
   const localUser = JSON.parse(window.localStorage.getItem('user'));
+  const user = useSelector((state) => state.user);
   const games = useSelector((state) => state.games);
-  const currentGame = useSelector((state) => state.currentGame);
   const userGames = useSelector((state) => state.userGames);
-  // const notUserGames = games.filter((el) => el.owner !== user.id);
+  const currentGame = useSelector((state) => state.currentGame);
 
   useEffect(() => {
     
     dispatch(getGames());
+    
     if (localUser) dispatch(getUserGames(localUser?.id));
   }, []);
 

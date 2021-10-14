@@ -6,14 +6,18 @@ const {
   GameStatistic,
   sequelize,
   UserGamePanding,
+  Street,
+  Dohod,
 } = require('../db/models');
 const { v4: uuidv4 } = require('uuid');
 const myEmitter = require('../src/ee');
 const {
-  NEW_GAME_CREATE,
-  NEW_PERSON,
+  CREATE_GAME_SOCKET,
+  GET_GAME_USERS_SOCKET,
   DEL_GAME,
   START_GAME_SOCKET,
+  ROLL_DICE_SOCKET,
+  TURN_SOCKET,
 } = require('../src/constants/event');
 
 router.route('/').get(async (req, res) => {
@@ -43,6 +47,7 @@ router.route('/add').post(async (req, res) => {
     key: uuidv4(),
     owner,
     inprocess: false,
+    turn: 1,
   });
 
   const userInGame = await UserInGame.create({
@@ -56,6 +61,7 @@ router.route('/add').post(async (req, res) => {
     money: 5500,
     queue: 1,
   });
+  // const users = await User.findAll();
   // const userInGame = await Game.findOne({
   //   where: { id: game.id },
   //   include: User,
@@ -63,7 +69,9 @@ router.route('/add').post(async (req, res) => {
   // console.log(userInGame.User); //user witch create game
 
   // Отправить данные о новой игре всем игрокам
-  myEmitter.emit(NEW_GAME_CREATE, game);
+
+  // console.log( myEmitter.emit(CREATE_GAME_SOCKET, game));
+  myEmitter.emit(CREATE_GAME_SOCKET, game);
 
   res.json(game);
 });
@@ -106,10 +114,19 @@ router.route('/start').post(async (req, res) => {
   game.inprocess = true;
   await game.save();
   const users = game.UserInGamesAliase;
+
+  const [gameusers] = await sequelize.query(`
+  select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users" 
+  join "UserInGames" on "Users".id = "UserInGames".userid
+  join "Games" on "UserInGames".gameid = "Games".id
+  join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+  where "Games".key = '${key}'
+   `);
+
   //Отправить всем игрокам в лобби статус игры
 
-  myEmitter.emit(START_GAME_SOCKET, { users, gameid: game.id });
-
+  myEmitter.emit(START_GAME_SOCKET, users, game.id);
+  myEmitter.emit(TURN_SOCKET, gameusers, game.turn);
   res.json(game);
 });
 
@@ -169,15 +186,8 @@ router.route('/users').post(async (req, res) => {
 
 router.route('/userInGame').post(async (req, res) => {
   const { gameid, userid } = req.body;
+  const curgame = await Game.findOne({ where: { id: gameid } });
   //max 4 person proverka
-
-  // const gameParty = await User.findAll({
-  //   include: {
-  //     model: Game,
-  //     where: { id: gameid },
-  //   },
-  //   raw: true,
-  // });
 
   const user = await UserInGame.findAll({ where: { userid, gameid } });
 
@@ -186,11 +196,12 @@ router.route('/userInGame').post(async (req, res) => {
       gameid,
       userid,
     });
+
     const [test] = await sequelize.query(`
-      select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
+      select "Users".id, name, "GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
       join "UserInGames" on "Users".id = "UserInGames".userid
       join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
-      where "UserInGames".gameid = ${gameid}
+      where "UserInGames".gameid = ${gameid} 
        `);
 
     await GameStatistic.create({
@@ -200,10 +211,79 @@ router.route('/userInGame').post(async (req, res) => {
       queue: test[test.length - 1].queue + 1,
     });
 
+    const [gameusers] = await sequelize.query(`
+    select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users" 
+    join "UserInGames" on "Users".id = "UserInGames".userid
+    join "Games" on "UserInGames".gameid = "Games".id
+    join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+    where "Games".key = '${curgame.key}'
+     `);
     //Отправить данные игрока всем, кто с ним в игре
-    // myEmitter.emit(NEW_PERSON, test);
+
+    myEmitter.emit(GET_GAME_USERS_SOCKET, gameusers);
     return res.sendStatus(200);
   } else return res.sendStatus(403);
+});
+
+router.route('/dice').post(async (req, res) => {
+  const { dice, userid, gamekey } = req.body;
+
+  const [gameusers] = await sequelize.query(`
+  select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users" 
+  join "UserInGames" on "Users".id = "UserInGames".userid
+  join "Games" on "UserInGames".gameid = "Games".id
+  join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+  where "Games".key = '${gamekey}'
+   `);
+
+  const curgame = await Game.findOne({ where: { key: gamekey } });
+  curgame.turn += 1;
+  await curgame.save();
+  if (curgame.turn > gameusers.length) {
+    curgame.turn = 1;
+    await curgame.save();
+  }
+
+  const UserInGameS = await UserInGame.findOne({
+    where: { userid, gameid: curgame.id },
+  });
+
+  const blablabla = await GameStatistic.findOne({
+    where: { uigid: UserInGameS.id },
+  });
+  blablabla.position += dice;
+  await blablabla.save();
+
+  if (blablabla.position > 39) {
+    blablabla.position = blablabla.position - 40;
+    await blablabla.save();
+  }
+
+  myEmitter.emit(ROLL_DICE_SOCKET, gameusers, dice, curgame.turn);
+  myEmitter.emit(TURN_SOCKET, gameusers, curgame.turn);
+
+  res.sendStatus(200);
+});
+router.route('/cardboard').get(async (req, res) => {
+  const card = await Street.findAll();
+
+  res.json(card);
+});
+router.route('/currentcard').post(async (req, res) => {
+  const { boardid } = req.body;
+  let card;
+  let cardBoardValue;
+  if (boardid === 0) {
+    card = { name: 'START' };
+  } else {
+    card = await Street.findOne({
+      where: boardid,
+    });
+
+    cardBoardValue = await Dohod.findOne({ where: { streetid: card?.id } });
+  }
+
+  res.json({ card, cardBoardValue });
 });
 
 module.exports = router;

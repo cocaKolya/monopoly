@@ -4,24 +4,38 @@ require('../passportSetup');
 
 const { User } = require('../db/models');
 
-router.get('/', passport.authenticate('google', { 
-  scope: ['profile', 'email'],
-  prompt: 'select_account',
- }));
+router.get(
+  '/',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    prompt: 'select_account',
+  })
+);
 
-router.get('/callback',
+router.get(
+  '/callback',
   passport.authenticate('google', { failureRedirect: '/failed' }),
   async function (req, res) {
-    if (req.user.displayName && req.user.emails[0].value && req.user.photos[0].value) {
+    if (
+      req.user.displayName &&
+      req.user.emails[0].value &&
+      req.user.photos[0].value
+    ) {
       try {
-        const currentUser = await User.findOne({ where: { email: req.user.emails[0].value } })
+        console.log(req.user);
+        const currentUser = await User.findOne({
+          where: { email: req.user.emails[0].value },
+        });
+        console.log(currentUser, 'user');
         if (req.user.emails[0].value === currentUser.email) {
+          console.log(req.user.emails);
           req.session.user = {
             id: currentUser.id,
             name: currentUser.name,
           }
           return res.redirect('http://localhost:3000/home');
         } else {
+          console.log(2222);
           const newUser = User.create({
             name: req.user.displayName,
             email: req.user.emails[0].value,
@@ -39,8 +53,8 @@ router.get('/callback',
     } else {
       return res.sendStatus(403).redirect('http://localhost:3000/reg');
     }
-  });
-
+  }
+);
 
 module.exports = router;
 //
