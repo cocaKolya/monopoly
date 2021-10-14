@@ -271,13 +271,13 @@ router.route('/cardboard').get(async (req, res) => {
 });
 router.route('/currentcard').post(async (req, res) => {
   const { boardid } = req.body;
+  console.log(boardid);
   const card = await Street.findOne({
     where: boardid,
   });
   const cardBoardValue = await Dohod.findOne({ where: { streetid: card.id } });
-  console.log(card, 'cardBoardValue');
-  console.log(cardBoardValue, 'cardBoardValue');
-  res.json(cardBoardValue);
+console.log(11111);
+  res.json({ card, cardBoardValue });
 });
 
 module.exports = router;

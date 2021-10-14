@@ -7,22 +7,28 @@ import { getCurrentCard } from '../redux/actions/currentCardActions';
 export const CenterCard = () => {
   const dispatch = useDispatch();
   const turn = useSelector((state) => state.turn);
-  const allCards = useSelector((state) => state.allCards);
+  const currentCard = useSelector((state) => state.currentCard);
   const { currentPosition } = useDiceContext();
 
   useEffect(() => {
     console.log('WORKING', currentPosition);
     dispatch(getCurrentCard(currentPosition));
   }, [currentPosition]);
-  // const currCard = allCards.find((el) => el.boardid === userPosition[turn - 1]);
+
   const color = 'red';
   const special = 'train';
   return (
-    <CardBack key={1} special={special}>
-      {color && <CardHead color={color}></CardHead>}
-      <CardText color={color} special={special}>
-        Площадь Маяковского
+    <CardBack key={1} special={currentCard.card.special}>
+      {currentCard.card.color && (
+        <CardHead color={currentCard.card.color}></CardHead>
+      )}
+      <CardText
+        color={currentCard.card.color}
+        special={currentCard.card.special}
+      >
+        {currentCard.card.name}
       </CardText>
+      <CardText>{currentCard.card.cost}k</CardText>
     </CardBack>
   );
 };
@@ -59,7 +65,7 @@ const CardHead = styled('div')`
 const CardText = styled('div')`
   display: flex;
   padding: 5px;
-  font-size: 14pt;
+  font-size: 12pt;
   justify-content: center;
   padding: 10px;
   ${(props) => props.special !== 'train' && !props.color && 'margin-top: 40%'};
