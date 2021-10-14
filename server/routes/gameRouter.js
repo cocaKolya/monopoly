@@ -15,6 +15,7 @@ const {
   DEL_GAME,
   START_GAME_SOCKET,
   ROLL_DICE_SOCKET,
+  TURN_SOCKET
 } = require('../src/constants/event');
 
 router.route('/').get(async (req, res) => {
@@ -44,6 +45,7 @@ router.route('/add').post(async (req, res) => {
     key: uuidv4(),
     owner,
     inprocess: false,
+    turn: 1,
   });
 
   const userInGame = await UserInGame.create({
@@ -130,8 +132,7 @@ router.route('/add/users').post(async (req, res) => {
   if (panding.length > 0) {
     const usersPandingFilter = notMe.filter(
       (user) =>
-        panding.findIndex((pandingUser) => pandingUser.userid === user.id) ===
-        -1
+        panding.findIndex((pandingUser) => pandingUser.userid === user.id) === -1
     );
 
     const user = usersPandingFilter.map((el) => {
@@ -168,7 +169,7 @@ router.route('/users').post(async (req, res) => {
   join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
   where "Games".key = '${key}'
    `);
-
+  console.log(gameusers);
   res.json(gameusers);
 });
 
@@ -178,20 +179,20 @@ router.route('/userInGame').post(async (req, res) => {
   //max 4 person proverka
 
   const user = await UserInGame.findAll({ where: { userid, gameid } });
-
+  console.log('user', user);
   if (user.length === 0) {
     const userInGame = await UserInGame.create({
       gameid,
       userid,
     });
-
+    console.log('userInGame', userInGame);
     const [test] = await sequelize.query(`
       select "Users".id, name, "GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
       join "UserInGames" on "Users".id = "UserInGames".userid
       join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
       where "UserInGames".gameid = ${gameid} 
        `);
-
+    console.log(test, 'test');
     await GameStatistic.create({
       uigid: userInGame.id,
       position: 0,
@@ -211,8 +212,6 @@ router.route('/userInGame').post(async (req, res) => {
     myEmitter.emit(GET_GAME_USERS_SOCKET, gameusers);
     return res.sendStatus(200);
   } else return res.sendStatus(403);
-
-  
 });
 
 router.route('/dice').post(async (req, res) => {
@@ -232,7 +231,13 @@ router.route('/dice').post(async (req, res) => {
   //   } else return { ...el, queue: el.queue - 1 };
   // });
   const curgame = await Game.findOne({ where: { key: gamekey } });
-// console.log(gameusers);
+  curgame.turn += 1;
+  await curgame.save();
+  if (curgame.turn > gameusers.length) {
+    curgame.turn = 1;
+    await curgame.save();
+  }
+  // console.log(gameusers);
 
   const UserInGameS = await UserInGame.findOne({
     where: { userid, gameid: curgame.id },
@@ -249,7 +254,8 @@ router.route('/dice').post(async (req, res) => {
     await blablabla.save();
   }
 
-  myEmitter.emit(ROLL_DICE_SOCKET, gameusers, dice);
+  myEmitter.emit(ROLL_DICE_SOCKET, gameusers, dice, curgame.turn);
+  myEmitter.emit(TURN_SOCKET, gameusers, curgame.turn);
 
   res.sendStatus(200);
 });

@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       key: DataTypes.TEXT,
       owner: DataTypes.INTEGER,
       inprocess: DataTypes.BOOLEAN,
+      turn: DataTypes.INTEGER,
     },
     {
       sequelize,
