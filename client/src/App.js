@@ -4,7 +4,7 @@ import CardBoard from './components/CardBoard';
 import styled from 'styled-components';
 import DiceContextProvider from './contexts/DiceContext';
 import './style.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { checkUser } from './redux/actions/userAction';
 import RegForm from './components/RegForm';
 import HomePage from './components/HomePage';
@@ -36,14 +36,21 @@ function App() {
   let location = useLocation();
   const localUser = window.localStorage.getItem('user');
   const history = useHistory();
-
+  
   if (!localUser && location.pathname !== '/reg' && location.pathname !== '/login')
     history.push('/reg');
+    
+    const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    socket.current = new WebSocket(url);
-    const socketOnMessage = createSocketOnMessage(dispatch);
-    socket.current.onmessage = socketOnMessage;
+    if (user) {
+      socket.current = new WebSocket(url);
+      const socketOnMessage = createSocketOnMessage(dispatch);
+      socket.current.onmessage = socketOnMessage;
+    }
+  }, [user]);
+
+  useEffect(() => {
     dispatch(checkUser());
     dispatch(getGames());
   }, []);

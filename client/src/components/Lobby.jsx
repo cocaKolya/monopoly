@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
@@ -9,6 +9,7 @@ import { getGameUsers } from '../redux/actions/gameUsersActions';
 import { Button } from './atoms/Button';
 import GamePlayersList from './GamePlayersList';
 import { useHistory } from 'react-router';
+import { createSocketOnMessage } from '../utils/socket.message';
 
 export const Lobby = () => {
   const { showAddUsers, setShowAddUsers, currentKey, setCurrentKey } =
@@ -20,14 +21,17 @@ export const Lobby = () => {
 
   const user = useSelector((state) => state.user);
   const games = useSelector((state) => state.games);
-  const allUsers = useSelector((state) => state.allUsers);
+
   const gameUsers = useSelector((state) => state.gameUsers);
+
+  
 
   useEffect(() => {
     setCurrentKey(params.id);
     dispatch(getGameUsers(params.id));
   }, []);
 
+  
   const currGame = games.find((el) => el.key === params.id);
   if (currGame?.inprocess === true) history.push(`/game/${params.id}`);
 

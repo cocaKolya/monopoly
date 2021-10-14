@@ -207,7 +207,7 @@ router.route('/userInGame').post(async (req, res) => {
     where "Games".key = '${curgame.key}'
      `);
     //Отправить данные игрока всем, кто с ним в игре
-    console.log(gameusers);
+
     myEmitter.emit(GET_GAME_USERS_SOCKET, gameusers);
     return res.sendStatus(200);
   } else return res.sendStatus(403);
@@ -224,8 +224,14 @@ router.route('/dice').post(async (req, res) => {
   where "Games".key = '${gamekey}'
    `);
 
+  gameusers.map((el) => {
+    if (el.queue < 1) {
+      return { ...el, queue: 4 };
+    } else return { ...el, queue: el.queue - 1 };
+  });
   const curgame = await Game.findOne({ where: { key: gamekey } });
-console.log(gameusers);
+// console.log(gameusers);
+
   const UserInGameS = await UserInGame.findOne({
     where: { userid, gameid: curgame.id },
   });
@@ -240,7 +246,6 @@ console.log(gameusers);
     blablabla.position = blablabla.position - 40;
     await blablabla.save();
   }
-  await blablabla.save();
 
   myEmitter.emit(ROLL_DICE_SOCKET, gameusers, dice);
 
