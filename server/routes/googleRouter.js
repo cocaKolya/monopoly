@@ -20,24 +20,24 @@ router.get('/callback',
             id: currentUser.id,
             name: currentUser.name,
           }
-          return res.clearCookie('sesid').redirect('http://localhost:3000/home');
+          return res.redirect('http://localhost:3000/home');
         } else {
           const newUser = User.create({
             name: req.user.displayName,
             email: req.user.emails[0].value,
             urlFoto: req.user.photos[0].value,
           });
+          req.session.user = {
+            id: newUser.id,
+            name: newUser.name,
+          } 
+          return res.redirect('http://localhost:3000/home');
         }
-        req.session.user = {
-          id: newUser.id,
-          name: newUser.name,
-        }
-        return res.redirect('http://localhost:3000/home');
       } catch (error) {
         return res.sendStatus(405);
       }
     } else {
-      return res.sendStatus(403);
+      return res.sendStatus(403).redirect('http://localhost:3000/reg');
     }
   });
 
