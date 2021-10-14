@@ -8,7 +8,7 @@ export const gameUsersReducer = (state = null, action) => {
       return payload;
     }
     case GET_GAME_USERS_SOCKET: {
-      return [...state, payload];
+      return [state];
     }
     default:
       return state;

@@ -130,7 +130,8 @@ router.route('/add/users').post(async (req, res) => {
   if (panding.length > 0) {
     const usersPandingFilter = notMe.filter(
       (user) =>
-        panding.findIndex((pandingUser) => pandingUser.userid === user.id) === -1
+        panding.findIndex((pandingUser) => pandingUser.userid === user.id) ===
+        -1
     );
 
     const user = usersPandingFilter.map((el) => {
@@ -214,7 +215,7 @@ router.route('/userInGame').post(async (req, res) => {
      `);
     //Отправить данные игрока всем, кто с ним в игре
 
-    myEmitter.emit(GET_GAME_USERS_SOCKET, test, gameusers);
+    myEmitter.emit(GET_GAME_USERS_SOCKET, test[0], gameusers);
     return res.sendStatus(200);
   } else return res.sendStatus(403);
 });

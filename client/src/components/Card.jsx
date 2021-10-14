@@ -2,6 +2,25 @@ import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
 import Player from './Player';
 
+function Card({ name, mpColor, isCorner, cardId, special }) {
+  const { userPosition, players } = useDiceContext();
+  return (
+    <>
+      <CardBack key={cardId} isCorner={isCorner} special={special}>
+        {players?.map(
+          (el, i) => userPosition[i] === cardId && <Player key={el.id} id={i} />
+        )}
+        {mpColor && <CardHead mpColor={mpColor}></CardHead>}
+        <CardText mpColor={mpColor} special={special}>
+          {name}
+        </CardText>
+      </CardBack>
+    </>
+  );
+}
+
+export default Card;
+
 const CardBack = styled('div')`
   position: relative;
   box-sizing: content-box;
@@ -39,23 +58,3 @@ const CardText = styled('div')`
   ${(props) =>
     props.special !== 'train' && !props.mpColor && 'margin-top: 40%'};
 `;
-
-function Card({ name, mpColor, isCorner, cardId, special }) {
-  const { userPosition, players } = useDiceContext();
-  // console.log('inside=========', userPosition)
-  return (
-    <>
-      <CardBack key={cardId} isCorner={isCorner} special={special}>
-        {players?.map(
-          (el, i) => userPosition[i] === cardId && <Player key={el.id} id={i} />
-        )}
-        {mpColor && <CardHead mpColor={mpColor}></CardHead>}
-        <CardText mpColor={mpColor} special={special}>
-          {name}
-        </CardText>
-      </CardBack>
-    </>
-  );
-}
-
-export default Card;

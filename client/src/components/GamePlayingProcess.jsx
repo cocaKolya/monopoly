@@ -16,10 +16,7 @@ export const GamePlayingProcess = () => {
   }, []);
 
   const gameUsers = useSelector((state) => state.gameUsers);
-  console.log(localUser);
-  console.log(gameUsers);
   const currUser = gameUsers.find((el) => (el.id = localUser.id));
-  console.log(currUser);
   return (
     <>
       <Switcher />

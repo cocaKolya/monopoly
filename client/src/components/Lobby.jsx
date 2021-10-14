@@ -10,6 +10,52 @@ import { Button } from './atoms/Button';
 import GamePlayersList from './GamePlayersList';
 import { useHistory } from 'react-router';
 
+export const Lobby = () => {
+  const { showAddUsers, setShowAddUsers, currentKey, setCurrentKey } =
+    useDiceContext();
+
+
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const params = useParams();
+
+  const user = useSelector((state) => state.user);
+  const games = useSelector((state) => state.games);
+  const allUsers = useSelector((state) => state.allUsers);
+  const gameUsers = useSelector((state) => state.gameUsers);
+
+  useEffect(() => {
+    setCurrentKey(params.id);
+    dispatch(getGameUsers(params.id));
+  }, []);
+
+  const currGame = games.find((el) => el.key === params.id);
+  if (currGame?.inprocess === true) history.push(`/game/${params.id}`);
+
+  const addUsersHandler = () => {
+    dispatch(getAllUsers(user.id, currentKey));
+    setShowAddUsers(!showAddUsers);
+  };
+  const startGamehandler = () => {
+    dispatch(startGame(params.id));
+    history.push(`/game/${params.id}`);
+  };
+  return (
+    <LobbyWrapper>
+      <GroupDiv>
+        <CloseButton onClick={() => history.push('/home')}>close</CloseButton>
+        <GamePlayersList players={gameUsers} />
+        <p>waiting for other players...</p>
+        <Button text={'add Players'} onClick={() => addUsersHandler()}></Button>
+      </GroupDiv>
+      <div>
+        <Button text={'Start Game'} onClick={() => startGamehandler()} />
+      </div>
+    </LobbyWrapper>
+  );
+};
+
 const LobbyWrapper = styled.div`
   position: relative;
   display: flex;
@@ -44,50 +90,3 @@ const CloseButton = styled.div`
     background-color: rgba(168, 168, 168, 0.8);
   }
 `;
-
-export const Lobby = () => {
-  const { showAddUsers, setShowAddUsers, currentKey, setCurrentKey } =
-    useDiceContext();
-
-  // const [isOwner, setIsOwner] = useState(false);
-
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const params = useParams();
-
-  const user = useSelector((state) => state.user);
-  const games = useSelector((state) => state.games);
-  const allUsers = useSelector((state) => state.allUsers);
-  const gameUsers = useSelector((state) => state.gameUsers);
-
-  useEffect(() => {
-    setCurrentKey(params.id);
-    dispatch(getGameUsers(params.id));
-  }, []);
-
-  const currGame = games.find((el) => el.key === params.id);
-  // console.log(currGame);
-  if (currGame?.inprocess === true) history.push(`/game/${params.id}`);
-
-  const addUsersHandler = () => {
-    dispatch(getAllUsers(user.id, currentKey));
-    setShowAddUsers(!showAddUsers);
-  };
-  const startGamehandler = () => {
-    dispatch(startGame(params.id));
-    history.push(`/game/${params.id}`);
-  };
-  return (
-    <LobbyWrapper>
-      <GroupDiv>
-        <CloseButton onClick={() => history.push('/home')}>close</CloseButton>
-        <GamePlayersList players={gameUsers} />
-        <p>waiting for other players...</p>
-        <Button text={'add Players'} onClick={() => addUsersHandler()}></Button>
-      </GroupDiv>
-      <div>
-        <Button text={'Start Game'} onClick={() => startGamehandler()} />
-      </div>
-    </LobbyWrapper>
-  );
-};
