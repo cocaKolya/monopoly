@@ -4,7 +4,10 @@ require('../passportSetup');
 
 const { User } = require('../db/models');
 
-router.get('/', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/', passport.authenticate('google', { 
+  scope: ['profile', 'email'],
+  prompt: 'select_account',
+ }));
 
 router.get('/callback',
   passport.authenticate('google', { failureRedirect: '/failed' }),

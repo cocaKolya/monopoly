@@ -271,10 +271,10 @@ router.route('/cardboard').get(async (req, res) => {
 });
 router.route('/currentcard').post(async (req, res) => {
   const { boardid } = req.body;
-  const card = {};
-  const cardBoardValue = {};
+  let card;
+  let cardBoardValue;
   if (boardid === 0) {
-    card.name = 'START';
+    card = { name: 'START' };
   } else {
     card = await Street.findOne({
       where: boardid,
