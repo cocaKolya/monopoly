@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
 import Player from './Player';
 
-function Card({ name, mpColor, isCorner, cardId, special }) {
+function Card({ name, color, isCorner, cardId, special }) {
   const { userPosition, players } = useDiceContext();
   return (
     <>
@@ -11,8 +11,8 @@ function Card({ name, mpColor, isCorner, cardId, special }) {
           (el, i) =>
             userPosition[i] === cardId && <Player key={el.id} id={el.queue} />
         )}
-        {mpColor && <CardHead mpColor={mpColor}></CardHead>}
-        <CardText mpColor={mpColor} special={special}>
+        {color && <CardHead color={color}></CardHead>}
+        <CardText color={color} special={special}>
           {name}
         </CardText>
       </CardBack>
@@ -47,7 +47,7 @@ const CardHead = styled('div')`
   width: calc(100% + 1px);
   height: 20px;
   border-bottom: 1px solid black;
-  background-color: ${(props) => props.mpColor};
+  background-color: ${(props) => props.color};
 `;
 
 const CardText = styled('div')`
@@ -57,5 +57,5 @@ const CardText = styled('div')`
   justify-content: center;
   padding: 10px;
   ${(props) =>
-    props.special !== 'train' && !props.mpColor && 'margin-top: 40%'};
+    props.special !== 'train' && !props.color && 'margin-top: 40%'};
 `;

@@ -1,7 +1,12 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
-
+import { getAllCards } from '../redux/actions/allCardsActions';
+import { BoardCenter } from './BoardCenter';
 import CardLine from './CardLine';
+import { CenterCard } from './CenterCard';
+
 const dbDown = [
   // { id: 1, name: 'житная', mpColor: 'brown' },
   // { id: 2, name: 'общ казна' },
@@ -52,6 +57,14 @@ const dbRight = [
 ];
 
 function CardBoard() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllCards());
+  }, []);
+
+  const allCards = useSelector((state) => state.allCards);
+  console.log('im all cards', allCards);
   const { transform } = useDiceContext();
 
   return (
@@ -59,17 +72,15 @@ function CardBoard() {
       <BoardWrapper transform3d={transform}>
         <Board>
           <LineWrapLeft>
-            <CardLine position={'left'} db={dbLeft} />
+            <CardLine position={'left'} db={allCards?.left} />
           </LineWrapLeft>
           <Row>
-            <CardLine position={'up'} db={dbUp} />
-            <Center>
-              <Center rotate={'true'}>MONOPOLY</Center>
-            </Center>
-            <CardLine position={'down'} db={dbDown} />
+            <CardLine position={'up'} db={allCards?.up} />
+            <BoardCenter/>
+            <CardLine position={'down'} db={allCards?.down} />
           </Row>
           <LineWrapRight>
-            <CardLine position={'right'} db={dbRight} />
+            <CardLine position={'right'} db={allCards?.right} />
           </LineWrapRight>
         </Board>
       </BoardWrapper>
@@ -111,22 +122,6 @@ const LineWrapRight = styled('div')`
   position: absolute;
   transform: translateX(50%);
   right: 50px;
-`;
-const Center = styled('div')`
-  ${(props) => props.rotate && '-webkit-transform: rotate(-45deg)'};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 35pt;
-  height: 552px;
-  ${(props) =>
-    !props.rotate &&
-    `background-color: rgb(208, 252, 242);
-    border: 1px solid #000;
-    position: relative;
-    z-index: 5
-  `}
 `;
 
 const Board = styled('div')`

@@ -8,5 +8,4 @@ export const FIND_GAMES = 'FIND_GAMES';
 export const FIND_USER_GAMES = 'FIND_USER_GAMES';
 export const ADD_USER_TO_GAME = 'ADD_USER_TO_GAME';
 export const ROLL_DICE = 'ROLL_DICE';
-export const CLEAR_DICE = 'ROLL_DICE';
-export const SET_PLAYERS_POSITION = 'SET_PLAYERS_POSITION';
+export const CLEAR_DICE = 'CLEAR_DICE';

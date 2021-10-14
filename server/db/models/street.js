@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Street extends Model {
     static associate({ Dohod, GameStatistic }) {
-      this.hasMany(Dohod, {
+      this.hasOne(Dohod, {
         foreignKey: 'streetid',
       });
       this.belongsToMany(GameStatistic, {

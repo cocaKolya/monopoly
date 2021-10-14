@@ -123,12 +123,6 @@ router.route('/start').post(async (req, res) => {
   where "Games".key = '${key}'
    `);
 
-  game.turn += 1;
-  await game.save();
-  if (game.turn > gameusers.length) {
-    game.turn = 1;
-    await game.save();
-  }
   //Отправить всем игрокам в лобби статус игры
 
   myEmitter.emit(START_GAME_SOCKET, users, game.id);
@@ -186,7 +180,7 @@ router.route('/users').post(async (req, res) => {
   join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
   where "Games".key = '${key}'
    `);
-  console.log(gameusers);
+
   res.json(gameusers);
 });
 
@@ -196,20 +190,20 @@ router.route('/userInGame').post(async (req, res) => {
   //max 4 person proverka
 
   const user = await UserInGame.findAll({ where: { userid, gameid } });
-  console.log('user', user);
+
   if (user.length === 0) {
     const userInGame = await UserInGame.create({
       gameid,
       userid,
     });
-    console.log('userInGame', userInGame);
+
     const [test] = await sequelize.query(`
       select "Users".id, name, "GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
       join "UserInGames" on "Users".id = "UserInGames".userid
       join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
       where "UserInGames".gameid = ${gameid} 
        `);
-    console.log(test, 'test');
+
     await GameStatistic.create({
       uigid: userInGame.id,
       position: 0,
@@ -242,11 +236,6 @@ router.route('/dice').post(async (req, res) => {
   where "Games".key = '${gamekey}'
    `);
 
-  // gameusers.map((el) => {
-  //   if (el.queue < 1) {
-  //     return { ...el, queue: 4 };
-  //   } else return { ...el, queue: el.queue - 1 };
-  // });
   const curgame = await Game.findOne({ where: { key: gamekey } });
   curgame.turn += 1;
   await curgame.save();
@@ -254,7 +243,6 @@ router.route('/dice').post(async (req, res) => {
     curgame.turn = 1;
     await curgame.save();
   }
-  // console.log(gameusers);
 
   const UserInGameS = await UserInGame.findOne({
     where: { userid, gameid: curgame.id },
@@ -272,6 +260,7 @@ router.route('/dice').post(async (req, res) => {
   }
 
   myEmitter.emit(ROLL_DICE_SOCKET, gameusers, dice, curgame.turn);
+  myEmitter.emit(TURN_SOCKET, gameusers, curgame.turn);
 
   res.sendStatus(200);
 });
@@ -282,9 +271,13 @@ router.route('/cardboard').get(async (req, res) => {
 });
 router.route('/currentcard').post(async (req, res) => {
   const { boardid } = req.body;
-  const cardvalue = await Street.findAll({ where: boardid, include: Dohod });
-  console.log(cardvalue);
-  res.json(cardvalue);
+  const card = await Street.findOne({
+    where: boardid,
+  });
+  const cardBoardValue = await Dohod.findOne({ where: { streetid: card.id } });
+  console.log(card, 'cardBoardValue');
+  console.log(cardBoardValue, 'cardBoardValue');
+  res.json(cardBoardValue);
 });
 
 module.exports = router;

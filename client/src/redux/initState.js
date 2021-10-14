@@ -8,6 +8,9 @@ const initState = {
   pendingUsers: [],
   playersPosition: [],
   dice: null,
+  turn: null,
+  allCards: {},
+  currentCard: [],
 };
 
 export default initState;
