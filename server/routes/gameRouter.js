@@ -332,9 +332,13 @@ router.route('/currentcard').post(async (req, res) => {
 });
 
 router.route('/cardbuy').post(async (req, res) => {
-  const { boardid, userid, gameid } = req.body;
+  const { boardid, userid, gamekey } = req.body;
+  console.log(boardid, userid, gamekey);
+  const game = await Game.findOne({ where: { key: gamekey } });
 
-  const userInGame = await UserInGame.findOne({ where: { userid, gameid } });
+  const userInGame = await UserInGame.findOne({
+    where: { userid, gameid: game.id },
+  });
 
   const userstatistic = await GameStatistic.findOne({
     where: { uigid: userInGame.id },
@@ -355,7 +359,18 @@ router.route('/cardbuy').post(async (req, res) => {
   join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
   where "Games".key = '${gamekey}'
    `);
+  const [usersstreet] = await sequelize.query(`
+  select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
+  join "UserInGames" on "Users".id = "UserInGames".userid
+  join "Games" on "UserInGames".gameid = "Games".id
+  join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+  join "Estates" on "GameStatistics".id = "Estates".gamestatisticid
+  join "Streets" on "Streets".id = "Estates".streetid
+  where "Games".key = '${gamekey}'
+   `);
 
+  console.log(usersstreet);
+  
   await Estate.create({
     streetid,
     gamestatisticid: userstatistic.id,
