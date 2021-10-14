@@ -7,10 +7,10 @@ const DiceContextProvider = ({ children }) => {
   const [showAddUsers, setShowAddUsers] = useState(false);
   const [currentKey, setCurrentKey] = useState(false);
   const players = useSelector((state) => state.gameUsers);
-  
+
   const [userPosition, setUserPosition] = useState([]);
-  
-  const [playerTurn, setPlayerTurn] = useState(0);
+
+  const [playerTurn, setPlayerTurn] = useState(1);
 
   const [transform, setTransform] = useState(false);
   const changeTransform = () => setTransform(!transform);
@@ -22,10 +22,10 @@ const DiceContextProvider = ({ children }) => {
   }, [players]);
 
   const nextPlayer = () => {
-    const playerNum = players.map((el) => el.id);
-    if (playerTurn < playerNum.length - 1) {
+    const playerNum = players.map((el, i) => i + 1);
+    if (playerTurn < playerNum.length) {
       setPlayerTurn((prev) => prev + 1);
-    } else setPlayerTurn(0);
+    } else setPlayerTurn(1);
   };
 
   return (

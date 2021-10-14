@@ -5,8 +5,8 @@ import { useDiceContext } from '../contexts/DiceContext';
 // npm пакет для звуков где useSound это хук
 import useSound from 'use-sound';
 import cubes from './sound/cubes.mp3';
-import { rollDice } from '../redux/actions/diceAction';
-import { useDispatch } from 'react-redux';
+import { clearDice, rollDice } from '../redux/actions/diceAction';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 
 function RollDice({ user }) {
@@ -15,13 +15,16 @@ function RollDice({ user }) {
   const dispatch = useDispatch();
   const { userPosition, setUserPosition, playerTurn, nextPlayer, players } =
     useDiceContext();
-  const [dice, setDice] = useState(0);
-  const [inProgress, setInProgress] = useState(false);
-  let currentPos = userPosition[playerTurn];
+  const [dice, setDice] = useState(false);
+
+  let currentPos = userPosition[playerTurn - 1];
+
+  const diceSocket = useSelector((state) => state.dice);
+  console.log('=================', diceSocket);
 
   useEffect(() => {
     const interval = () => {
-      let newPosition = dice + userPosition[playerTurn];
+      let newPosition = diceSocket + userPosition[playerTurn - 1];
 
       let timerId = setInterval(() => {
         currentPos++;
@@ -29,54 +32,50 @@ function RollDice({ user }) {
           newPosition = newPosition - currentPos;
           currentPos = 0;
           setUserPosition((prev) =>
-            prev.map((el, i) => (i === playerTurn ? 0 : el))
+            prev.map((el, i) => (i === playerTurn - 1 ? 0 : el))
           );
         } else
           setUserPosition((prev) =>
-            prev.map((el, i) => (i === playerTurn ? el + 1 : el))
+            prev.map((el, i) => (i === playerTurn - 1 ? el + 1 : el))
           );
-       
+
         if (currentPos === newPosition) {
           clearInterval(timerId);
-          setInProgress(false);
-          setDice(0);
+          dispatch(clearDice());
           nextPlayer();
         }
       }, 100);
     };
-    if (dice !== 0) interval();
-  }, [dice, players]);
+    if (diceSocket > 0) interval();
+  }, [diceSocket]);
 
   const rollHandler = () => {
-    setInProgress(true);
     let x = Math.floor(Math.random() * 6 + 1);
     let y = Math.floor(Math.random() * 6 + 1);
     let dicetotal = x + y;
-    setDice(dicetotal);
+
     dispatch(rollDice(dicetotal, params.id, user.id));
   };
 
-  const Button = styled('div')`
-    background-color: black;
-    cursor: pointer;
-    color: white;
-    margin: 20px;
-  `;
+  console.log('im user', user);
+  console.log(playerTurn);
 
   return (
     <>
-      {!inProgress ? (
+      {user?.queue === playerTurn ? (
         <Button
           onClick={() => {
             rollHandler();
             play();
           }}
         >
-          {' '}
           ROLL!
         </Button>
       ) : (
-        <Button style={{ backgroundColor: 'pink' }}> ROLL!</Button>
+        <Button style={{ backgroundColor: 'pink' }}>
+          {' '}
+          PLAYER {players[playerTurn - 1]?.name} TURN
+        </Button>
       )}
       <p>
         Ходит игрок: {players[playerTurn]?.name} <br />
@@ -87,3 +86,10 @@ function RollDice({ user }) {
 }
 
 export default RollDice;
+
+const Button = styled('div')`
+  background-color: black;
+  cursor: pointer;
+  color: white;
+  margin: 20px;
+`;

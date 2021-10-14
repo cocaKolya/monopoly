@@ -130,7 +130,8 @@ router.route('/add/users').post(async (req, res) => {
   if (panding.length > 0) {
     const usersPandingFilter = notMe.filter(
       (user) =>
-        panding.findIndex((pandingUser) => pandingUser.userid === user.id) === -1
+        panding.findIndex((pandingUser) => pandingUser.userid === user.id) ===
+        -1
     );
 
     const user = usersPandingFilter.map((el) => {
@@ -225,12 +226,13 @@ router.route('/dice').post(async (req, res) => {
   where "Games".key = '${gamekey}'
    `);
 
-  gameusers.map((el) => {
-    if (el.queue < 1) {
-      return { ...el, queue: 4 };
-    } else return { ...el, queue: el.queue - 1 };
-  });
+  // gameusers.map((el) => {
+  //   if (el.queue < 1) {
+  //     return { ...el, queue: 4 };
+  //   } else return { ...el, queue: el.queue - 1 };
+  // });
   const curgame = await Game.findOne({ where: { key: gamekey } });
+// console.log(gameusers);
 
   const UserInGameS = await UserInGame.findOne({
     where: { userid, gameid: curgame.id },

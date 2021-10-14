@@ -5,16 +5,17 @@ import { createSocketOnMessage } from '../utils/socket.message';
 import { GamePlayerItem } from './GamePlayersItem';
 
 const PlayersWrapper = styled.div`
+  position: relative;
   display: flex;
-  width: 100%;
+  width: 260px;
+  background-color: rgba(168, 168, 168, 0.514);
+  border-radius: 10px;
 `;
 
 const GamePlayersList = ({ players }) => {
- 
-  const gameUsers = useSelector((state) => state.gameUsers);
   return (
     <PlayersWrapper>
-      {gameUsers?.map((el) => (
+      {players?.map((el) => (
         <>
           <GamePlayerItem player={el} />
         </>

@@ -16,15 +16,13 @@ export const GamePlayingProcess = () => {
   }, []);
 
   const gameUsers = useSelector((state) => state.gameUsers);
-  console.log(localUser);
-  console.log(gameUsers);
-  const currUser = gameUsers.find((el) => (el.id = localUser.id));
-  console.log(currUser);
+  const currUser = gameUsers.find((el) => (el.id === localUser.id));
+  console.log('im curr', currUser);
   return (
     <>
       <Switcher />
       <CardBoard />
-      <RollDice user ={currUser}/>
+      <RollDice user={currUser} />
     </>
   );
 };
