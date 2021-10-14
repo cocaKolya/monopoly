@@ -50,11 +50,10 @@ function RollDice({ user }) {
   }, [diceSocket]);
 
   const rollHandler = () => {
-    // setInProgress(true);
     let x = Math.floor(Math.random() * 6 + 1);
     let y = Math.floor(Math.random() * 6 + 1);
     let dicetotal = x + y;
-    // setDice(dicetotal);
+
     dispatch(rollDice(dicetotal, params.id, user.id));
   };
 
@@ -63,18 +62,20 @@ function RollDice({ user }) {
 
   return (
     <>
-      {true ? (
+      {user?.queue === playerTurn ? (
         <Button
           onClick={() => {
             rollHandler();
             play();
           }}
         >
-          {' '}
           ROLL!
         </Button>
       ) : (
-        <Button style={{ backgroundColor: 'pink' }}> ROLL!</Button>
+        <Button style={{ backgroundColor: 'pink' }}>
+          {' '}
+          PLAYER {players[playerTurn - 1]?.name} TURN
+        </Button>
       )}
       <p>
         Ходит игрок: {players[playerTurn]?.name} <br />
