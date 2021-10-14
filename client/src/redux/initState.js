@@ -9,6 +9,7 @@ const initState = {
   playersPosition: [],
   dice: null,
   turn: null,
+  allCards: {},
 };
 
 export default initState;

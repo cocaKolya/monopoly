@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
+import { getAllCards } from '../redux/actions/allCardsActions';
 import { getGameUsers } from '../redux/actions/gameUsersActions';
 import CardLine from './CardLine';
 import RollDice from './RollDice';
@@ -58,6 +59,14 @@ const dbRight = [
 ];
 
 function CardBoard() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllCards());
+  }, []);
+
+  const allCards = useSelector((state) => state.allCards);
+  console.log('im all cards', allCards);
   const { transform } = useDiceContext();
 
   return (
@@ -65,21 +74,20 @@ function CardBoard() {
       <BoardWrapper transform3d={transform}>
         <Board>
           <LineWrapLeft>
-            <CardLine position={'left'} db={dbLeft} />
+            <CardLine position={'left'} db={allCards?.left} />
           </LineWrapLeft>
           <Row>
-            <CardLine position={'up'} db={dbUp} />
+            <CardLine position={'up'} db={allCards?.up} />
             <Center>
-              <Center rotate={"true"}>MONOPOLY</Center>
+              <Center rotate={'true'}>MONOPOLY</Center>
             </Center>
-            <CardLine position={'down'} db={dbDown} />
+            <CardLine position={'down'} db={allCards?.down} />
           </Row>
           <LineWrapRight>
-            <CardLine position={'right'} db={dbRight} />
+            <CardLine position={'right'} db={allCards?.right} />
           </LineWrapRight>
         </Board>
       </BoardWrapper>
-      
     </>
   );
 }

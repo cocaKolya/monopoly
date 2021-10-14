@@ -19,7 +19,7 @@ function CardLine({ position, db }) {
   return (
     <>
       <Wrapper position={position}>
-        {db.map((el) => (
+        {db?.map((el) => (
           <Card
             key={el.id}
             name={el.name}

@@ -17,6 +17,7 @@ import { getGames } from './redux/actions/gameActions';
 import { createSocketOnMessage } from './utils/socket.message';
 import { GamePlayingProcess } from './components/GamePlayingProcess';
 import LogIn from './components/LogIn';
+import { clearDice } from './redux/actions/diceAction';
 
 const MainWrapperDiv = styled('div')`
   display: flex;
@@ -36,11 +37,15 @@ function App() {
   let location = useLocation();
   const localUser = window.localStorage.getItem('user');
   const history = useHistory();
-  
-  if (!localUser && location.pathname !== '/reg' && location.pathname !== '/login')
+
+  if (
+    !localUser &&
+    location.pathname !== '/reg' &&
+    location.pathname !== '/login'
+  )
     history.push('/reg');
-    
-    const user = useSelector((state) => state.user);
+
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     if (user) {
@@ -61,14 +66,14 @@ function App() {
       <MainWrapperDiv>
         <AddPlayersModal />
         <Switch>
-          <Route exact path="/game/:id" component={GamePlayingProcess} />
-          <Route exact path="/" component={CardBoard} />
-          <Route exact path="/reg" component={RegForm} />
-          <Route exact path="/login" component={LogIn} />
-          <Route exact path="/logout" component={Logout} />
-          <Route exact path="/home" component={HomePage} />
-          <Route exact path="/game/:id/lobby" component={Lobby} />
-          <Route exact path="/profile" component={Lobby} />
+          <Route exact path='/game/:id' component={GamePlayingProcess} />
+          <Route exact path='/' component={CardBoard} />
+          <Route exact path='/reg' component={RegForm} />
+          <Route exact path='/login' component={LogIn} />
+          <Route exact path='/logout' component={Logout} />
+          <Route exact path='/home' component={HomePage} />
+          <Route exact path='/game/:id/lobby' component={Lobby} />
+          <Route exact path='/profile' component={Lobby} />
         </Switch>
       </MainWrapperDiv>
     </DiceContextProvider>

@@ -21,7 +21,6 @@ function RollDice({ user }) {
 
   let currentPos = userPosition[turnSocket - 1];
 
-  // console.log('=================', diceSocket);
 
   useEffect(() => {
     const interval = () => {
@@ -57,9 +56,6 @@ function RollDice({ user }) {
 
     dispatch(rollDice(dicetotal, params.id, user.id));
   };
-
-  console.log('im user', user);
-  console.log(turnSocket);
 
   return (
     <>

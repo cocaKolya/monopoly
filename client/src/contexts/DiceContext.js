@@ -16,7 +16,7 @@ const DiceContextProvider = ({ children }) => {
   const changeTransform = () => setTransform(!transform);
 
   useEffect(() => {
-    if (!userPosition.length) {
+    if (!userPosition.length || userPosition.length !== players.length) {
       setUserPosition(players.map((el) => (el = el.position)));
     }
   }, [players]);

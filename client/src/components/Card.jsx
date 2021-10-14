@@ -4,6 +4,7 @@ import Player from './Player';
 
 function Card({ name, mpColor, isCorner, cardId, special }) {
   const { userPosition, players } = useDiceContext();
+  console.log('card players:.', players);
   return (
     <>
       <CardBack key={cardId} isCorner={isCorner} special={special}>
