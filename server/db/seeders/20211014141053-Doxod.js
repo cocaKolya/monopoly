@@ -195,12 +195,6 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      {
-        streetid: 0,
-        value: 200,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
     ]);
   },
 

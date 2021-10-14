@@ -271,14 +271,19 @@ router.route('/cardboard').get(async (req, res) => {
 });
 router.route('/currentcard').post(async (req, res) => {
   const { boardid } = req.body;
-  console.log(boardid);
-  const card = await Street.findOne({
-    where: boardid,
-  });
- 
-  const cardBoardValue = await Dohod.findOne({ where: { streetid: card?.id } });
+  const card = {};
+  const cardBoardValue = {};
+  if (boardid === 0) {
+    card.name = 'START';
+  } else {
+    card = await Street.findOne({
+      where: boardid,
+    });
 
-  res.json({card, cardBoardValue});
+    cardBoardValue = await Dohod.findOne({ where: { streetid: card?.id } });
+  }
+
+  res.json({ card, cardBoardValue });
 });
 
 module.exports = router;
