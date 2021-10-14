@@ -17,7 +17,7 @@ import { getGames } from './redux/actions/gameActions';
 import { createSocketOnMessage } from './utils/socket.message';
 import { GamePlayingProcess } from './components/GamePlayingProcess';
 import LogIn from './components/LogIn';
-import { clearDice } from './redux/actions/diceAction';
+
 
 const MainWrapperDiv = styled('div')`
   display: flex;
@@ -52,6 +52,10 @@ function App() {
       socket.current = new WebSocket(url);
       const socketOnMessage = createSocketOnMessage(dispatch);
       socket.current.onmessage = socketOnMessage;
+      socket.current.onclose = () => {
+        alert('server close ws connection. Try again later')
+        history.push('/')
+      }
     }
   }, [user]);
 
