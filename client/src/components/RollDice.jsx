@@ -13,14 +13,18 @@ function RollDice({ user }) {
   const params = useParams();
   const [play] = useSound(cubes);
   const dispatch = useDispatch();
-  const { userPosition, setUserPosition, nextPlayer, players } =
-    useDiceContext();
+  const {
+    userPosition,
+    setCurrentPosition,
+    setUserPosition,
+    nextPlayer,
+    players,
+  } = useDiceContext();
 
   const diceSocket = useSelector((state) => state.dice);
   const turnSocket = useSelector((state) => state.turn);
 
   let currentPos = userPosition[turnSocket - 1];
-
 
   useEffect(() => {
     const interval = () => {
@@ -40,6 +44,8 @@ function RollDice({ user }) {
           );
 
         if (currentPos === newPosition) {
+          console.log('inside it');
+          setCurrentPosition(currentPos);
           clearInterval(timerId);
           dispatch(clearDice());
           nextPlayer();
@@ -75,7 +81,7 @@ function RollDice({ user }) {
         </Button>
       )}
       <p>
-        Ходит игрок: {players[turnSocket-1]?.name} <br />
+        Ходит игрок: {players[turnSocket - 1]?.name} <br />
         На кубиках выпало: {diceSocket > 0 ? diceSocket : '??'}
       </p>
     </>

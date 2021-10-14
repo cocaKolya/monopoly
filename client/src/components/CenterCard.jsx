@@ -1,12 +1,19 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
+import { getCurrentCard } from '../redux/actions/currentCardActions';
 
 export const CenterCard = () => {
+  const dispatch = useDispatch();
   const turn = useSelector((state) => state.turn);
   const allCards = useSelector((state) => state.allCards);
-  const { userPosition, players } = useDiceContext();
-  console.log('123123123123123', userPosition[turn - 1]);
+  const { currentPosition } = useDiceContext();
+
+  useEffect(() => {
+    console.log('WORKING', currentPosition);
+    dispatch(getCurrentCard(currentPosition));
+  }, [currentPosition]);
   // const currCard = allCards.find((el) => el.boardid === userPosition[turn - 1]);
   const color = 'red';
   const special = 'train';

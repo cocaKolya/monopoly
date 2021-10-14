@@ -9,7 +9,7 @@ const DiceContextProvider = ({ children }) => {
   const players = useSelector((state) => state.gameUsers);
 
   const [userPosition, setUserPosition] = useState([]);
-
+  const [currentPosition, setCurrentPosition] = useState(null);
   const [playerTurn, setPlayerTurn] = useState(1);
 
   const [transform, setTransform] = useState(false);
@@ -43,6 +43,8 @@ const DiceContextProvider = ({ children }) => {
         setShowAddUsers,
         currentKey,
         setCurrentKey,
+        currentPosition,
+        setCurrentPosition,
       }}
     >
       {children}
