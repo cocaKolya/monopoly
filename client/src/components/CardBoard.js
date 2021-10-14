@@ -58,22 +58,11 @@ const dbRight = [
 ];
 
 function CardBoard() {
-  // const localUser = JSON.parse(window.localStorage.getItem('user'));
   const { transform } = useDiceContext();
-  // const dispatch = useDispatch();
-  // const params = useParams();
-  // useEffect(() => {
-  //   dispatch(getGameUsers(params.id));
-  // }, []);
 
-  // const gameUsers = useSelector((state) => state.gameUsers);
-  // console.log(localUser);
-  // console.log(gameUsers);
-  // const currUser = gameUsers.find((el) => (el.id = localUser.id));
-  // console.log(currUser);
   return (
     <>
-      <BoardWrapper transform={transform}>
+      <BoardWrapper transform3d={transform}>
         <Board>
           <LineWrapLeft>
             <CardLine position={'left'} db={dbLeft} />
@@ -81,7 +70,7 @@ function CardBoard() {
           <Row>
             <CardLine position={'up'} db={dbUp} />
             <Center>
-              <Center rotate={true}>MONOPOLY</Center>
+              <Center rotate={"true"}>MONOPOLY</Center>
             </Center>
             <CardLine position={'down'} db={dbDown} />
           </Row>
@@ -102,13 +91,13 @@ const BoardWrapper = styled('div')`
   position: relative;
   overflow: hidden;
   ${(props) =>
-    props.transform &&
+    props.transform3d &&
     `transform:rotateX(40deg); -webkit-transition: background 1s linear 0s;
 	-moz-transition: transform 1s linear 0s;
 	-o-transition: transform 1s linear 0s;
 	transition:transform 1s linear 0s`};
   ${(props) =>
-    !props.transform &&
+    !props.transform3d &&
     `transform:rotateX(0deg); -webkit-transition: background 1s linear 0s;
 	-moz-transition: transform 1s linear 0s;
 	-o-transition: transform 1s linear 0s;

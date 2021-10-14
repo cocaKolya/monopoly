@@ -42,12 +42,12 @@ const CardText = styled('div')`
 
 function Card({ name, mpColor, isCorner, cardId, special }) {
   const { userPosition, players } = useDiceContext();
-
+  // console.log('inside=========', userPosition)
   return (
     <>
-      <CardBack isCorner={isCorner} special={special}>
-        {players.map(
-          (el) => userPosition[el.id - 1] === cardId && <Player id={el.id} />
+      <CardBack key={cardId} isCorner={isCorner} special={special}>
+        {players?.map(
+          (el, i) => userPosition[i] === cardId && <Player key={el.id} id={i} />
         )}
         {mpColor && <CardHead mpColor={mpColor}></CardHead>}
         <CardText mpColor={mpColor} special={special}>

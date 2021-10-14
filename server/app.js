@@ -93,7 +93,7 @@ server.on('upgrade', function (request, socket, head) {
 //2
 wss.on('connection', function (ws, request) {
   const userId = request.session.user.id;
-  
+  console.log('------123');
   map.set(userId, ws);
 
   registerWsEmitter(map);

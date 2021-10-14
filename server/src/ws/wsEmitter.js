@@ -9,6 +9,7 @@ const myEmitter = require('../ee');
 function registerWsEmitter(map) {
   myEmitter.on(CREATE_GAME_SOCKET, (game) => {
     for (let [id, userConnect] of map) {
+      console.log(id);
       userConnect.send(
         JSON.stringify({
           type: CREATE_GAME_SOCKET,

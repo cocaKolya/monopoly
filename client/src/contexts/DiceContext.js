@@ -1,22 +1,25 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const DiceContext = createContext();
 
 const DiceContextProvider = ({ children }) => {
   const [showAddUsers, setShowAddUsers] = useState(false);
   const [currentKey, setCurrentKey] = useState(false);
-
-  const players = [
-    { id: 1, name: 'fedor' },
-    { id: 2, name: 'oleg' },
-    { id: 3, name: 'ivan' },
-    { id: 4, name: 'stas' },
-  ];
-  const [userPosition, setUserPosition] = useState(players.map((el) => 0));
+  const players = useSelector((state) => state.gameUsers);
+  
+  const [userPosition, setUserPosition] = useState([]);
+  
   const [playerTurn, setPlayerTurn] = useState(0);
-  const [transform, setTransform] = useState(false);
 
+  const [transform, setTransform] = useState(false);
   const changeTransform = () => setTransform(!transform);
+
+  useEffect(() => {
+    if (!userPosition.length) {
+      setUserPosition(players.map((el) => (el = el.position)));
+    }
+  }, [players]);
 
   const nextPlayer = () => {
     const playerNum = players.map((el) => el.id);
@@ -25,17 +28,11 @@ const DiceContextProvider = ({ children }) => {
     } else setPlayerTurn(0);
   };
 
-  const increment = () => {
-    setUserPosition((prev) => {
-      return prev + 1;
-    });
-  };
   return (
     <DiceContext.Provider
       value={{
         userPosition,
         setUserPosition,
-        increment,
         players,
         nextPlayer,
         playerTurn,
