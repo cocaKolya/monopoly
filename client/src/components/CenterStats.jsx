@@ -5,6 +5,7 @@ import { Button } from './atoms/Button';
 import { useParams } from 'react-router';
 
 export const CenterStats = () => {
+  const dispatch = useDispatch();
   const localUser = JSON.parse(window.localStorage.getItem('user'));
   const params = useParams();
   const dispatch = useDispatch();
