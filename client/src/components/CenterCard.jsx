@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
 import { getCurrentCard } from '../redux/actions/currentCardActions';
@@ -10,9 +11,12 @@ export const CenterCard = () => {
   const currentCard = useSelector((state) => state.currentCard);
   const { currentPosition } = useDiceContext();
 
+  const localUser = JSON.parse(window.localStorage.getItem('user'));
+  const params = useParams();
+
   useEffect(() => {
     console.log('WORKING', currentPosition);
-    dispatch(getCurrentCard(currentPosition));
+    dispatch(getCurrentCard(currentPosition, localUser?.id, params?.id));
   }, [currentPosition]);
 
   const color = 'red';

@@ -11,11 +11,9 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDiceContext } from '../contexts/DiceContext';
 
-export const Dice = () => {
+export const Dice = ({user}) => {
   const reactDice = useRef(null);
-  const user = JSON.parse(window.localStorage.getItem('user'));
   const params = useParams();
-  console.log(user);
   const dispatch = useDispatch();
   const {
     userPosition,
@@ -69,14 +67,6 @@ export const Dice = () => {
     if (diceSocket > 0) interval();
   }, [diceSocket]);
 
-  // const rollHandler = () => {
-  //   let x = Math.floor(Math.random() * 6 + 1);
-  //   let y = Math.floor(Math.random() * 6 + 1);
-  //   let dicetotal = x + y;
-
-  //   dispatch(rollDice(dicetotal, params.id, user.id));
-  // };
-
   function rollAll() {
     let x = Math.floor(Math.random() * 6 + 1);
     let y = Math.floor(Math.random() * 6 + 1);
@@ -89,9 +79,9 @@ export const Dice = () => {
   function rollDoneCallback(num) {
     console.log(`You rolled a ${num}`);
   }
-
+  console.log('usersqueue', user?.queue);
   return (
-    <div>
+    <DiceWrapper>
       <ReactDice
         numDice={2}
         rollDone={rollDoneCallback}
@@ -100,14 +90,33 @@ export const Dice = () => {
         rollTime={1}
         ref={reactDice}
       />
-      <Button
-        text={'ROLL'}
-        onClick={() => {
-          rollAll();
-          play();
-        }}
-      />
+
+      {user?.queue === turnSocket ? (
+        <Button
+          text={'ROLL'}
+          onClick={() => {
+            rollAll();
+            play();
+          }}
+        />
+      ) : (
+        <Button
+          text={`PLAYER ${players[turnSocket - 1]?.name} TURN`}
+          style={{ backgroundColor: 'pink' }}
+        >
+          PLAYER {players[turnSocket - 1]?.name} TURN
+        </Button>
+      )}
+
       <Button text={'Stop sound ROLL'} onClick={soundOnOffHandler} />
-    </div>
+    </DiceWrapper>
   );
 };
+
+const DiceWrapper = styled.div`
+  margin-top: 50px;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;

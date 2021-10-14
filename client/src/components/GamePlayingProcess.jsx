@@ -19,10 +19,15 @@ export const GamePlayingProcess = () => {
 
   const gameUsers = useSelector((state) => state.gameUsers);
   const currUser = gameUsers.find((el) => el.id === localUser.id);
+
+  console.log('localuser------', localUser);
+  console.log('123123------', gameUsers);
+  console.log('1qqqqqqq------', currUser);
+
   return (
     <MainWrapperDiv>
       <Col>
-        <Dice />
+        <Dice user={currUser} />
       </Col>
       <Center>
         <Wrapper3d>
@@ -37,6 +42,7 @@ export const GamePlayingProcess = () => {
 
 const MainWrapperDiv = styled('div')`
   display: flex;
+  width: 95%;
 `;
 
 const Wrapper3d = styled.div`
@@ -44,7 +50,6 @@ const Wrapper3d = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 1000px;
   width: 100%;
   transform-style: preserve-3d;
   perspective: 900px;
