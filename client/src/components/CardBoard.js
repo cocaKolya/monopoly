@@ -64,7 +64,6 @@ function CardBoard() {
   }, []);
 
   const allCards = useSelector((state) => state.allCards);
-  console.log('im all cards', allCards);
   const { transform } = useDiceContext();
 
   return (

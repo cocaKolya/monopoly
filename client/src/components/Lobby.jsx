@@ -69,7 +69,6 @@ const LobbyWrapper = styled.div`
   background-color: white;
   width: 50%;
   height: 500px;
-  margin: 10px;
   border-radius: 10px;
 `;
 
