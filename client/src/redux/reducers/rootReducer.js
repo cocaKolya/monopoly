@@ -6,6 +6,7 @@ import { gameReducer } from './gameReducer';
 import { gameUsersReducer } from './gameUsersReducers';
 import { pendingUsersReducer } from './pendingUsersReducers';
 import { playersPositionReducer } from './playersPositionReducers';
+import { turnReducer } from './turnReducer';
 import { userGameReducer } from './userGameReducers';
 import { userReducer } from './userReducer';
 
@@ -19,4 +20,5 @@ export const rootReducer = combineReducers({
   pendingUsers: pendingUsersReducer,
   dice: diceReducer,
   playersPosition: playersPositionReducer,
+  turn: turnReducer,
 });

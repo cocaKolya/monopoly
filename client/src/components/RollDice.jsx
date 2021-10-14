@@ -13,18 +13,19 @@ function RollDice({ user }) {
   const params = useParams();
   const [play] = useSound(cubes);
   const dispatch = useDispatch();
-  const { userPosition, setUserPosition, playerTurn, nextPlayer, players } =
+  const { userPosition, setUserPosition, nextPlayer, players } =
     useDiceContext();
-  const [dice, setDice] = useState(false);
-
-  let currentPos = userPosition[playerTurn - 1];
 
   const diceSocket = useSelector((state) => state.dice);
-  console.log('=================', diceSocket);
+  const turnSocket = useSelector((state) => state.turn);
+
+  let currentPos = userPosition[turnSocket - 1];
+
+  // console.log('=================', diceSocket);
 
   useEffect(() => {
     const interval = () => {
-      let newPosition = diceSocket + userPosition[playerTurn - 1];
+      let newPosition = diceSocket + userPosition[turnSocket - 1];
 
       let timerId = setInterval(() => {
         currentPos++;
@@ -32,11 +33,11 @@ function RollDice({ user }) {
           newPosition = newPosition - currentPos;
           currentPos = 0;
           setUserPosition((prev) =>
-            prev.map((el, i) => (i === playerTurn - 1 ? 0 : el))
+            prev.map((el, i) => (i === turnSocket - 1 ? 0 : el))
           );
         } else
           setUserPosition((prev) =>
-            prev.map((el, i) => (i === playerTurn - 1 ? el + 1 : el))
+            prev.map((el, i) => (i === turnSocket - 1 ? el + 1 : el))
           );
 
         if (currentPos === newPosition) {
@@ -58,11 +59,11 @@ function RollDice({ user }) {
   };
 
   console.log('im user', user);
-  console.log(playerTurn);
+  console.log(turnSocket);
 
   return (
     <>
-      {user?.queue === playerTurn ? (
+      {user?.queue === turnSocket ? (
         <Button
           onClick={() => {
             rollHandler();
@@ -74,12 +75,12 @@ function RollDice({ user }) {
       ) : (
         <Button style={{ backgroundColor: 'pink' }}>
           {' '}
-          PLAYER {players[playerTurn - 1]?.name} TURN
+          PLAYER {players[turnSocket - 1]?.name} TURN
         </Button>
       )}
       <p>
-        Ходит игрок: {players[playerTurn]?.name} <br />
-        На кубиках выпало: {dice > 0 ? dice : '??'}
+        Ходит игрок: {players[turnSocket-1]?.name} <br />
+        На кубиках выпало: {diceSocket > 0 ? diceSocket : '??'}
       </p>
     </>
   );

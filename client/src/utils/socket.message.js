@@ -3,6 +3,7 @@ import {
   START_GAME_SOCKET,
   GET_GAME_USERS_SOCKET,
   ROLL_DICE_SOCKET,
+  TURN_SOCKET,
 } from '../constants/socket';
 
 import {
@@ -10,6 +11,7 @@ import {
   rollDiceSocket,
   startGameSocket,
   getGameUsersSocket,
+  turnSocket,
 } from '../redux/actions/socketActions/gameActionsSocket';
 
 export const createSocketOnMessage = (dispatch) => (event) => {
@@ -29,6 +31,9 @@ export const createSocketOnMessage = (dispatch) => (event) => {
 
     case ROLL_DICE_SOCKET:
       dispatch(rollDiceSocket(parsedData.payload));
+      break;
+    case TURN_SOCKET:
+      dispatch(turnSocket(parsedData.payload));
       break;
 
     default:
