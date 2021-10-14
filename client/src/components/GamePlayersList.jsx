@@ -1,4 +1,7 @@
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { createSocketOnMessage } from '../utils/socket.message';
 import { GamePlayerItem } from './GamePlayersItem';
 
 const PlayersWrapper = styled.div`
@@ -7,10 +10,11 @@ const PlayersWrapper = styled.div`
 `;
 
 const GamePlayersList = ({ players }) => {
-
+ 
+  const gameUsers = useSelector((state) => state.gameUsers);
   return (
     <PlayersWrapper>
-      {players?.map((el) => (
+      {gameUsers?.map((el) => (
         <>
           <GamePlayerItem player={el} />
         </>
