@@ -192,13 +192,8 @@ router.route('/userInGame').post(async (req, res) => {
       gameid,
       userid,
     });
-
-    const [test] = await sequelize.query(`
-      select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
-      join "UserInGames" on "Users".id = "UserInGames".userid
-      join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
-      where "UserInGames".gameid = ${gameid}
-       `);
+    console.log(userInGame);
+   
     await GameStatistic.create({
       uigid: userInGame.id,
       position: 0,
@@ -215,7 +210,7 @@ router.route('/userInGame').post(async (req, res) => {
      `);
     //Отправить данные игрока всем, кто с ним в игре
 
-    myEmitter.emit(GET_GAME_USERS_SOCKET, test[0], gameusers);
+    myEmitter.emit(GET_GAME_USERS_SOCKET, gameusers);
     return res.sendStatus(200);
   } else return res.sendStatus(403);
 });

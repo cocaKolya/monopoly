@@ -14,8 +14,6 @@ export const Lobby = () => {
   const { showAddUsers, setShowAddUsers, currentKey, setCurrentKey } =
     useDiceContext();
 
-
-
   const dispatch = useDispatch();
   const history = useHistory();
   const params = useParams();
