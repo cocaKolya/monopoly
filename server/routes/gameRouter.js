@@ -11,7 +11,7 @@ const { v4: uuidv4 } = require('uuid');
 const myEmitter = require('../src/ee');
 const {
   CREATE_GAME_SOCKET,
-  NEW_PERSON_SOCKET,
+  GET_GAME_USERS_SOCKET,
   DEL_GAME,
   START_GAME_SOCKET,
   ROLL_DICE_SOCKET,
@@ -213,7 +213,8 @@ router.route('/userInGame').post(async (req, res) => {
     where "Games".key = '${curgame.key}'
      `);
     //Отправить данные игрока всем, кто с ним в игре
-    myEmitter.emit(NEW_PERSON_SOCKET, (test, gameusers));
+
+    myEmitter.emit(GET_GAME_USERS_SOCKET, test, gameusers);
     return res.sendStatus(200);
   } else return res.sendStatus(403);
 });
