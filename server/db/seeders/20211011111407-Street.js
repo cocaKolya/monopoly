@@ -227,7 +227,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        boardid: 21,
+        boardid: 22,
         special: 'null',
         corner: false,
         name: 'ШАНС',
@@ -285,7 +285,7 @@ module.exports = {
         boardid: 27,
         special: 'null',
         corner: false,
-        name: 'ЧАЙУОВСКОГО',
+        name: 'НОВИНСКИЙ БУЛЬВАР',
         cost: 260,
         color: 'yellow',
         maxlevel: 7,

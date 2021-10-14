@@ -7,6 +7,7 @@ const {
   sequelize,
   UserGamePanding,
   Street,
+  Dohod,
 } = require('../db/models');
 const { v4: uuidv4 } = require('uuid');
 const myEmitter = require('../src/ee');
@@ -268,6 +269,12 @@ router.route('/cardboard').get(async (req, res) => {
   const card = await Street.findAll();
 
   res.json(card);
+});
+router.route('/currentcard').post(async (req, res) => {
+  const { boardid } = req.body;
+  const cardvalue = await Street.findAll({ where: boardid, include: Dohod });
+  console.log(cardvalue);
+  res.json(cardvalue);
 });
 
 module.exports = router;
