@@ -210,6 +210,8 @@ router.route('/userInGame').post(async (req, res) => {
     myEmitter.emit(GET_GAME_USERS_SOCKET, gameusers);
     return res.sendStatus(200);
   } else return res.sendStatus(403);
+
+  
 });
 
 router.route('/dice').post(async (req, res) => {
