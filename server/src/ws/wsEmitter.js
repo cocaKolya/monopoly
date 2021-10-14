@@ -4,6 +4,7 @@ const {
   DEL_GAME,
   ROLL_DICE_SOCKET,
   START_GAME_SOCKET,
+  TURN_SOCKET,
 } = require('../constants/event');
 const myEmitter = require('../ee');
 
@@ -57,6 +58,20 @@ function registerWsEmitter(map) {
             JSON.stringify({
               type: ROLL_DICE_SOCKET,
               payload: dice,
+            })
+          );
+        }
+      });
+    }
+  });
+  myEmitter.on(TURN_SOCKET, (users, turn) => {
+    for (let [id, userConnect] of map) {
+      users.map((el) => {
+        if (id === el.id) {
+          userConnect.send(
+            JSON.stringify({
+              type: TURN_SOCKET,
+              payload: turn,
             })
           );
         }
