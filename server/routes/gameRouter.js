@@ -62,16 +62,7 @@ router.route('/add').post(async (req, res) => {
     money: 5500,
     queue: 1,
   });
-  // const users = await User.findAll();
-  // const userInGame = await Game.findOne({
-  //   where: { id: game.id },
-  //   include: User,
-  // });
-  // console.log(userInGame.User); //user witch create game
 
-  // Отправить данные о новой игре всем игрокам
-
-  // console.log( myEmitter.emit(CREATE_GAME_SOCKET, game));
   myEmitter.emit(CREATE_GAME_SOCKET, game);
 
   res.json(game);
@@ -81,7 +72,6 @@ router.route('/del').post(async (req, res) => {
   const { userid, gameid } = req.body;
   await Game.destoy({ where: { gameid, userid } });
 
-  //отправить id удаленной игры, чтобы все ее удалили
   myEmitter.emit(DEL_GAME, gameid);
   res.sendStatus(200);
 });
@@ -102,7 +92,6 @@ router.route('/mygame').post(async (req, res) => {
 
 router.route('/start').post(async (req, res) => {
   const { key } = req.body;
-  console.log(key);
 
   const game = await Game.findOne({
     where: { key },
@@ -113,7 +102,7 @@ router.route('/start').post(async (req, res) => {
       },
     ],
   });
-  console.log(game, 'fssdfsfdsfdsfsdfsdf');
+
   game.inprocess = true;
   await game.save();
   const users = game.UserInGamesAliase;
@@ -123,9 +112,9 @@ router.route('/start').post(async (req, res) => {
   join "UserInGames" on "Users".id = "UserInGames".userid
   join "Games" on "UserInGames".gameid = "Games".id
   join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
-  where "Games".key = ${key}
+  where "Games".key = '${key}'
    `);
-  console.log(game);
+
   //Отправить всем игрокам в лобби статус игры
 
   myEmitter.emit(START_GAME_SOCKET, users, game.id);
@@ -146,8 +135,7 @@ router.route('/add/users').post(async (req, res) => {
   if (panding.length > 0) {
     const usersPandingFilter = notMe.filter(
       (user) =>
-        panding.findIndex((pandingUser) => pandingUser.userid === user.id) ===
-        -1
+        panding.findIndex((pandingUser) => pandingUser.userid === user.id) === -1
     );
 
     const user = usersPandingFilter.map((el) => {
@@ -274,89 +262,99 @@ router.route('/cardboard').get(async (req, res) => {
   res.json(card);
 });
 router.route('/currentcard').post(async (req, res) => {
-  const { boardid, userid, gamekey } = req.body;
+  const { boardid } = req.body;
+  //   const { boardid, userid } = req.body;
 
-  const user = await User.findOne({ where: { id: userid } });
-
-  const [gameusers] = await sequelize.query(`
-  select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users" 
-  join "UserInGames" on "Users".id = "UserInGames".userid
-  join "Games" on "UserInGames".gameid = "Games".id
-  join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
-  where "Games".key = '${gamekey}'
-   `);
-
-  let cardstatus = false;
-  let card = null;
-  let cardBoardValue = null;
-  const money = {};
+  let card;
+  let cardBoardValue;
   if (boardid === 0) {
     card = { name: 'START' };
   } else {
-    const game = await Game.findOne({ where: { key: gamekey } });
-
-    const userInGame = await UserInGame.findOne({
-      where: { userid, gameid: game.id },
+    card = await Street.findOne({
+      where: boardid,
     });
-
-    const card = await Street.findOne({
-      where: { boardid },
-    });
-    const value = await Dohod.findOne({ while: { streetid: card.id } });
-
-    const userstatistic = await GameStatistic.findOne({
-      where: { uigid: userInGame.id },
-    });
-    const cardowner = await Estate.findAll({
-      where: { streetid: card.id, gamestatisticid: userstatistic.id },
-    });
-
-    if (!cardowner) {
-      cardstatus = true;
-    } else {
-      for (let i = 0; i < gameusers.length; i++) {
-        const userInGameOnwer = await UserInGame.findOne({
-          where: { userid: gameusers[i].id, gameid: game.id },
-        });
-
-        const userstatisticOwner = await GameStatistic.findOne({
-          where: { uigid: userInGameOnwer.id },
-        });
-
-        const cardOwner = await Estate.findAll({
-          where: { streetid: card.id, gamestatisticid: userstatisticOwner.id },
-        });
-        if (cardOwner) {
-          userstatisticOwner.money += value.value;
-          userstatistic.money -= value.value;
-          await userstatisticOwner.save();
-          await userstatistic.save();
-          money.pay = user.name;
-          money.haveMoney = gameusers[i].name;
-        }
-      }
-    }
-
-    cardBoardValue = await Dohod.findOne({ where: { streetid: card.id } });
+    cardBoardValue = await Dohod.findOne({ where: { streetid: card?.id } });
   }
-  res.json({ card, cardBoardValue, cardstatus, money });
+  res.json({ card, cardBoardValue });
+//   const user = await User.findOne({ where: { id: userid } });
+
+//   //   const [gameusers] = await sequelize.query(`
+//   //   select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
+//   //   join "UserInGames" on "Users".id = "UserInGames".userid
+//   //   join "Games" on "UserInGames".gameid = "Games".id
+//   //   join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+//   //   where "Games".key = '${gamekey}'
+//   //    `);
+
+//   //   let isFree = false;
+//   let card = null;
+//   let cardBoardValue = null;
+//   //   const money = {};
+//   if (boardid === 0) {
+//     card = { name: 'START' };
+//   } else {
+//     const game = await Game.findOne({ where: { key: gamekey } });
+
+//     const userInGame = await UserInGame.findOne({
+//       where: { userid, gameid: game.id },
+//     });
+
+//     const card = await Street.findOne({
+//       where: { boardid },
+//     });
+//     // const value = await Dohod.findOne({ while: { streetid: card.id } });
+
+//     const userstatistic = await GameStatistic.findOne({
+//       where: { uigid: userInGame.id },
+//     });
+//     const cardowner = await Estate.findAll({
+//       where: { streetid: card.id, gamestatisticid: userstatistic.id },
+//     });
+
+//     if (!cardowner) {
+//       isFree = true;
+//     } else {
+//       //       for (let i = 0; i < gameusers.length; i++) {
+//       //         const userInGameOnwer = await UserInGame.findOne({
+//       //           where: { userid: gameusers[i].id, gameid: game.id },
+//       //         });
+//       //         const userstatisticOwner = await GameStatistic.findOne({
+//       //           where: { uigid: userInGameOnwer.id },
+//       //         });
+//       //         const cardOwner = await Estate.findAll({
+//       //           where: { streetid: card.id, gamestatisticid: userstatisticOwner.id },
+//       //         });
+//       //         if (cardOwner) {
+//       //           userstatisticOwner.money += value.value;
+//       //           userstatistic.money -= value.value;
+//       //           await userstatisticOwner.save();
+//       //           await userstatistic.save();
+//       //           money.pay = user.name;
+//       //           money.haveMoney = gameusers[i].name;
+//       //         }
+//     }
+//   }
+
+//   cardBoardValue = await Dohod.findOne({ where: { streetid: card.id } });
+//   //   }
+//   res.json({ card, cardBoardValue, isFree, money });
 });
 
-router.route('/cardbuy').post(async (req, res) => {
-  const { streetid, userid, gameid } = req.body;
+// router.route('/cardbuy').post(async (req, res) => {
+//   const { boardid, userid, gameid } = req.body;
 
-  const userInGame = await UserInGame.findOne({ where: { userid, gameid } });
-  const userstatistic = await GameStatistic.findOne({
-    where: { uigid: userInGame.id },
-  });
-  const dohod = await Dohod.findOne({ where: { streetid } });
-  await Estate.create({
-    streetid,
-    gamestatisticid: userstatistic.id,
-    dohodid: dohod.id,
-  });
+//   const userInGame = await UserInGame.findOne({ where: { userid, gameid } });
+//   const userstatistic = await GameStatistic.findOne({
+//     where: { uigid: userInGame.id },
+//   });
+//   const dohod = await Dohod.findOne({ where: { streetid } });
+//   await Estate.create({
+//     streetid,
+//     gamestatisticid: userstatistic.id,
+//     dohodid: dohod.id,
+//   });
 
-  res.json();
-});
+//   res.json();
+// });
 
 module.exports = router;
