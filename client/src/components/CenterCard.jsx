@@ -18,17 +18,17 @@ export const CenterCard = () => {
   const color = 'red';
   const special = 'train';
   return (
-    <CardBack key={1} special={currentCard.card.special}>
-      {currentCard.card.color && (
-        <CardHead color={currentCard.card.color}></CardHead>
+    <CardBack key={1} special={currentCard?.card?.special}>
+      {currentCard?.card?.color && (
+        <CardHead color={currentCard?.card?.color}></CardHead>
       )}
       <CardText
-        color={currentCard.card.color}
-        special={currentCard.card.special}
+        color={currentCard?.card?.color}
+        special={currentCard?.card?.special}
       >
-        {currentCard.card.name}
+        {currentCard?.card?.name}
       </CardText>
-      <CardText>{currentCard.card.cost}k</CardText>
+      <CardText>{currentCard?.card?.cost}k</CardText>
     </CardBack>
   );
 };
