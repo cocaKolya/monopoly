@@ -7,7 +7,7 @@ export const CenterUserStats = () => {
     <Wrapper>
       <p> Игрок: {currentUserCards?.gameusers?.name}</p>
       <p>Ваши деньги: {currentUserCards?.gameusers?.money}</p>
-      <p>Ваши улицы: null</p>
+      <p>Ваши улицы: ""null""</p>
     </Wrapper>
   );
 };
