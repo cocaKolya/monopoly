@@ -271,6 +271,7 @@ router.route('/cardboard').get(async (req, res) => {
 });
 router.route('/currentcard').post(async (req, res) => {
   const { boardid } = req.body;
+  console.log(boardid);
   const card = await Street.findOne({
     where: boardid,
   });
