@@ -6,6 +6,7 @@ const {
   GameStatistic,
   sequelize,
   UserGamePanding,
+  Street,
 } = require('../db/models');
 const { v4: uuidv4 } = require('uuid');
 const myEmitter = require('../src/ee');
@@ -272,6 +273,11 @@ router.route('/dice').post(async (req, res) => {
   myEmitter.emit(ROLL_DICE_SOCKET, gameusers, dice, curgame.turn);
 
   res.sendStatus(200);
+});
+router.route('/cardboard').get(async (req, res) => {
+  const card = await Street.findAll();
+
+  res.json(card);
 });
 
 module.exports = router;

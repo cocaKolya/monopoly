@@ -39,7 +39,7 @@ function App() {
   
   if (!localUser && location.pathname !== '/reg' && location.pathname !== '/login')
     history.push('/reg');
-    
+
     const user = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -47,6 +47,10 @@ function App() {
       socket.current = new WebSocket(url);
       const socketOnMessage = createSocketOnMessage(dispatch);
       socket.current.onmessage = socketOnMessage;
+      socket.current.onclose = () => {
+        alert('server close ws connection. Try again later')
+        history.push('/')
+      }
     }
   }, [user]);
 

@@ -14,9 +14,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   Street.init(
     {
+      boardid: DataTypes.INTEGER,
       name: DataTypes.STRING,
-      cost: DataTypes.INTEGER,
       color: DataTypes.STRING,
+      cost: DataTypes.INTEGER,
+      special: DataTypes.STRING,
+      corner: DataTypes.BOOLEAN,
       maxlevel: DataTypes.INTEGER,
       full: DataTypes.INTEGER,
     },
