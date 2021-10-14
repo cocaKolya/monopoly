@@ -11,20 +11,25 @@ import { useParams } from 'react-router';
 
 function RollDice({ user }) {
   const params = useParams();
-  const [play] = useSound(cubes);
+
   const dispatch = useDispatch();
-  const {
-    userPosition,
-    setCurrentPosition,
-    setUserPosition,
-    nextPlayer,
-    players,
-  } = useDiceContext();
+  const { userPosition, setCurrentPosition, setUserPosition, nextPlayer, players } =
+    useDiceContext();
 
   const diceSocket = useSelector((state) => state.dice);
   const turnSocket = useSelector((state) => state.turn);
 
   let currentPos = userPosition[turnSocket - 1];
+
+  const [soundEnabled, setSoundEnabled] = useState(true);
+
+  const [play] = useSound(cubes, {
+    soundEnabled,
+  });
+
+  const soundOnOffHandler = () => {
+    setSoundEnabled(!soundEnabled);
+  };
 
   useEffect(() => {
     const interval = () => {
@@ -84,6 +89,7 @@ function RollDice({ user }) {
         Ходит игрок: {players[turnSocket - 1]?.name} <br />
         На кубиках выпало: {diceSocket > 0 ? diceSocket : '??'}
       </p>
+      <Button onClick={soundOnOffHandler}>Stop sound ROLL</Button>
     </>
   );
 }
