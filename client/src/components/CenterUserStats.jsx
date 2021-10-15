@@ -2,10 +2,12 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 export const CenterUserStats = () => {
+  const localUser = JSON.parse(window.localStorage.getItem('user'));
   const currentUserCards = useSelector((state) => state.currentUserCards);
+  console.log(currentUserCards);
   return (
     <Wrapper>
-      <p> Игрок: {currentUserCards?.gameusers?.name}</p>
+      <p> Игрок: {localUser.name}</p>
       <p>Ваши деньги: {currentUserCards?.gameusers?.money}</p>
       <p>Ваши улицы: ""null""</p>
     </Wrapper>

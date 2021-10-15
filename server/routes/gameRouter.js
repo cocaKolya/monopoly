@@ -169,7 +169,8 @@ router.route('/add/users').post(async (req, res) => {
     if (panding.length > 0) {
       const usersPandingFilter = notMe.filter(
         (user) =>
-          panding.findIndex((pandingUser) => pandingUser.userid === user.id) === -1
+          panding.findIndex((pandingUser) => pandingUser.userid === user.id) ===
+          -1
       );
 
       const user = usersPandingFilter.map((el) => {
@@ -323,8 +324,8 @@ router.route('/cardboard').get(async (req, res) => {
     res.sendStatus(403);
   }
 });
-router.route('/nextturn').get(async (req, res) => {
-  const { gamekey } = req.body;
+router.route('/nextturn').post(async (req, res) => {
+  const { key } = req.body;
 
   try {
     const [gameusers] = await sequelize.query(`
@@ -332,10 +333,10 @@ router.route('/nextturn').get(async (req, res) => {
   join "UserInGames" on "Users".id = "UserInGames".userid
   join "Games" on "UserInGames".gameid = "Games".id
   join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
-  where "Games".key = '${gamekey}'
+  where "Games".key = '${key}'
    `);
 
-    const curgame = await Game.findOne({ where: { key: gamekey } });
+    const curgame = await Game.findOne({ where: { key: key } });
 
     myEmitter.emit(TURN_SOCKET, gameusers, curgame.turn);
 
@@ -399,7 +400,10 @@ router.route('/currentcard').post(async (req, res) => {
             where: { uigid: userInGameOnwer.id },
           });
           const cardOwner = await Estate.findAll({
-            where: { streetid: card.id, gamestatisticid: userstatisticOwner.id },
+            where: {
+              streetid: card.id,
+              gamestatisticid: userstatisticOwner.id,
+            },
           });
           if (cardOwner) {
             userstatisticOwner.money += value.value;
@@ -457,7 +461,7 @@ router.route('/cardbuy').post(async (req, res) => {
     });
 
     myEmitter.emit(GET_CARD_USER_SOCKET, gameusers, street);
-    res.json({ gameusers: [gameusers], street });
+    res.json({ gameusers: gameusers, street });
   } catch (error) {
     console.log(error);
     res.sendStatus(403);

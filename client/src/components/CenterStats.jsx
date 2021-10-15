@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { buyCard } from '../redux/actions/currentCardActions';
 import { Button } from './atoms/Button';
 import { useParams } from 'react-router';
+import { nextTurn } from '../redux/actions/gameActions';
 
 export const CenterStats = () => {
   const dispatch = useDispatch();
@@ -16,19 +17,20 @@ export const CenterStats = () => {
   const turnSocket = useSelector((state) => state.turnSocket);
   return (
     <Wrapper>
-      {
-        currCard?.card?.cost &&
-        currCard?.isFree && (
-          <Button
-            onClick={() =>
-              dispatch(
-                buyCard(currCard?.card?.boardid, localUser?.id, params?.id)
-              )
-            }
-            text={`Купить за ${currCard?.card?.cost}к`}
-          />
-        )}
-      <Button text={'Завершить ход'} />
+      {currCard?.card?.cost && currCard?.isFree && (
+        <Button
+          onClick={() =>
+            dispatch(
+              buyCard(currCard?.card?.boardid, localUser?.id, params?.id)
+            )
+          }
+          text={`Купить за ${currCard?.card?.cost}к`}
+        />
+      )}
+      <Button
+        text={'Завершить ход'}
+        onClick={() => dispatch(nextTurn(params.id))}
+      />
     </Wrapper>
   );
 };
