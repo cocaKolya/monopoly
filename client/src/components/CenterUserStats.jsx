@@ -3,13 +3,21 @@ import styled from 'styled-components';
 
 export const CenterUserStats = () => {
   const localUser = JSON.parse(window.localStorage.getItem('user'));
+
+  const gameUsers = useSelector((state) => state.gameUsers);
+  const currUser = gameUsers.find((el) => el.id === localUser.id);
   const currentUserCards = useSelector((state) => state.currentUserCards);
-  console.log(currentUserCards);
+  console.log('current user', currUser);
   return (
     <Wrapper>
-      <p> Игрок: {localUser.name}</p>
-      <p>Ваши деньги: {currentUserCards?.gameusers?.money}</p>
-      <p>Ваши улицы: ""null""</p>
+      <p> Игрок: {currUser?.name}</p>
+      <p>Ваши деньги: {currUser?.money}</p>
+      <p>
+        Ваши улицы:{' '}
+        {currentUserCards.map((el) => (
+          <span>{el.name}; </span>
+        ))}
+      </p>
     </Wrapper>
   );
 };

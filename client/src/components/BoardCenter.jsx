@@ -18,7 +18,7 @@ export const BoardCenter = ({ user }) => {
         <>
           <Row>
             <CenterCard />
-            {turnSocket === user.queue && <CenterStats />}
+            {turnSocket === user?.queue && <CenterStats />}
           </Row>
           <Row>
             <CenterUserStats />
