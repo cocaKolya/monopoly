@@ -4,6 +4,11 @@ import { buyCard } from '../redux/actions/currentCardActions';
 import { Button } from './atoms/Button';
 import { useParams } from 'react-router';
 
+import { useSound } from 'use-sound'
+import buySound from './sound/buySound.mp3'
+
+
+
 export const CenterStats = () => {
   const dispatch = useDispatch();
   const localUser = JSON.parse(window.localStorage.getItem('user'));
@@ -11,14 +16,18 @@ export const CenterStats = () => {
 
   const currCard = useSelector((state) => state.currentCard);
   console.log(currCard);
+
+  const [play] = useSound(buySound);
   return (
     <Wrapper>
       {currCard?.card?.cost && currCard?.isFree && (
         <Button
-          onClick={() =>
+          onClick={() => {
+            play()
             dispatch(
               buyCard(currCard?.card?.boardid, localUser?.id, params?.id)
             )
+          }
           }
           text={`Купить за ${currCard?.card?.cost}к`}
         />
