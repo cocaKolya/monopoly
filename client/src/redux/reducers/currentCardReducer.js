@@ -6,9 +6,7 @@ export const currentCardReducer = (state = [], action) => {
     case GET_CURRENT_CARD: {
       return payload;
     }
-    case BUY_CARD: {
-      return payload;
-    }
+    
     default:
       return state;
   }

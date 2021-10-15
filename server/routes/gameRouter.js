@@ -369,7 +369,7 @@ router.route('/cardbuy').post(async (req, res) => {
   });
 
   myEmitter.emit(GET_CARD_USER_SOCKET, gameusers, street);
-  res.sendStatus(200);
+  res.json({gameusers:[gameusers], street});
 });
 
 module.exports = router;

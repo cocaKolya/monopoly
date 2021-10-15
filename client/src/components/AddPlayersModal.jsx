@@ -76,7 +76,6 @@ export const AddPlayersModal = () => {
     dispatch(addPendingUsers(currentKey, selectedPlayers));
     setShowAddUsers(false);
   };
-  console.log(allUsers);
   return (
     <ModalWrapper isOpen={showAddUsers}>
       <Overlay onClick={() => setShowAddUsers(false)} />

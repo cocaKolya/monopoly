@@ -3,6 +3,7 @@ import { allCardsReducer } from './allCardsReducer';
 import { allUsersReducer } from './allUsersReducers';
 import { currentCardReducer } from './currentCardReducer';
 import { currentGameReducer } from './currentGameReducer';
+import { currentUserCardsReducer } from './currentUserCardsReducer';
 import { diceReducer } from './diceReducer';
 import { gameReducer } from './gameReducer';
 import { gameUsersReducer } from './gameUsersReducers';
@@ -25,4 +26,5 @@ export const rootReducer = combineReducers({
   allCards: allCardsReducer,
   currentCard: currentCardReducer,
   userInGameStats: userInGameStatsReducer,
+  currentUserCards: currentUserCardsReducer,
 });
