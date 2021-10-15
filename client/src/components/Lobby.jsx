@@ -68,8 +68,7 @@ const LobbyWrapper = styled.div`
   border: 3px solid black;
   background-color: white;
   width: 50%;
-  height: 500px;
-  margin: 10px;
+  height: 500px;boardid
   border-radius: 10px;
 `;
 

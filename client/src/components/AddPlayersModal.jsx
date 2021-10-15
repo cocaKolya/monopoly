@@ -35,6 +35,7 @@ const ModalWrapper = styled.div`
   position: fixed;
   width: 100%;
   height: 100%;
+  z-index: 100;
 `;
 
 const Overlay = styled.div`
@@ -75,28 +76,35 @@ export const AddPlayersModal = () => {
     dispatch(addPendingUsers(currentKey, selectedPlayers));
     setShowAddUsers(false);
   };
-
   return (
     <ModalWrapper isOpen={showAddUsers}>
       <Overlay onClick={() => setShowAddUsers(false)} />
       <Modal>
         <UsersWrapper>
-          <form>
-            {allUsers?.map((el) => (
-              <AddPlayerItem
-                key={el.id}
-                player={el}
-                onChange={() => changeHandler(el.id)}
-              />
-            ))}
-          </form>
+          {allUsers !== [] ? (
+            <form>
+              {allUsers?.map((el) => (
+                <AddPlayerItem
+                  key={el.id}
+                  player={el}
+                  onChange={() => changeHandler(el.id)}
+                />
+              ))}
+            </form>
+          ) : (
+            <p>некого добавлять</p>
+          )}
         </UsersWrapper>
-        <Button
-          text='ADD'
-          onClick={() => {
-            addPlayersHandler();
-          }}
-        />
+        {allUsers !== [] ? (
+          <Button
+            text='ADD'
+            onClick={() => {
+              addPlayersHandler();
+            }}
+          />
+        ) : (
+          <Button onClick={() => setShowAddUsers(false)} text={'Close'} />
+        )}
       </Modal>
     </ModalWrapper>
   );

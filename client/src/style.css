@@ -2,6 +2,7 @@ body {
   width: 100%;
   background-color: rgb(233, 96, 142);
   margin: 0px;
+  font-family: 'Cuprum', sans-serif;
 }
 
 * {

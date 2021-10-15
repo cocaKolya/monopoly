@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import CardBoard from './components/CardBoard';
-import styled from 'styled-components';
+
 import DiceContextProvider from './contexts/DiceContext';
 import './style.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,18 +17,8 @@ import { getGames } from './redux/actions/gameActions';
 import { createSocketOnMessage } from './utils/socket.message';
 import { GamePlayingProcess } from './components/GamePlayingProcess';
 import LogIn from './components/LogIn';
+import styled from 'styled-components';
 
-
-const MainWrapperDiv = styled('div')`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 1000px;
-  width: 100%;
-  transform-style: preserve-3d;
-  perspective: 900px;
-`;
 function App() {
   const dispatch = useDispatch();
   const url = process.env.REACT_APP_URL_SOCKET;
@@ -53,9 +43,9 @@ function App() {
       const socketOnMessage = createSocketOnMessage(dispatch);
       socket.current.onmessage = socketOnMessage;
       socket.current.onclose = () => {
-        alert('server close ws connection. Try again later')
-        history.push('/')
-      }
+        alert('server close ws connection. Try again later');
+        history.push('/');
+      };
     }
   }, [user]);
 
@@ -67,7 +57,7 @@ function App() {
   return (
     <DiceContextProvider>
       <NavBar />
-      <MainWrapperDiv>
+      <MainWrapper>
         <AddPlayersModal />
         <Switch>
           <Route exact path='/game/:id' component={GamePlayingProcess} />
@@ -79,9 +69,18 @@ function App() {
           <Route exact path='/game/:id/lobby' component={Lobby} />
           <Route exact path='/profile' component={Lobby} />
         </Switch>
-      </MainWrapperDiv>
+      </MainWrapper>
     </DiceContextProvider>
   );
 }
 
 export default App;
+
+const MainWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  // height: 840px;
+`;

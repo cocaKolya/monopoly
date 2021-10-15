@@ -1,19 +1,29 @@
 import styled from 'styled-components';
 import { CenterCard } from './CenterCard';
+import { CenterStats } from './CenterStats';
+import { CenterUserStats } from './CenterUserStats';
 
 export const BoardCenter = () => {
   return (
     <Center>
-      <CenterCard />
+      <Row>
+        <CenterCard />
+        <CenterStats />
+      </Row>
+      <Row>
+        <CenterUserStats />
+      </Row>
     </Center>
   );
 };
 
 const Center = styled('div')`
+  font-weight: 700;
   ${(props) => props.rotate && '-webkit-transform: rotate(-45deg)'};
   display: flex;
+  padding: 20px;
   flex-direction: column;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
   font-size: 35pt;
   height: 552px;
@@ -24,4 +34,11 @@ const Center = styled('div')`
     position: relative;
     z-index: 5
   `}
+`;
+
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 50%;
 `;

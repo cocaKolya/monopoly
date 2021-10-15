@@ -8,6 +8,7 @@ const {
   UserGamePanding,
   Street,
   Dohod,
+  Estate,
 } = require('../db/models');
 const { v4: uuidv4 } = require('uuid');
 const myEmitter = require('../src/ee');
@@ -18,6 +19,7 @@ const {
   START_GAME_SOCKET,
   ROLL_DICE_SOCKET,
   TURN_SOCKET,
+  GET_CARD_USER_SOCKET,
 } = require('../src/constants/event');
 
 router.route('/').get(async (req, res) => {
@@ -61,16 +63,7 @@ router.route('/add').post(async (req, res) => {
     money: 5500,
     queue: 1,
   });
-  // const users = await User.findAll();
-  // const userInGame = await Game.findOne({
-  //   where: { id: game.id },
-  //   include: User,
-  // });
-  // console.log(userInGame.User); //user witch create game
 
-  // Отправить данные о новой игре всем игрокам
-
-  // console.log( myEmitter.emit(CREATE_GAME_SOCKET, game));
   myEmitter.emit(CREATE_GAME_SOCKET, game);
 
   res.json(game);
@@ -80,7 +73,6 @@ router.route('/del').post(async (req, res) => {
   const { userid, gameid } = req.body;
   await Game.destoy({ where: { gameid, userid } });
 
-  //отправить id удаленной игры, чтобы все ее удалили
   myEmitter.emit(DEL_GAME, gameid);
   res.sendStatus(200);
 });
@@ -96,7 +88,7 @@ router.route('/mygame').post(async (req, res) => {
     },
   });
 
-  res.json(myGames[0].UserInGamesAliase);
+  res.json(myGames[0]?.UserInGamesAliase);
 });
 
 router.route('/start').post(async (req, res) => {
@@ -111,6 +103,7 @@ router.route('/start').post(async (req, res) => {
       },
     ],
   });
+
   game.inprocess = true;
   await game.save();
   const users = game.UserInGamesAliase;
@@ -270,20 +263,113 @@ router.route('/cardboard').get(async (req, res) => {
   res.json(card);
 });
 router.route('/currentcard').post(async (req, res) => {
-  const { boardid } = req.body;
-  let card;
-  let cardBoardValue;
-  if (boardid === 0) {
+  const { boardid, userid, gamekey } = req.body;
+
+  let isFree = false;
+  let card = null;
+  let cardBoardValue = null;
+  const money = {};
+
+  const user = await User.findOne({ where: { id: userid } });
+
+  const [gameusers] = await sequelize.query(`
+  select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
+  join "UserInGames" on "Users".id = "UserInGames".userid
+  join "Games" on "UserInGames".gameid = "Games".id
+  join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+  where "Games".key = '${gamekey}'
+   `);
+
+  if (boardid === null) {
     card = { name: 'START' };
   } else {
+    const game = await Game.findOne({ where: { key: gamekey } });
+
+    const userInGame = await UserInGame.findOne({
+      where: { userid, gameid: game.id },
+    });
     card = await Street.findOne({
-      where: boardid,
+      where: { boardid },
     });
 
-    cardBoardValue = await Dohod.findOne({ where: { streetid: card?.id } });
+    const value = await Dohod.findOne({ where: { streetid: card.id } });
+
+    const userstatistic = await GameStatistic.findOne({
+      where: { uigid: userInGame.id },
+    });
+    const cardowner = await Estate.findAll({
+      where: { streetid: card.id, gamestatisticid: userstatistic.id },
+    });
+    cardBoardValue = await Dohod.findOne({ where: { streetid: card.id } });
+    if (cardowner.length === 0) {
+      isFree = true;
+    } else {
+      for (let i = 0; i < gameusers.length; i++) {
+        const userInGameOnwer = await UserInGame.findOne({
+          where: { userid: gameusers[i].id, gameid: game.id },
+        });
+
+        const userstatisticOwner = await GameStatistic.findOne({
+          where: { uigid: userInGameOnwer.id },
+        });
+        const cardOwner = await Estate.findAll({
+          where: { streetid: card.id, gamestatisticid: userstatisticOwner.id },
+        });
+        if (cardOwner) {
+          userstatisticOwner.money += value.value;
+          userstatistic.money -= value.value;
+          await userstatisticOwner.save();
+          await userstatistic.save();
+          money.pay = user.name;
+          money.haveMoney = gameusers[i].name;
+        }
+      }
+    }
   }
 
-  res.json({ card, cardBoardValue });
+  res.json({ card, cardBoardValue, isFree, money });
+});
+
+router.route('/cardbuy').post(async (req, res) => {
+  const { boardid, userid, gamekey } = req.body;
+
+  const game = await Game.findOne({ where: { key: gamekey } });
+
+  const userInGame = await UserInGame.findOne({
+    where: { userid, gameid: game.id },
+  });
+
+  const userstatistic = await GameStatistic.findOne({
+    where: { uigid: userInGame.id },
+  });
+
+  const street = await Street.findOne({ where: { boardid } });
+
+  const dohod = await Dohod.findOne({ where: { streetid: street.id } });
+
+  userstatistic.money -= street.cost;
+
+  await userstatistic.save();
+
+
+
+  const [gameusers] = await sequelize.query(`
+  select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users"
+  join "UserInGames" on "Users".id = "UserInGames".userid
+  join "Games" on "UserInGames".gameid = "Games".id
+  join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+  where "Games".key = '${gamekey}'
+   `);
+
+
+  await Estate.create({
+    streetid:street.id,
+    gamestatisticid: userstatistic.id,
+    dohodid: dohod.id,
+  });
+
+  myEmitter.emit(GET_CARD_USER_SOCKET, gameusers, street);
+  res.json({gameusers:[gameusers], street});
 });
 
 module.exports = router;

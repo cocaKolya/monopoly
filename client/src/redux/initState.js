@@ -11,6 +11,8 @@ const initState = {
   turn: null,
   allCards: {},
   currentCard: [],
+  userInGameStats: {},
+  currentUserCards: {},
 };
 
 export default initState;
