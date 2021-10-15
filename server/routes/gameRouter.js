@@ -147,6 +147,7 @@ router.route('/start').post(async (req, res) => {
     //Отправить всем игрокам в лобби статус игры
 
     myEmitter.emit(START_GAME_SOCKET, users, game.id);
+    myEmitter.emit(GET_GAME_USERS_SOCKET, gameusers);
     myEmitter.emit(TURN_SOCKET, gameusers, game.turn);
     res.json(game);
   } catch (err) {
@@ -416,6 +417,7 @@ router.route('/currentcard').post(async (req, res) => {
         }
       }
     }
+    myEmitter.emit(GET_GAME_USERS_SOCKET, gameusers);
 
     res.json({ card, cardBoardValue, isFree, money });
   } catch (err) {
@@ -461,7 +463,8 @@ router.route('/cardbuy').post(async (req, res) => {
     });
 
     myEmitter.emit(GET_CARD_USER_SOCKET, gameusers, street);
-    res.json({ gameusers: gameusers, street });
+    myEmitter.emit(GET_GAME_USERS_SOCKET, gameusers);
+    res.sendStatus(200);
   } catch (error) {
     console.log(error);
     res.sendStatus(403);
