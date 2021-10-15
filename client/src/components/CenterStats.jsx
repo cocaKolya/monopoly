@@ -6,23 +6,27 @@ import { useParams } from 'react-router';
 
 export const CenterStats = () => {
   const dispatch = useDispatch();
-  const localUser = JSON.parse(window.localStorage.getItem('user'));
+  const localUser =
+    JSON.parse(window.localStorage.getItem('curUser')) ||
+    JSON.parse(window.localStorage.getItem('user'));
   const params = useParams();
   const currCard = useSelector((state) => state.currentCard);
   const currentUserCards = useSelector((state) => state.currentUserCards);
-  console.log('asdasdasdasdasd', currentUserCards);
+  const turnSocket = useSelector((state) => state.turnSocket);
   return (
     <Wrapper>
-      {currCard?.card?.cost && currCard?.isFree && (
-        <Button
-          onClick={() =>
-            dispatch(
-              buyCard(currCard?.card?.boardid, localUser?.id, params?.id)
-            )
-          }
-          text={`Купить за ${currCard?.card?.cost}к`}
-        />
-      )}
+      {
+        currCard?.card?.cost &&
+        currCard?.isFree && (
+          <Button
+            onClick={() =>
+              dispatch(
+                buyCard(currCard?.card?.boardid, localUser?.id, params?.id)
+              )
+            }
+            text={`Купить за ${currCard?.card?.cost}к`}
+          />
+        )}
       <Button text={'Завершить ход'} />
     </Wrapper>
   );

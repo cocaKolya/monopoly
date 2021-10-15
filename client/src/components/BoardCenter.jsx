@@ -1,18 +1,27 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useDiceContext } from '../contexts/DiceContext';
 import { CenterCard } from './CenterCard';
 import { CenterStats } from './CenterStats';
 import { CenterUserStats } from './CenterUserStats';
 
-export const BoardCenter = () => {
+export const BoardCenter = ({ user }) => {
+  const { inProcess } = useDiceContext();
+
+  const turnSocket = useSelector((state) => state.turn);
   return (
     <Center>
-      <Row>
-        <CenterCard />
-        <CenterStats />
-      </Row>
-      <Row>
-        <CenterUserStats />
-      </Row>
+      {!inProcess && (
+        <>
+          <Row>
+            <CenterCard />
+            {turnSocket !== user.queue && <CenterStats />}
+          </Row>
+          <Row>
+            <CenterUserStats />
+          </Row>
+        </>
+      )}
     </Center>
   );
 };

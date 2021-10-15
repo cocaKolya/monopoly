@@ -10,12 +10,10 @@ export const CenterCard = () => {
   const turn = useSelector((state) => state.turn);
   const currentCard = useSelector((state) => state.currentCard);
   const { currentPosition } = useDiceContext();
-  console.log('asdasdasd',currentCard);
   const localUser = JSON.parse(window.localStorage.getItem('user'));
   const params = useParams();
 
   useEffect(() => {
-    console.log('WORKING', currentPosition);
     dispatch(getCurrentCard(currentPosition, localUser?.id, params?.id));
   }, [currentPosition]);
 

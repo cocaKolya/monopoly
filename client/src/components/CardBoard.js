@@ -56,7 +56,7 @@ const dbRight = [
   // { id: 0, name: 'Start', isCorner: true, special: 'start' },
 ];
 
-function CardBoard() {
+function CardBoard({user}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -75,7 +75,7 @@ function CardBoard() {
           </LineWrapLeft>
           <Row>
             <CardLine position={'up'} db={allCards?.up} />
-            <BoardCenter/>
+            <BoardCenter user={user}/>
             <CardLine position={'down'} db={allCards?.down} />
           </Row>
           <LineWrapRight>

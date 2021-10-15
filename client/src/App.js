@@ -32,9 +32,9 @@ function App() {
     !localUser &&
     location.pathname !== '/reg' &&
     location.pathname !== '/login'
-  )
+  ) {
     history.push('/reg');
-
+  }
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
