@@ -413,6 +413,7 @@ router.route('/currentcard').post(async (req, res) => {
         }
       }
     }
+    myEmitter.emit(GET_GAME_USERS_SOCKET, gameusers);
 
     res.json({ card, cardBoardValue, isFree, money });
   } catch (err) {
