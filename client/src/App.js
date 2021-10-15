@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 
-
 import DiceContextProvider from './contexts/DiceContext';
 import './style.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,11 +27,7 @@ function App() {
   // const localUser = window.localStorage.getItem('user');
   const history = useHistory();
   const user = useSelector((state) => state.user);
-  const isCheckedAuth = useRef(false)
-
-
-
-
+  const isCheckedAuth = useRef(false);
 
   useEffect(() => {
     if (user) {
@@ -45,14 +40,13 @@ function App() {
         history.push('/');
       };
     }
-    
+
     if (isCheckedAuth && !user) history.push('/reg');
- 
   }, [user]);
 
   useEffect(() => {
     dispatch(checkUser());
-    isCheckedAuth.current = true
+    isCheckedAuth.current = true;
   }, []);
 
   return (
@@ -61,14 +55,14 @@ function App() {
       <MainWrapper>
         <AddPlayersModal />
         <Switch>
-          <Route exact path='/game/:id' component={GamePlayingProcess} />
-          <Route exact path='/' component={HomePage} />
-          <Route exact path='/reg' component={RegForm} />
-          <Route exact path='/login' component={LogIn} />
-          <Route exact path='/logout' component={Logout} />
-          <Route exact path='/home' component={HomePage} />
-          <Route exact path='/game/:id/lobby' component={Lobby} />
-          <Route exact path='/profile' component={Lobby} />
+          <Route exact path="/game/:id" component={GamePlayingProcess} />
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/reg" component={RegForm} />
+          <Route exact path="/login" component={LogIn} />
+          <Route exact path="/logout" component={Logout} />
+
+          <Route exact path="/game/:id/lobby" component={Lobby} />
+          <Route exact path="/profile" component={Lobby} />
         </Switch>
       </MainWrapper>
     </DiceContextProvider>

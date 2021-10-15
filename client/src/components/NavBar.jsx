@@ -14,8 +14,7 @@ export const NavBar = () => {
         {user && <UserName>{user.name}</UserName>}
         <LinkWrapper>
           {user && <Link to='/profile'>PROFILE</Link>}
-          <Link to='/home'>HOME</Link>
-          <Link to='/'>GAME</Link>
+          <Link to='/'>HOME</Link>
           {!user && <Link to='/reg'>REG</Link>}
           {!user && <Link to='/login'>LOGIN</Link>}
           {user && <Link to='/logout'>LOGOUT</Link>}

@@ -460,7 +460,7 @@ router.route('/cardbuy').post(async (req, res) => {
 
     myEmitter.emit(GET_CARD_USER_SOCKET, gameusers, street);
     myEmitter.emit(GET_GAME_USERS_SOCKET, gameusers);
-    res.sendStatus(200);
+    res.json(street);
   } catch (error) {
     console.log(error);
     res.sendStatus(403);
