@@ -23,16 +23,25 @@ const {
 } = require('../src/constants/event');
 
 router.route('/').get(async (req, res) => {
-  const game = await Game.findAll({
-    include: [
-      {
-        model: User,
-        as: 'UserInGamesAliase',
-      },
-    ],
-  });
+  try {
+    const game = await Game.findAll({
+      include: [
+        {
+          model: User,
+          as: 'UserInGamesAliase',
+        },
+      ],
+    });
+    console.log('Games', game);
+    
+    res.json(game);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(404)
+  }
+  
 
-  res.json(game);
+  
 });
 
 router.route('/checkGame').get(async (req, res) => {
