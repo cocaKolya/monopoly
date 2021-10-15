@@ -1,8 +1,11 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useDiceContext } from '../contexts/DiceContext';
+import { Button } from './atoms/Button';
 
 export const NavBar = () => {
+  const { soundEnabled, setSoundEnabled, soundOnOffHandler } = useDiceContext();
   const user = useSelector((state) => state.user);
   return (
     <NavBarWrapper>
@@ -19,6 +22,23 @@ export const NavBar = () => {
           {!user && <Link to='/login'>LOGIN</Link>}
           {user && <Link to='/logout'>LOGOUT</Link>}
         </LinkWrapper>
+        {soundEnabled ? (
+          <img
+            src='https://img.icons8.com/material-rounded/30/000000/no-audio--v2.png'
+            alt='sound'
+            onClick={() => {
+              soundOnOffHandler();
+            }}
+          />
+        ) : (
+          <img
+            src='https://img.icons8.com/material-rounded/30/000000/no-audio--v1.png'
+            alt='sound-off'
+            onClick={() => {
+              soundOnOffHandler();
+            }}
+          />
+        )}
       </RightWrapper>
     </NavBarWrapper>
   );

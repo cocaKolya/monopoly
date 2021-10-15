@@ -22,21 +22,17 @@ export const Dice = ({ user }) => {
     nextPlayer,
     players,
     setInprocess,
+    soundEnabled,
   } = useDiceContext();
 
   const diceSocket = useSelector((state) => state.dice);
   const turnSocket = useSelector((state) => state.turn);
 
   let currentPos = userPosition[turnSocket - 1];
-  const [soundEnabled, setSoundEnabled] = useState(true);
 
   const [play] = useSound(cubes, {
     soundEnabled,
   });
-
-  const soundOnOffHandler = () => {
-    setSoundEnabled(!soundEnabled);
-  };
 
   useEffect(() => {
     const interval = () => {
@@ -108,8 +104,6 @@ export const Dice = ({ user }) => {
           PLAYER {players[turnSocket - 1]?.name} TURN
         </Button>
       )}
-
-      <Button text={'Stop sound ROLL'} onClick={soundOnOffHandler} />
     </DiceWrapper>
   );
 };

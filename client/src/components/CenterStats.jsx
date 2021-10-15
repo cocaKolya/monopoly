@@ -7,6 +7,7 @@ import { nextTurn } from '../redux/actions/gameActions';
 
 import { useSound } from 'use-sound';
 import buySound from './sound/buySound.mp3';
+import { useDiceContext } from '../contexts/DiceContext';
 
 export const CenterStats = () => {
   const dispatch = useDispatch();
@@ -14,23 +15,28 @@ export const CenterStats = () => {
     JSON.parse(window.localStorage.getItem('curUser')) ||
     JSON.parse(window.localStorage.getItem('user'));
   const params = useParams();
-
+  const { soundEnabled } = useDiceContext();
   const currCard = useSelector((state) => state.currentCard);
   console.log(currCard);
 
-  const [play] = useSound(buySound);
+  const [play] = useSound(buySound, { soundEnabled });
   return (
     <Wrapper>
       {currCard?.card?.cost && currCard?.isFree && (
         <Button
           onClick={() => {
             play();
-            dispatch(buyCard(currCard?.card?.boardid, localUser?.id, params?.id));
+            dispatch(
+              buyCard(currCard?.card?.boardid, localUser?.id, params?.id)
+            );
           }}
           text={`Купить за ${currCard?.card?.cost}к`}
         />
       )}
-      <Button text={'Завершить ход'} onClick={() => dispatch(nextTurn(params.id))} />
+      <Button
+        text={'Завершить ход'}
+        onClick={() => dispatch(nextTurn(params.id))}
+      />
     </Wrapper>
   );
 };

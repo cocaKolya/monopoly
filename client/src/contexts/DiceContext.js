@@ -16,7 +16,11 @@ const DiceContextProvider = ({ children }) => {
   const [transform, setTransform] = useState(false);
   const changeTransform = () => setTransform(!transform);
 
+  const [soundEnabled, setSoundEnabled] = useState(true);
 
+  const soundOnOffHandler = () => {
+    setSoundEnabled(!soundEnabled);
+  };
 
   useEffect(() => {
     if (!userPosition.length || userPosition.length !== players.length) {
@@ -50,6 +54,9 @@ const DiceContextProvider = ({ children }) => {
         setCurrentPosition,
         inProcess,
         setInprocess,
+        soundEnabled,
+        setSoundEnabled,
+        soundOnOffHandler,
       }}
     >
       {children}
