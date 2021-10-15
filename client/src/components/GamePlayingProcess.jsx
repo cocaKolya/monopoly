@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { useDiceContext } from '../contexts/DiceContext';
+
 import { getGameUsers } from '../redux/actions/gameUsersActions';
 import CardBoard from './CardBoard';
-import RollDice from './RollDice';
+
 import Switcher from './Switcher';
 import styled from 'styled-components';
 import { Dice } from './Dice';

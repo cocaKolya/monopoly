@@ -147,6 +147,7 @@ router.route('/start').post(async (req, res) => {
     //Отправить всем игрокам в лобби статус игры
 
     myEmitter.emit(START_GAME_SOCKET, users, game.id);
+    myEmitter.emit(GET_GAME_USERS_SOCKET, gameusers);
     myEmitter.emit(TURN_SOCKET, gameusers, game.turn);
     res.json(game);
   } catch (err) {
@@ -323,8 +324,8 @@ router.route('/cardboard').get(async (req, res) => {
     res.sendStatus(403);
   }
 });
-router.route('/nextturn').get(async (req, res) => {
-  const { gamekey } = req.body;
+router.route('/nextturn').post(async (req, res) => {
+  const { key } = req.body;
 
   try {
     const [gameusers] = await sequelize.query(`
@@ -457,7 +458,8 @@ router.route('/cardbuy').post(async (req, res) => {
     });
 
     myEmitter.emit(GET_CARD_USER_SOCKET, gameusers, street);
-    res.json({ gameusers: [gameusers], street });
+    myEmitter.emit(GET_GAME_USERS_SOCKET, gameusers);
+    res.sendStatus(200);
   } catch (error) {
     console.log(error);
     res.sendStatus(403);
