@@ -6,6 +6,7 @@ const {
   START_GAME_SOCKET,
   TURN_SOCKET,
   GET_CARD_USER_SOCKET,
+  JOIN_GAME_SOCKET,
 } = require('../constants/event');
 const myEmitter = require('../ee');
 
@@ -15,6 +16,18 @@ function registerWsEmitter(map) {
       userConnect.send(
         JSON.stringify({
           type: CREATE_GAME_SOCKET,
+          payload: game,
+        })
+      );
+    }
+  });
+
+
+  myEmitter.on(DEL_GAME, (game) => {
+    for (let [id, userConnect] of map) {
+      userConnect.send(
+        JSON.stringify({
+          type: DEL_GAME,
           payload: game,
         })
       );

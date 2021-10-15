@@ -1,11 +1,12 @@
 import {
-  CLEAR_DICE_SOCKET,
+
   CREATE_GAME_SOCKET,
   GET_CARD_USER_SOCKET,
   GET_GAME_USERS_SOCKET,
   ROLL_DICE_SOCKET,
   START_GAME_SOCKET,
   TURN_SOCKET,
+
 } from '../../../constants/socket';
 
 export const startGameSocket = (gameId) => {

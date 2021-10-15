@@ -9,7 +9,8 @@ export const BoardCenter = ({ user }) => {
   const { inProcess } = useDiceContext();
   const localUser = JSON.parse(window.localStorage.getItem('user'));
   const currUserCards = useSelector((state) => state.currentUserCards);
-  const ususer = currUserCards?.gameusers?.find((el) => el.id === localUser.id);
+  console.log(currUserCards, '-----------');
+  const ususer = currUserCards?.find((el) => el.id === localUser.id);
   console.log('======', ususer);
   const turnSocket = useSelector((state) => state.turn);
   return (

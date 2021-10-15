@@ -20,7 +20,7 @@ function RegForm() {
 
   useEffect(() => {
     if (user) {
-      history.push('/home');
+      history.push('/');
     }
   }, [user]);
 

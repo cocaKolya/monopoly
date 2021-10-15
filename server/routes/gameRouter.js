@@ -90,7 +90,7 @@ router.route('/add').post(async (req, res) => {
 router.route('/del').post(async (req, res) => {
   const { userid, gameid } = req.body;
   try {
-    await Game.destoy({ where: { gameid, userid } });
+    await userInGame.destoy({ where: { gameid, userid } });
 
     myEmitter.emit(DEL_GAME, gameid);
     res.sendStatus(200);
@@ -170,8 +170,7 @@ router.route('/add/users').post(async (req, res) => {
     if (panding.length > 0) {
       const usersPandingFilter = notMe.filter(
         (user) =>
-          panding.findIndex((pandingUser) => pandingUser.userid === user.id) ===
-          -1
+          panding.findIndex((pandingUser) => pandingUser.userid === user.id) === -1
       );
 
       const user = usersPandingFilter.map((el) => {
@@ -387,8 +386,9 @@ router.route('/currentcard').post(async (req, res) => {
       const cardEstate = await Estate.findAll({
         where: { streetid: card.id, gamestatisticid: userstatistic.id },
       });
-
+      console.log(0000, 'cardEstate', cardEstate);
       cardBoardValue = await Dohod.findOne({ where: { streetid: card.id } });
+
       if (cardEstate.length === 0) {
         isFree = true;
       } else {
@@ -406,9 +406,14 @@ router.route('/currentcard').post(async (req, res) => {
               gamestatisticid: userstatisticOwner.id,
             },
           });
-          if (cardOwner) {
+          console.log(111111, 'cardOwner', cardOwner);
+          if (cardOwner.length !== 0) {
+            console.log(22222,'userstatisticOwner', userstatisticOwner);
+            console.log(33333,'userstatistic', userstatistic);
             userstatisticOwner.money += value.value;
             userstatistic.money -= value.value;
+            console.log(44444,'userstatisticOwner', userstatisticOwner);
+            console.log(55555,'userstatistic', userstatistic);
             await userstatisticOwner.save();
             await userstatistic.save();
             money.pay = user.name;

@@ -20,7 +20,7 @@ function LogIn() {
 
   useEffect(() => {
     if (user) {
-      history.push('/home');
+      history.push('/');
     }
   }, [user]);
 

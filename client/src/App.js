@@ -23,7 +23,7 @@ function App() {
   const url = process.env.REACT_APP_URL_SOCKET;
   const socket = useRef();
 
-  let location = useLocation();
+  // let location = useLocation();
   // const localUser = window.localStorage.getItem('user');
   const history = useHistory();
   const user = useSelector((state) => state.user);
