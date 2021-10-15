@@ -24,8 +24,6 @@ export const createSocketOnMessage = (dispatch) => (event) => {
       dispatch(createGameSocket(parsedData.payload));
       break;
     case GET_GAME_USERS_SOCKET:
-      console.log(parsedData.payload);
-
       dispatch(getGameUsersSocket(parsedData.payload));
       break;
 

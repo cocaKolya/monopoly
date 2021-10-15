@@ -20,13 +20,12 @@ function LogIn() {
 
   useEffect(() => {
     if (user) {
-      history.push('/home');
+      history.push('/');
     }
   }, [user]);
 
   const inputChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(formInput);
   };
   const submitForm = (e) => {
     e.preventDefault();

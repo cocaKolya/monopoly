@@ -5,7 +5,7 @@ import { useDiceContext } from '../contexts/DiceContext';
 import { Button } from './atoms/Button';
 
 export const NavBar = () => {
-  const { soundEnabled, setSoundEnabled, soundOnOffHandler } = useDiceContext();
+  const { soundEnabled, soundOnOffHandler } = useDiceContext();
   const user = useSelector((state) => state.user);
   return (
     <NavBarWrapper>

@@ -26,13 +26,9 @@ function GameItem({ game, active }) {
 
   return (
     <GameWrapper>
-      <div>{game.id}</div>
+      <div>Monopoly </div>
       <PlayersWrapper>
-        <div>olololol</div>
-        {/* <Player>{game.gamer1}</Player>
-        <Player>{game.gamer2}</Player>
-        {game.gamer3 && <Player>{game.gamer3}</Player>}
-        {game.gamer4 && <Player>{game.gamer4}</Player>} */}
+        <div>Public Game {game.id}</div>
       </PlayersWrapper>
       {active ? (
         <PlayersWrapper>

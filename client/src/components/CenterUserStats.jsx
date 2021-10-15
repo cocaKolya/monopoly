@@ -7,7 +7,6 @@ export const CenterUserStats = () => {
   const gameUsers = useSelector((state) => state.gameUsers);
   const currUser = gameUsers.find((el) => el.id === localUser.id);
   const currentUserCards = useSelector((state) => state.currentUserCards);
-  console.log('current user', currUser);
   return (
     <Wrapper>
       <p> Игрок: {currUser?.name}</p>
@@ -27,9 +26,10 @@ const Wrapper = styled.div`
   font-size: 14pt;
   flex-direction: column;
   aligh-items: center;
-  width: 100%;
+  max-width: 100%;
   padding: 10px;
   margin: 5px;
   height: 100%;
-  border: 1px solid red;
+  max-width: 450px;
+  word-break: normal;
 `;

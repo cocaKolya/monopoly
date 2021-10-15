@@ -46,7 +46,7 @@ export const Lobby = () => {
   return (
     <LobbyWrapper>
       <GroupDiv>
-        <CloseButton onClick={() => history.push('/home')}>close</CloseButton>
+        <CloseButton onClick={() => history.push('/')}>close</CloseButton>
         <GamePlayersList players={gameUsers} />
         <p>waiting for other players...</p>
         <Button text={'add Players'} onClick={() => addUsersHandler()}></Button>

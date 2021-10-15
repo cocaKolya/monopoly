@@ -7,18 +7,21 @@ import { getCurrentCard } from '../redux/actions/currentCardActions';
 
 export const CenterCard = () => {
   const dispatch = useDispatch();
-  const turn = useSelector((state) => state.turn);
   const currentCard = useSelector((state) => state.currentCard);
   const { currentPosition } = useDiceContext();
   const localUser = JSON.parse(window.localStorage.getItem('user'));
   const params = useParams();
-
+  console.log(currentCard);
   useEffect(() => {
     dispatch(getCurrentCard(currentPosition, localUser?.id, params?.id));
   }, [currentPosition]);
 
   return (
-    <CardBack key={1} special={currentCard?.card?.special}>
+    <CardBack
+      key={currentCard?.card?.boardid}
+      special={currentCard?.card?.special}
+      isCorner={currentCard?.card?.corner}
+    >
       {currentCard?.card?.color && (
         <CardHead color={currentCard?.card?.color}></CardHead>
       )}
@@ -47,8 +50,13 @@ const CardBack = styled('div')`
   align-items: center;
   border: 1.5px solid black;
   background-color: white;
+  ${(props) =>
+    props.isCorner &&
+    'border: none; background-color: rgba(255, 255, 255, 0);'}
   background-size: cover;
-  ${(props) => props.special==='train' && `background-image: url(/${props.special}.png);`}
+  ${(props) =>
+    props.special === 'train' &&
+    `background-image: url(/${props.special}.png);`}
   ${(props) =>
     props.special === 'train' &&
     'background-size: 50px; background-repeat: no-repeat; background-position-x: center; background-position-y: 90%;'}

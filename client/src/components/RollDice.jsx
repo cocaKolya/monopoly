@@ -49,7 +49,6 @@ function RollDice({ user }) {
           );
 
         if (currentPos === newPosition) {
-          console.log('inside it');
           setCurrentPosition(currentPos);
           clearInterval(timerId);
           dispatch(clearDice());

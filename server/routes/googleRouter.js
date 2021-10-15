@@ -19,7 +19,7 @@ router.get('/callback',
             id: currentUser.id,
             name: currentUser.name,
           }
-          return res.redirect('http://localhost:3000/home');
+          return res.redirect('http://localhost:3000/');
         } else {
           const newUser = User.create({
             name: req.user.displayName,
@@ -30,7 +30,7 @@ router.get('/callback',
             id: newUser.id,
             name: newUser.name,
           }
-          return res.redirect('http://localhost:3000/home');
+          return res.redirect('http://localhost:3000/');
         }
       } catch (error) {
         return res.sendStatus(405);

@@ -15,27 +15,32 @@ export const CenterStats = () => {
     JSON.parse(window.localStorage.getItem('curUser')) ||
     JSON.parse(window.localStorage.getItem('user'));
   const params = useParams();
-  const { soundEnabled } = useDiceContext();
+  const { soundEnabled, setDiceDone } = useDiceContext();
   const currCard = useSelector((state) => state.currentCard);
-  console.log(currCard);
+  const currentUserCards = useSelector((state) => state.currentUserCards);
 
   const [play] = useSound(buySound, { soundEnabled });
   return (
     <Wrapper>
-      {currCard?.card?.cost && currCard?.isFree && (
-        <Button
-          onClick={() => {
-            play();
-            dispatch(
-              buyCard(currCard?.card?.boardid, localUser?.id, params?.id)
-            );
-          }}
-          text={`Купить за ${currCard?.card?.cost}к`}
-        />
-      )}
+      {!currentUserCards?.find((el) => el?.id === currCard?.card?.id) &&
+        currCard?.card?.cost &&
+        currCard?.isFree && (
+          <Button
+            onClick={() => {
+              play();
+              dispatch(
+                buyCard(currCard?.card?.boardid, localUser?.id, params?.id)
+              );
+            }}
+            text={`Купить за ${currCard?.card?.cost}к`}
+          />
+        )}
       <Button
         text={'Завершить ход'}
-        onClick={() => dispatch(nextTurn(params.id))}
+        onClick={() => {
+          dispatch(nextTurn(params.id));
+          setDiceDone(false);
+        }}
       />
     </Wrapper>
   );
@@ -49,5 +54,4 @@ const Wrapper = styled.div`
   padding: 10px;
   margin: 5px;
   height: 100%;
-  border: 1px solid red;
 `;

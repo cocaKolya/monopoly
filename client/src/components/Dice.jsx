@@ -23,6 +23,8 @@ export const Dice = ({ user }) => {
     players,
     setInprocess,
     soundEnabled,
+    diceDone,
+    setDiceDone,
   } = useDiceContext();
 
   const diceSocket = useSelector((state) => state.dice);
@@ -71,24 +73,28 @@ export const Dice = ({ user }) => {
 
     dispatch(rollDice(dicetotal, params.id, user.id));
     reactDice.current.rollAll([x, y]);
+    setDiceDone(true);
   }
 
-  function rollDoneCallback(num) {
-    console.log(`You rolled a ${num}`);
-  }
-  console.log('usersqueue', user?.queue);
   return (
     <DiceWrapper>
       <ReactDice
         numDice={2}
-        rollDone={rollDoneCallback}
         faceColor={'rgb(70, 63, 65)'}
         dotColor={'white'}
         rollTime={1}
         ref={reactDice}
       />
-
-      {user?.queue === turnSocket ? (
+      {!diceDone ? (
+        <Text>
+          Player<StyledSpan> {players[turnSocket - 1]?.name}</StyledSpan> Turn
+        </Text>
+      ) : (
+        <Text>
+          <StyledSpan> Your</StyledSpan> Turn!
+        </Text>
+      )}
+      {!diceDone && user?.queue === turnSocket ? (
         <Button
           text={'ROLL'}
           onClick={() => {
@@ -97,12 +103,7 @@ export const Dice = ({ user }) => {
           }}
         />
       ) : (
-        <Button
-          text={`PLAYER ${players[turnSocket - 1]?.name} TURN`}
-          style={{ backgroundColor: 'pink' }}
-        >
-          PLAYER {players[turnSocket - 1]?.name} TURN
-        </Button>
+        <></>
       )}
     </DiceWrapper>
   );
@@ -114,4 +115,16 @@ const DiceWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+`;
+
+const Text = styled.div`
+  color: white;
+  padding: 10px;
+`;
+
+const StyledSpan = styled.span`
+  background-color: red;
+  border-radius: 5px;
+  padding: 0px 5px;
+  font-size: 14pt;
 `;

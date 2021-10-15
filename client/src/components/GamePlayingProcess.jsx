@@ -23,9 +23,7 @@ export const GamePlayingProcess = () => {
   if (currUser) {
     window.localStorage.setItem('curUser', JSON.stringify(currUser));
   }
-  // console.log('localuser------', localUser);
-  // console.log('123123------', gameUsers);
-  console.log('1qqqqqqq------', currUser);
+
 
   return (
     <MainWrapperDiv>
@@ -38,7 +36,7 @@ export const GamePlayingProcess = () => {
           {<CardBoard user={currUser} />}
         </Wrapper3d>
       </Center>
-      <Col>asasd</Col>
+      <Col></Col>
     </MainWrapperDiv>
   );
 };
@@ -64,5 +62,4 @@ const Center = styled.div`
 
 const Col = styled.div`
   width: 29%;
-  border: 1px solid black;
 `;

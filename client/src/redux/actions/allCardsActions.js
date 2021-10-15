@@ -9,7 +9,6 @@ const cards = response.data
   cardsObj.left = cards.slice(9, 20);
   cardsObj.up = cards.slice(20, 29);
   cardsObj.right = cards.slice(29, 40);
-  console.log(cardsObj);
   dispatch({
     type: GET_ALL_CARDS,
     payload: cardsObj,

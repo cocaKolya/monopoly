@@ -22,6 +22,12 @@ const DiceContextProvider = ({ children }) => {
     setSoundEnabled(!soundEnabled);
   };
 
+  const [diceDone, setDiceDone] = useState(false);
+
+  const diceDoneChanger = () => {
+    setDiceDone(!diceDone);
+  };
+
   useEffect(() => {
     if (!userPosition.length || userPosition.length !== players.length) {
       setUserPosition(players.map((el) => (el = el.position)));
@@ -34,7 +40,7 @@ const DiceContextProvider = ({ children }) => {
       setPlayerTurn((prev) => prev + 1);
     } else setPlayerTurn(1);
   };
-
+  console.log('diceDone', diceDone);
   return (
     <DiceContext.Provider
       value={{
@@ -57,6 +63,8 @@ const DiceContextProvider = ({ children }) => {
         soundEnabled,
         setSoundEnabled,
         soundOnOffHandler,
+        diceDone,
+        setDiceDone,
       }}
     >
       {children}
