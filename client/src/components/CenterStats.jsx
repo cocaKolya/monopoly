@@ -3,14 +3,18 @@ import styled from 'styled-components';
 import { buyCard } from '../redux/actions/currentCardActions';
 import { Button } from './atoms/Button';
 import { useParams } from 'react-router';
+import { nextTurn } from '../redux/actions/gameActions';
 
 export const CenterStats = () => {
   const dispatch = useDispatch();
-  const localUser = JSON.parse(window.localStorage.getItem('user'));
+  const localUser =
+    JSON.parse(window.localStorage.getItem('curUser')) ||
+    JSON.parse(window.localStorage.getItem('user'));
   const params = useParams();
 
   const currCard = useSelector((state) => state.currentCard);
-  console.log(currCard);
+  const currentUserCards = useSelector((state) => state.currentUserCards);
+  const turnSocket = useSelector((state) => state.turnSocket);
   return (
     <Wrapper>
       {currCard?.card?.cost && currCard?.isFree && (
@@ -23,7 +27,10 @@ export const CenterStats = () => {
           text={`Купить за ${currCard?.card?.cost}к`}
         />
       )}
-      <Button text={'Завершить ход'} />
+      <Button
+        text={'Завершить ход'}
+        onClick={() => dispatch(nextTurn(params.id))}
+      />
     </Wrapper>
   );
 };

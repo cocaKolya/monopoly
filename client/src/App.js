@@ -27,7 +27,10 @@ function App() {
   // const localUser = window.localStorage.getItem('user');
   const history = useHistory();
   const user = useSelector((state) => state.user);
-  const isCheckedAuth = useRef(false);
+  const isCheckedAuth = useRef(false)
+
+
+
 
   useEffect(() => {
     if (user) {

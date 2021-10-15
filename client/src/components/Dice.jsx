@@ -21,6 +21,7 @@ export const Dice = ({ user }) => {
     setUserPosition,
     nextPlayer,
     players,
+    setInprocess,
   } = useDiceContext();
 
   const diceSocket = useSelector((state) => state.dice);
@@ -39,29 +40,30 @@ export const Dice = ({ user }) => {
 
   useEffect(() => {
     const interval = () => {
-      let newPosition = diceSocket + userPosition[turnSocket - 1];
-
-      let timerId = setInterval(() => {
-        currentPos++;
-        if (currentPos > 39) {
-          newPosition = newPosition - currentPos;
-          currentPos = 0;
-          setUserPosition((prev) =>
-            prev.map((el, i) => (i === turnSocket - 1 ? 0 : el))
-          );
-        } else
-          setUserPosition((prev) =>
-            prev.map((el, i) => (i === turnSocket - 1 ? el + 1 : el))
-          );
-
-        if (currentPos === newPosition) {
-          console.log('inside it');
-          setCurrentPosition(currentPos);
-          clearInterval(timerId);
-          dispatch(clearDice());
-          nextPlayer();
-        }
-      }, 100);
+      if (turnSocket) {
+        setInprocess(true);
+        let newPosition = diceSocket + userPosition[turnSocket - 1];
+        let timerId = setInterval(() => {
+          currentPos++;
+          if (currentPos > 39) {
+            newPosition = newPosition - currentPos;
+            currentPos = 0;
+            setUserPosition((prev) =>
+              prev.map((el, i) => (i === turnSocket - 1 ? 0 : el))
+            );
+          } else
+            setUserPosition((prev) =>
+              prev.map((el, i) => (i === turnSocket - 1 ? el + 1 : el))
+            );
+          if (currentPos === newPosition) {
+            setInprocess(false);
+            setCurrentPosition(currentPos);
+            clearInterval(timerId);
+            dispatch(clearDice());
+            nextPlayer();
+          }
+        }, 100);
+      }
     };
     if (diceSocket > 0) interval();
   }, [diceSocket]);
@@ -90,8 +92,7 @@ export const Dice = ({ user }) => {
         ref={reactDice}
       />
 
-      {/* {user?.queue === turnSocket ? ( */}
-      {true ? (
+      {user?.queue === turnSocket ? (
         <Button
           text={'ROLL'}
           onClick={() => {

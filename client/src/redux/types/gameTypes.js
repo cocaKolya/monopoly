@@ -9,3 +9,4 @@ export const FIND_USER_GAMES = 'FIND_USER_GAMES';
 export const ADD_USER_TO_GAME = 'ADD_USER_TO_GAME';
 export const ROLL_DICE = 'ROLL_DICE';
 export const CLEAR_DICE = 'CLEAR_DICE';
+export const NEXT_TURN = 'NEXT_TURN';

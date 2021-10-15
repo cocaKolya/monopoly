@@ -170,7 +170,8 @@ router.route('/add/users').post(async (req, res) => {
     if (panding.length > 0) {
       const usersPandingFilter = notMe.filter(
         (user) =>
-          panding.findIndex((pandingUser) => pandingUser.userid === user.id) === -1
+          panding.findIndex((pandingUser) => pandingUser.userid === user.id) ===
+          -1
       );
 
       const user = usersPandingFilter.map((el) => {
@@ -333,10 +334,10 @@ router.route('/nextturn').post(async (req, res) => {
   join "UserInGames" on "Users".id = "UserInGames".userid
   join "Games" on "UserInGames".gameid = "Games".id
   join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
-  where "Games".key = '${gamekey}'
+  where "Games".key = '${key}'
    `);
 
-    const curgame = await Game.findOne({ where: { key: gamekey } });
+    const curgame = await Game.findOne({ where: { key: key } });
 
     myEmitter.emit(TURN_SOCKET, gameusers, curgame.turn);
 
@@ -400,7 +401,10 @@ router.route('/currentcard').post(async (req, res) => {
             where: { uigid: userInGameOnwer.id },
           });
           const cardOwner = await Estate.findAll({
-            where: { streetid: card.id, gamestatisticid: userstatisticOwner.id },
+            where: {
+              streetid: card.id,
+              gamestatisticid: userstatisticOwner.id,
+            },
           });
           if (cardOwner) {
             userstatisticOwner.money += value.value;

@@ -17,12 +17,15 @@ export const GamePlayingProcess = () => {
     dispatch(getGameUsers(params.id));
   }, []);
 
+
   const gameUsers = useSelector((state) => state.gameUsers);
   const currUser = gameUsers.find((el) => el.id === localUser.id);
-
+  if (currUser) {
+    window.localStorage.setItem('curUser', JSON.stringify(currUser));
+  }
   // console.log('localuser------', localUser);
   // console.log('123123------', gameUsers);
-  // console.log('1qqqqqqq------', currUser);
+  console.log('1qqqqqqq------', currUser);
 
   return (
     <MainWrapperDiv>
@@ -32,7 +35,7 @@ export const GamePlayingProcess = () => {
       <Center>
         <Wrapper3d>
           <Switcher />
-          <CardBoard />
+          {<CardBoard user={currUser} />}
         </Wrapper3d>
       </Center>
       <Col>asasd</Col>

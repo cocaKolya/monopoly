@@ -11,9 +11,12 @@ const DiceContextProvider = ({ children }) => {
   const [userPosition, setUserPosition] = useState([]);
   const [currentPosition, setCurrentPosition] = useState(null);
   const [playerTurn, setPlayerTurn] = useState(1);
+  const [inProcess, setInprocess] = useState(true);
 
   const [transform, setTransform] = useState(false);
   const changeTransform = () => setTransform(!transform);
+
+
 
   useEffect(() => {
     if (!userPosition.length || userPosition.length !== players.length) {
@@ -45,6 +48,8 @@ const DiceContextProvider = ({ children }) => {
         setCurrentKey,
         currentPosition,
         setCurrentPosition,
+        inProcess,
+        setInprocess,
       }}
     >
       {children}

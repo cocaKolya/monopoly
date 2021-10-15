@@ -5,6 +5,7 @@ import {
   CREATE_GAME,
   FIND_GAMES,
   FIND_USER_GAMES,
+  NEXT_TURN,
   START_GAME,
 } from '../types/gameTypes';
 
@@ -38,6 +39,13 @@ export const startGame = (key) => async (dispatch) => {
 
   dispatch({
     type: START_GAME,
+  });
+};
+export const nextTurn = (key) => async (dispatch) => {
+  await axios.post('http://localhost:3001/game/nextturn', { key });
+
+  dispatch({
+    type: NEXT_TURN,
   });
 };
 
