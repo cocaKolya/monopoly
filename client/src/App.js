@@ -32,8 +32,7 @@ function App() {
     !localUser &&
     location.pathname !== '/reg' &&
     location.pathname !== '/login'
-  )
-    history.push('/reg');
+  ){history.push('/reg');}
 
   const user = useSelector((state) => state.user);
 
@@ -61,7 +60,7 @@ function App() {
         <AddPlayersModal />
         <Switch>
           <Route exact path='/game/:id' component={GamePlayingProcess} />
-          <Route exact path='/' component={CardBoard} />
+          <Route exact path='/' component={HomePage} />
           <Route exact path='/reg' component={RegForm} />
           <Route exact path='/login' component={LogIn} />
           <Route exact path='/logout' component={Logout} />

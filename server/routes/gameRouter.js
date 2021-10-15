@@ -366,7 +366,7 @@ router.route('/currentcard').post(async (req, res) => {
       });
 
       cardBoardValue = await Dohod.findOne({ where: { streetid: card.id } });
-      if (cardEstatef.length === 0) {
+      if (cardEstate.length === 0) {
         isFree = true;
       } else {
         for (let i = 0; i < gameusers.length; i++) {
