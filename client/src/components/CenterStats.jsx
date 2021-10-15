@@ -5,6 +5,9 @@ import { Button } from './atoms/Button';
 import { useParams } from 'react-router';
 import { nextTurn } from '../redux/actions/gameActions';
 
+import { useSound } from 'use-sound';
+import buySound from './sound/buySound.mp3';
+
 export const CenterStats = () => {
   const dispatch = useDispatch();
   const localUser =
@@ -13,24 +16,21 @@ export const CenterStats = () => {
   const params = useParams();
 
   const currCard = useSelector((state) => state.currentCard);
-  const currentUserCards = useSelector((state) => state.currentUserCards);
-  const turnSocket = useSelector((state) => state.turnSocket);
+  console.log(currCard);
+
+  const [play] = useSound(buySound);
   return (
     <Wrapper>
       {currCard?.card?.cost && currCard?.isFree && (
         <Button
-          onClick={() =>
-            dispatch(
-              buyCard(currCard?.card?.boardid, localUser?.id, params?.id)
-            )
-          }
+          onClick={() => {
+            play();
+            dispatch(buyCard(currCard?.card?.boardid, localUser?.id, params?.id));
+          }}
           text={`Купить за ${currCard?.card?.cost}к`}
         />
       )}
-      <Button
-        text={'Завершить ход'}
-        onClick={() => dispatch(nextTurn(params.id))}
-      />
+      <Button text={'Завершить ход'} onClick={() => dispatch(nextTurn(params.id))} />
     </Wrapper>
   );
 };
