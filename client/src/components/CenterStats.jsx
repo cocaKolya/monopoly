@@ -10,6 +10,7 @@ export const CenterStats = () => {
     JSON.parse(window.localStorage.getItem('curUser')) ||
     JSON.parse(window.localStorage.getItem('user'));
   const params = useParams();
+
   const currCard = useSelector((state) => state.currentCard);
   const currentUserCards = useSelector((state) => state.currentUserCards);
   const turnSocket = useSelector((state) => state.turnSocket);
