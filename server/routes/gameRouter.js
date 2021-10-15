@@ -306,7 +306,6 @@ router.route('/dice').post(async (req, res) => {
     }
 
     myEmitter.emit(ROLL_DICE_SOCKET, gameusers, dice, curgame.turn);
-    myEmitter.emit(TURN_SOCKET, gameusers, curgame.turn);
 
     res.sendStatus(200);
   } catch (err) {
@@ -319,6 +318,28 @@ router.route('/cardboard').get(async (req, res) => {
     const card = await Street.findAll();
 
     res.json(card);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(403);
+  }
+});
+router.route('/nextturn').get(async (req, res) => {
+  const { gamekey } = req.body;
+
+  try {
+    const [gameusers] = await sequelize.query(`
+  select "Users".id, name,"GameStatistics".position, "GameStatistics".money,"GameStatistics".queue from "Users" 
+  join "UserInGames" on "Users".id = "UserInGames".userid
+  join "Games" on "UserInGames".gameid = "Games".id
+  join "GameStatistics" on "UserInGames".id = "GameStatistics".uigid
+  where "Games".key = '${gamekey}'
+   `);
+
+    const curgame = await Game.findOne({ where: { key: gamekey } });
+
+    myEmitter.emit(TURN_SOCKET, gameusers, curgame.turn);
+
+    res.sendStatus(200);
   } catch (err) {
     console.log(err);
     res.sendStatus(403);

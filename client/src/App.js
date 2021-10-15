@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
-import CardBoard from './components/CardBoard';
+
 
 import DiceContextProvider from './contexts/DiceContext';
 import './style.css';
@@ -25,19 +25,18 @@ function App() {
   const socket = useRef();
 
   let location = useLocation();
-  const localUser = window.localStorage.getItem('user');
+  // const localUser = window.localStorage.getItem('user');
   const history = useHistory();
-
-  if (
-    !localUser &&
-    location.pathname !== '/reg' &&
-    location.pathname !== '/login'
-  ){history.push('/reg');}
-
   const user = useSelector((state) => state.user);
+  const isCheckedAuth = useRef(false)
+
+
+
+
 
   useEffect(() => {
     if (user) {
+      dispatch(getGames());
       socket.current = new WebSocket(url);
       const socketOnMessage = createSocketOnMessage(dispatch);
       socket.current.onmessage = socketOnMessage;
@@ -46,11 +45,14 @@ function App() {
         history.push('/');
       };
     }
+    
+    if (isCheckedAuth && !user) history.push('/reg');
+ 
   }, [user]);
 
   useEffect(() => {
     dispatch(checkUser());
-    dispatch(getGames());
+    isCheckedAuth.current = true
   }, []);
 
   return (
