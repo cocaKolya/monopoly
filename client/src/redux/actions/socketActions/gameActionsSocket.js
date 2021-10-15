@@ -1,4 +1,5 @@
 import {
+  CHECK_CARD_SOCKET,
   CLEAR_DICE_SOCKET,
   CREATE_GAME_SOCKET,
   GET_CARD_USER_SOCKET,
@@ -38,6 +39,12 @@ export const turnSocket = (turn) => {
   return {
     type: TURN_SOCKET,
     payload: turn,
+  };
+};
+export const checkCard = (stats) => {
+  return {
+    type: CHECK_CARD_SOCKET,
+    payload: stats,
   };
 };
 export const getStatsSocket = (stats) => {

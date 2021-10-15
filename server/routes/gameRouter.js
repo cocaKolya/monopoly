@@ -20,6 +20,7 @@ const {
   ROLL_DICE_SOCKET,
   TURN_SOCKET,
   GET_CARD_USER_SOCKET,
+  CHECK_CARD_SOCKET,
 } = require('../src/constants/event');
 
 router.route('/').get(async (req, res) => {
@@ -428,7 +429,8 @@ router.route('/currentcard').post(async (req, res) => {
 
 router.route('/cardbuy').post(async (req, res) => {
   const { boardid, userid, gamekey } = req.body;
-
+  let isFree = false;
+  let money = {};
   try {
     const game = await Game.findOne({ where: { key: gamekey } });
 
@@ -464,6 +466,7 @@ router.route('/cardbuy').post(async (req, res) => {
 
     myEmitter.emit(GET_CARD_USER_SOCKET, gameusers, street);
     myEmitter.emit(GET_GAME_USERS_SOCKET, gameusers);
+    myEmitter.emit(CHECK_CARD_SOCKET, gameusers, street, dohod, isFree, money);
     res.json(street);
   } catch (error) {
     console.log(error);
