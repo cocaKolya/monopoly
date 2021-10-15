@@ -4,6 +4,8 @@ import GameItem from './GameItem';
 const GameListDiv = styled('div')`
   display: flex;
   flex-wrap: wrap;
+  margin-right: -10px;
+  width: calc(100%+10px);
 `;
 
 function GameList({ db, active }) {

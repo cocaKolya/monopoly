@@ -26,10 +26,10 @@ function GameItem({ game, active }) {
 
   return (
     <GameWrapper>
-      <div>Monopoly </div>
-      <PlayersWrapper>
-        <div>Public Game {game.id}</div>
-      </PlayersWrapper>
+      <Text>Monopoly </Text>
+      
+        <Text>Public Game {game.id}</Text>
+      
       {active ? (
         <PlayersWrapper>
           <Button
@@ -53,8 +53,9 @@ export default GameItem;
 const GameWrapper = styled('div')`
   border: 3px solid black;
   background-color: white;
-  width: 200px;
-  margin: 10px;
+  width: calc(100% / 12 * 4 - 10px);
+  margin-right: 10px;
+  margin-bottom: 10px;
   padding: 10px;
   border-radius: 10px;
   // > *:not:last-child {
@@ -69,4 +70,8 @@ const PlayersWrapper = styled('div')`
 `;
 const Player = styled('div')`
   margin: 10px;
+`;
+
+const Text = styled.p`
+  margin-bottom: 10px;
 `;

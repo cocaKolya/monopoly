@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-
 const PLAYER_FACTORS = {
   0: 'top: 40%; left:20%; background-color: yellow;',
   1: 'top: 40%; left:50%; background-color: rgb(212, 16, 58);',
@@ -20,8 +19,8 @@ const PlayerDiv = styled('div')`
   ${(props) => PLAYER_FACTORS[props.user]}
 `;
 
-function Player({id}) {
-  return <PlayerDiv user={id} />;
+function Player({ id }) {
+  return <PlayerDiv user={id}/>;
 }
 
 export default Player;

@@ -22,12 +22,36 @@ const Row = styled('div')`
 `;
 
 const Header = styled('div')`
-  margin-top: 50px;
 `;
 
 const Text = styled.p`
   color: white;
   font-size: 20pt;
+`;
+
+
+const StartBtn = styled.button`
+  margin: 5px;
+  border: 2px solid black;
+  padding: 5px 30px;
+  font-size: 26pt;
+  border-radius: 15px;
+  cursor: pointer;
+  border: none;
+  color: white;
+  min-width: 200px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: rgb(161, 83, 172);
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    background-color: rgb(177, 126, 184);
+  }
 `;
 
 function HomePage() {
@@ -66,7 +90,7 @@ function HomePage() {
   return (
     <>
       <Header>
-        <Button text={'Создать игру'} onClick={() => GameStarter(user?.id)} />
+        <StartBtn  onClick={() => GameStarter(user?.id)}> Создать Игру</StartBtn>
       </Header>
       <HomeWrapper>
         <Row>

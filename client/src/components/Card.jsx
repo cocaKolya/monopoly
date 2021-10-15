@@ -9,7 +9,9 @@ function Card({ name, color, isCorner, cardId, special }) {
       <CardBack key={cardId} isCorner={isCorner} special={special}>
         {players?.map(
           (el, i) =>
-            userPosition[i] === cardId && <Player key={el.id} id={el.queue} />
+            userPosition[i] === cardId && (
+              <Player key={el.id} id={el.queue} />
+            )
         )}
         {color && <CardHead color={color}></CardHead>}
         <CardText color={color} special={special}>
@@ -56,6 +58,5 @@ const CardText = styled('div')`
   font-size: 8pt;
   justify-content: center;
   padding: 10px;
-  ${(props) =>
-    props.special !== 'train' && !props.color && 'margin-top: 40%'};
+  ${(props) => props.special !== 'train' && !props.color && 'margin-top: 40%'};
 `;

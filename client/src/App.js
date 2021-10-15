@@ -27,10 +27,7 @@ function App() {
   // const localUser = window.localStorage.getItem('user');
   const history = useHistory();
   const user = useSelector((state) => state.user);
-  const isCheckedAuth = useRef(false)
-
-
-
+  const isCheckedAuth = useRef(false);
 
   useEffect(() => {
     if (user) {
@@ -54,20 +51,22 @@ function App() {
 
   return (
     <DiceContextProvider>
-      <NavBar />
-      <MainWrapper>
-        <AddPlayersModal />
-        <Switch>
-          <Route exact path="/game/:id" component={GamePlayingProcess} />
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/reg" component={RegForm} />
-          <Route exact path="/login" component={LogIn} />
-          <Route exact path="/logout" component={Logout} />
+      <Wrapper>
+        <NavBar />
+        <MainWrapper>
+          {/* <AddPlayersModal /> */}
+          <Switch>
+            <Route exact path='/game/:id' component={GamePlayingProcess} />
+            <Route exact path='/' component={HomePage} />
+            <Route exact path='/reg' component={RegForm} />
+            <Route exact path='/login' component={LogIn} />
+            <Route exact path='/logout' component={Logout} />
 
-          <Route exact path="/game/:id/lobby" component={Lobby} />
-          <Route exact path="/profile" component={Lobby} />
-        </Switch>
-      </MainWrapper>
+            <Route exact path='/game/:id/lobby' component={Lobby} />
+            <Route exact path='/profile' component={Lobby} />
+          </Switch>
+        </MainWrapper>
+      </Wrapper>
     </DiceContextProvider>
   );
 }
@@ -80,5 +79,13 @@ const MainWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+  padding: 40px 20px;
+  flex-grow: 1;
   // height: 840px;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 `;

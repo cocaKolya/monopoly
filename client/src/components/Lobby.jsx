@@ -24,14 +24,11 @@ export const Lobby = () => {
 
   const gameUsers = useSelector((state) => state.gameUsers);
 
-  
-
   useEffect(() => {
     setCurrentKey(params.id);
     dispatch(getGameUsers(params.id));
   }, []);
 
-  
   const currGame = games.find((el) => el.key === params.id);
   if (currGame?.inprocess === true) history.push(`/game/${params.id}`);
 
@@ -44,17 +41,32 @@ export const Lobby = () => {
     history.push(`/game/${params.id}`);
   };
   return (
+    // <MainDiv>
     <LobbyWrapper>
-      <GroupDiv>
-        <CloseButton onClick={() => history.push('/')}>close</CloseButton>
+      <CloseButton onClick={() => history.push('/')}>close</CloseButton>
+      
         <GamePlayersList players={gameUsers} />
         <p>waiting for other players...</p>
-        <Button text={'add Players'} onClick={() => addUsersHandler()}></Button>
-      </GroupDiv>
+        {/* <Button
+            text={'add Players'}
+            onClick={() => addUsersHandler()}
+          ></Button> */}
+      
       <div>
         <Button text={'Start Game'} onClick={() => startGamehandler()} />
       </div>
     </LobbyWrapper>
+    //    <StyleWrapper>
+    //     <StylesDiv>
+    //       Выбор темы игры <br />
+    //       Coming soon...
+    //     </StylesDiv>
+    //     <StylesDiv>
+    //       Выбор фигурки игрока <br />
+    //       Coming soon...
+    //     </StylesDiv>
+    //   </StyleWrapper>
+    //  </MainDiv>
   );
 };
 
@@ -65,11 +77,22 @@ const LobbyWrapper = styled.div`
   justify-content: space-evenly;
   align-items: center;
   padding: 40px;
-  border: 3px solid black;
   background-color: white;
-  width: 50%;
-  height: 500px;boardid
-  border-radius: 10px;
+  width: 40%;
+  height: 400px;
+  border: 3px solid black;
+`;
+
+const StyleWrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 40px;
+  background-color: white;
+  width: 40%;
+  height: 300px;
 `;
 
 const GroupDiv = styled.div`
@@ -77,6 +100,16 @@ const GroupDiv = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+`;
+
+const StylesDiv = styled.div`
+  position: relative;
+  display: flex;
+  width: 200px;
+  height: 50px;
+  background-color: rgba(168, 168, 168, 0.414);
+  border-radius: 10px;
+  padding: 10px;
 `;
 
 const CloseButton = styled.div`
@@ -90,4 +123,18 @@ const CloseButton = styled.div`
   &:hover {
     background-color: rgba(168, 168, 168, 0.8);
   }
+`;
+
+const MainDiv = styled.div`
+margin: 50px;
+position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 40px;
+  border: 3px solid black;
+  background-color: white;
+  width: 50%;
+  height: 500px;boardid
+  border-radius: 10px;
 `;
