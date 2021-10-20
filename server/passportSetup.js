@@ -9,12 +9,15 @@ passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
-passport.use(new GoogleStrategy({
-  clientID: "120504265045-epuup284aef776dnmmdq93cc3q1kknf8",
-  clientSecret: "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",
-  callbackURL: "http://localhost:3001/google/callback"
-},
-  function (accessToken, refreshToken, profile, done) {
-    return done(null, profile);
-  }
-));
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE,
+      clientSecret: process.env.GOOGLE_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK,
+    },
+    function (accessToken, refreshToken, profile, done) {
+      return done(null, profile);
+    }
+  )
+);
