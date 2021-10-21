@@ -14,3 +14,5 @@
 - Sequelize
 - Style-components
 - WebSocket
+
+<img width="1156" alt="Снимок экрана 2021-10-21 в 15 33 45" src="https://user-images.githubusercontent.com/58190904/138278102-b63ddba3-a611-49f0-861f-00c83acf20ad.png">
